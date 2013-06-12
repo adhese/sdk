@@ -1,0 +1,71 @@
+<html>
+<head>
+<script type="text/javascript" src="adhese-vast.js"></script>
+</head>
+<body>
+
+<!-- create a player and info pane container -->
+<div id="info"></div>
+<div id="player"></div>
+
+<script type="text/javascript">
+
+// just for completing the example, the content that will be shown after the example ad
+var actualContentSrc = "http://media.w3.org/2010/05/bunny/movie.mp4";
+
+// get reference to the container elements
+var playerContainer = document.getElementById("player");
+var infoContainer = document.getElementById("info");
+
+var a = new AdheseVastWrapper();
+a.init();
+a.addEventListener("ADS_LOADED", adsAreLoaded);
+a.requestAds("http://ads.pebblemedia.adhese.com", "/sl_test_home_-preroll/");
+
+function adsAreLoaded() {
+
+	// if has preroll, show it
+	if (a.hasAd("preroll")) {
+		// display duration
+		infoContainer.innerHTML = "ad takes " + a.getDuration("preroll") + " time, stay tuned";
+
+		// create source element for video
+		var adSrc = document.createElement("source");
+		adSrc.src = a.getMediafile("preroll","video/mp4");
+		adSrc.type = "video/mp4";
+
+	    // create desired video element 
+		var adPlayer = document.createElement("video");
+
+	    adPlayer.width = 640;
+	    adPlayer.height = 480;
+	    adPlayer.autoplay = "true";
+		//adPlayer.controls = "true";
+
+	    // if using a flash based player: make sure adPlayer is a reference to the flash object and allowScripAccess is true
+	    
+		// attach to timeupdate event for passing the currentTime, this allows adhese to track the actual viewing of the ad
+		adPlayer.addEventListener("timeupdate", function() { a.timeupdate("preroll", adPlayer.currentTime); }, true);
+		// clicks on video player should be sent to adhese for handling and reporting
+		adPlayer.addEventListener("click", function() { a.clicked("preroll"); }, true);
+		// when playong has ended, tell and adhese and than continue to showing content
+		adPlayer.addEventListener("ended", function() { a.ended("preroll", adPlayer.currentTime); showActualContentAfterPreroll(); }, true);
+
+		//add the source to the video element
+		adPlayer.appendChild(adSrc);
+
+		// ad the video element to the player container
+		playerContainer.appendChild(adPlayer);
+	}
+
+}
+
+function showActualContentAfterPreroll() {
+	// here comes the code to start your content after the ad
+	infoContainer.innerHTML = "Feature film starting. Enjoy!";
+	playerContainer.innerHTML = '<video id="video" controls="" autoplay="" width="640" height="480" preload="none" poster="http://media.w3.org/2010/05/bunny/poster.png"><source id="mp4" src="http://media.w3.org/2010/05/bunny/movie.mp4" type="video/mp4"><source id="ogv" src="http://media.w3.org/2010/05/bunny/movie.ogv" type="video/ogg"></video>';
+}
+
+</script>
+</body>
+</html>
