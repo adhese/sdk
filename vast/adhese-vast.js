@@ -1,8 +1,8 @@
-// vast linear ads for html/js
+// vast linear ads for html/js by adhese.com
 // http://www.iab.net/media/file/VASTv3.0.pdf
 
 function AdheseVastWrapper() {
-	
+	//
 }
 
 AdheseVastWrapper.prototype.init = function() {
@@ -12,18 +12,21 @@ AdheseVastWrapper.prototype.init = function() {
 	this.helper = new AdheseVastHelper();
 };
 
-AdheseVastWrapper.prototype.requestAds = function(inHost, inPath) {
-	this.currentScript = null;  
-    var newScript = document.createElement("script");
+AdheseVastWrapper.prototype.requestAds = function(inHost, inLocation, inFormats) {
+	var uri = inHost + "/jsonp/a.parseVastJson";
+	for (var f in inFormats) {
+		uri += "/sl" + inLocation + "-" + inFormats[f];
+	}
+	uri += "/?t=" + new Date().getTime();
+
+	var newScript = document.createElement("script");
     newScript.type = "text/javascript";  
-    newScript.src = inHost + "/jsonp/a.parseVastJson" + inPath + (inPath.indexOf("?")+1 ? "&" : "?") + "t=" + new Date().getTime();
-    if(this.currentScript) head.removeChild(currentScript);
+    newScript.src = uri;
     document.getElementsByTagName("head")[0].appendChild(newScript);     
 }
 
 AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 	var xml = this.parseXML(inJson[0].tag);
-	//console.log(xml.getElementsByTagName("Ad"));
 		
 	var ads = xml.getElementsByTagName("Ad");
 	for (var i=0; i<ads.length; i++) {
@@ -117,8 +120,11 @@ AdheseVastWrapper.prototype.getMediafile = function(adId, type) {
 };
 
 AdheseVastWrapper.prototype.getDuration = function(adId) {
-	console.log("getDuration " + adId);
 	return this.schedule[adId].getDuration();	
+};
+
+AdheseVastWrapper.prototype.getDurationInSeconds = function(adId) {
+	return this.schedule[adId].getDurationInSeconds();	
 };
 
 // whenever a player shows an ad, it should call it's Impressions uri
@@ -156,8 +162,8 @@ AdheseVastWrapper.prototype.timeupdate = function(adId, currentTime) {
 	}
 };
 
-AdheseVastWrapper.prototype.clicked = function(adId) {
-	console.log("tracker clicked for " + adId);
+AdheseVastWrapper.prototype.clicked = function(adId, currentTime) {
+	console.log("tracker clicked for " + adId + " @" + currentTime);
 	console.log("open new window with VideoClicks>ClickThrough");
 };
 

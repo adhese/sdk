@@ -5,7 +5,7 @@
 <body>
 
 <!-- create a player and info pane container -->
-<div id="info"></div>
+<h1 id="info"></h1>
 <div id="player"></div>
 
 <script type="text/javascript">
@@ -20,7 +20,7 @@ var infoContainer = document.getElementById("info");
 var a = new AdheseVastWrapper();
 a.init();
 a.addEventListener("ADS_LOADED", adsAreLoaded);
-a.requestAds("http://ads.pebblemedia.adhese.com", "/sl_test_home_-preroll/");
+a.requestAds("http://ads.pebblemedia.adhese.com", "_test_home_", ["preroll","postroll"]);
 
 function adsAreLoaded() {
 
@@ -43,11 +43,12 @@ function adsAreLoaded() {
 		//adPlayer.controls = "true";
 
 	    // if using a flash based player: make sure adPlayer is a reference to the flash object and allowScripAccess is true
+	    // event names will be different in flash as well, depending on how video playback is implemented
 	    
 		// attach to timeupdate event for passing the currentTime, this allows adhese to track the actual viewing of the ad
 		adPlayer.addEventListener("timeupdate", function() { a.timeupdate("preroll", adPlayer.currentTime); }, true);
 		// clicks on video player should be sent to adhese for handling and reporting
-		adPlayer.addEventListener("click", function() { a.clicked("preroll"); }, true);
+		adPlayer.addEventListener("click", function() { a.clicked("preroll", adPlayer.currentTime); }, true);
 		// when playong has ended, tell and adhese and than continue to showing content
 		adPlayer.addEventListener("ended", function() { a.ended("preroll", adPlayer.currentTime); showActualContentAfterPreroll(); }, true);
 
