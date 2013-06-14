@@ -1,8 +1,8 @@
-Adhese Vast for Javascript/HTML5 - Readme
+#Adhese Vast for Javascript/HTML5 - Readme
 
 
 
-Introduction
+##Introduction
 
 The Adhese Vast JS library is meant to ease the integration of VAST (2.0 & 3.0) ads in video players.
 It contains cross-domain safe methods for requesting ads from your adhese account as well as convenience methods for playing and tracking the ads.
@@ -10,7 +10,7 @@ It is however not a player on its own and it does not insert anything in the DOM
 
 
 
-Getting started
+##Getting started
 
 
 1.	Load the javascript file.
@@ -40,7 +40,7 @@ Getting started
 
 
 
-API
+##API
 
 AdheseVastWrapper
 The main object through which you will request ads and access the response.
@@ -86,9 +86,9 @@ This function will track the click and open a new window containing the click-th
 
 
 
-References
+##References
 
-More on HTML5 Media Events
+###More on HTML5 Media Events
 
 API: http://www.w3.org/TR/html5/embedded-content-0.html#htmlmediaelement
 Full demo: http://www.w3.org/2010/05/video/mediaevents.html
