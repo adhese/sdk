@@ -17,7 +17,7 @@ var actualContentSrc = "http://media.w3.org/2010/05/bunny/movie.mp4";
 var playerContainer = document.getElementById("player");
 var infoContainer = document.getElementById("info");
 
-var a = new AdheseVastWrapper();
+var a = new AdheseVastWrapper(true);
 a.init();
 a.addEventListener("ADS_LOADED", adsAreLoaded);
 a.requestAds("http://ads.pebblemedia.adhese.com", "_test_home_", ["preroll","postroll"]);
@@ -40,8 +40,7 @@ function adsAreLoaded() {
 	    adPlayer.width = 640;
 	    adPlayer.height = 480;
 	    adPlayer.autoplay = "true";
-		//adPlayer.controls = "true";
-
+		
 	    // if using a flash based player: make sure adPlayer is a reference to the flash object and allowScripAccess is true
 	    // event names will be different in flash as well, depending on how video playback is implemented
 	    

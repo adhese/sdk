@@ -1,8 +1,8 @@
 // vast linear ads for html/js by adhese.com
 // http://www.iab.net/media/file/VASTv3.0.pdf
 
-function AdheseVastWrapper() {
-	//
+function AdheseVastWrapper(inDebug) {
+	this.debug = inDebug!=undefined?inDebug:false;
 }
 
 AdheseVastWrapper.prototype.init = function() {
@@ -49,22 +49,50 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 			impression.push(im[j].firstChild.nodeValue);	
 		}
 		
+		//get Trackers and add to object, attribute is event name
+		var trackers = new Object();
+		var tr = ads[i].getElementsByTagName("Tracking");
+		for (var j=0; j<tr.length; j++) {
+			// add this uri to the array for this event
+			if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").nodeValue] = new Array();
+			trackers[tr[j].attributes.getNamedItem("event").nodeValue].push(tr[j].firstChild.nodeValue);
+		}
+
+		// get ClickTracking uri's and add them to the tracking array as well, with the event name "click"
+		var ctr = ads[i].getElementsByTagName("ClickTracking");
+		for (var j=0; j<tr.length; j++) {
+			// add this uri to the array for this event
+			if (!trackers["click"]) trackers["click"] = new Array();
+			if (ctr[j] && ctr[j].firstChild.nodeValue && ctr[j].firstChild.nodeValue!="") {
+				trackers["click"].push(ctr[j].firstChild.nodeValue);
+			}			
+		}
+
+		//get ClickThrough
+		var click = "";
+		var ci = ads[i].getElementsByTagName("ClickThrough");
+		for (var j=0; j<ci.length; j++) {
+			click = ci[j].firstChild.nodeValue;
+		}
+
 		// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
-		console.log(ads[i].attributes.getNamedItem("id").nodeValue);
+		if (this.debug) console.log(ads[i].attributes.getNamedItem("id").nodeValue);
 		this.schedule[ads[i].attributes.getNamedItem("id").nodeValue] = new AdheseVastAd(
 			ads[i].attributes.getNamedItem("id").nodeValue,
 			mediafiles,
 			ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue,
 			impression,
-			this.helper.getDurationInSeconds(ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue)
+			this.helper.getDurationInSeconds(ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue),
+			trackers,
+			click
 		);
-		console.log(this.schedule);
+		if (this.debug) console.log(this.schedule);
 	}
 	this.fireAdsLoaded();
 };
 
 AdheseVastWrapper.prototype.parseXML = function(inXml) {
-	console.log(typeof window.DOMParser);
+	if (this.debug) console.log(typeof window.DOMParser);
 	if (typeof window.DOMParser != "undefined") {
 	    return ( new window.DOMParser() ).parseFromString(inXml, "text/xml");
 	} else if (typeof window.ActiveXObject != "undefined" && new window.ActiveXObject("Microsoft.XMLDOM")) {
@@ -87,7 +115,7 @@ AdheseVastWrapper.prototype.addEventListener = function(event, listener) {
 AdheseVastWrapper.prototype.fireAdsLoaded = function() {
 	for (var i=0; i<this.eventListeners.length; i++) {
 		if (this.eventListeners[i].getEvent()=="ADS_LOADED") {
-			console.log("ADS_LOADED sent to listener");
+			if (this.debug) console.log("ADS_LOADED sent to listener");
 			this.eventListeners[i].getListener().apply();
 		}
 	}
@@ -108,6 +136,14 @@ AdheseVastWrapper.prototype.hasAd = function(adId) {
 
 AdheseVastWrapper.prototype.getImpression = function(adId) {
 	return this.schedule[adId].getImpression();	
+};
+
+AdheseVastWrapper.prototype.getClick = function(adId) {
+	return this.schedule[adId].getClick();	
+};
+
+AdheseVastWrapper.prototype.getTrackers = function(adId) {
+	return this.schedule[adId].getTrackers();	
 };
 
 AdheseVastWrapper.prototype.getMediafile = function(adId, type) {
@@ -140,46 +176,57 @@ AdheseVastWrapper.prototype.track = function(uri) {
 };
 
 AdheseVastWrapper.prototype.timeupdate = function(adId, currentTime) {
-	//console.log(adId + " timeupdate @" + currentTime + " sec.");
+	if (this.debug) console.log(adId + " timeupdate @" + currentTime + " sec.");
 	// at start, log an impressions
 	if (currentTime==0) {
-		console.log("Tracking impression for " + adId);
+		if (this.debug) console.log("Tracking impression for " + adId);
 		this.track(this.getImpression(adId));
 	} else {
 		var perc = currentTime / this.schedule[adId].getDurationInSeconds();
-		if (perc.toFixed(2)==0.25) {
+		if (perc.toFixed(2)==0) {
+			if (this.debug) console.log("Tracking start for " + adId);
+			this.track(this.getTrackers(adId).start);
+		} else if (perc.toFixed(2)==0.25) {
 			// first quartile reached, this will be reached probably twice due to rounding
 			// but unique tracker uri's will only be called once in the AdheseVastWrapper.track function
 			// so we let it simply happen
-			console.log("Tracking first quartile for " + adId);
+			if (this.debug) console.log("Tracking first quartile for " + adId + " - " + this.getTrackers(adId).firstQuartile);
+			this.track(this.getTrackers(adId).firstQuartile);
 		} else if (perc.toFixed(2)==0.50) {
 			//mid point reached
-			console.log("Tracking mid point for " + adId);
+			if (this.debug) console.log("Tracking mid point for " + adId);
+			this.track(this.getTrackers(adId).midpoint);
 		} else if (perc.toFixed(2)==0.75) {
 			//third quartile
-			console.log("Tracking third quartile for " + adId);
+			if (this.debug) console.log("Tracking third quartile for " + adId);
+			this.track(this.getTrackers(adId).thirdQuartile);
 		}
 	}
 };
 
 AdheseVastWrapper.prototype.clicked = function(adId, currentTime) {
-	console.log("tracker clicked for " + adId + " @" + currentTime);
-	console.log("open new window with VideoClicks>ClickThrough");
+	if (this.debug) console.log("tracker clicked for " + adId + " @" + currentTime);
+	if (this.debug) console.log("open new window with VideoClicks>ClickThrough");
+	this.helper.openNewWindow(this.getClick(adId));
+	this.track(this.getTrackers(adId).click);
 };
 
 AdheseVastWrapper.prototype.ended = function(adId, currentTime) {
-	console.log(adId + " ended @" + currentTime);
-	console.log("tracker complete for " + adId);
+	if (this.debug) console.log(adId + " ended @" + currentTime);
+	if (this.debug) console.log("tracker complete for " + adId);
+	this.track(this.getTrackers(adId).complete);
 };
 
 
 // AdheseVastAd
-function AdheseVastAd(inId, inMediaFile, inDuration, inImpression, inDurationInSeconds) {
+function AdheseVastAd(inId, inMediaFile, inDuration, inImpression, inDurationInSeconds, inTrackers, inClick) {
 	this.id = inId;
 	this.mediafile = inMediaFile;
 	this.duration = inDuration;
 	this.impression = inImpression;
 	this.durationInSeconds = inDurationInSeconds;
+	this.trackers = inTrackers;
+	this.click = inClick;
 }
 
 AdheseVastAd.prototype.getId = function() {
@@ -202,6 +249,13 @@ AdheseVastAd.prototype.getImpression = function() {
 	return this.impression;
 };
 
+AdheseVastAd.prototype.getTrackers = function() {
+	return this.trackers;
+};
+
+AdheseVastAd.prototype.getClick = function() {
+	return this.click;
+};
 
 
 // AdheseVastMediaFile
@@ -257,6 +311,11 @@ AdheseVastHelper.prototype.getDurationInSeconds = function(inDuration) {
 		return 0;	
 	}
 	return 0;
+};
+
+AdheseVastHelper.prototype.openNewWindow = function(uri) {
+	var win = window.open(uri, '_blank');
+  	win.focus();
 };
 
 
