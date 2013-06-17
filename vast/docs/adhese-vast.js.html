@@ -1,4 +1,31 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: adhese-vast.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: adhese-vast.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
  * @class 
  * The Adhese Vast JS library is meant to ease the integration of VAST (2.0 & 3.0) ads in video players.
  * It contains cross-domain safe methods for requesting ads from your adhese account as well as convenience methods for playing and tracking the ads.
@@ -33,7 +60,7 @@ AdheseVastWrapper.prototype.init = function() {
  * wrapper.requestAds("http://ads.demo.adhese.com", "_test_", ["preroll","postroll"]);
  * @param  {string} host     The protocol and host of your Adhese account
  * @param  {string} location The location indentification for the Ad position you are requesting.
- * @param  {Array.<String>} formats  An array of strings containing the identification of the formats you want to request. These strings will be used as id for accessing scheduled Ad's properties.
+ * @param  {Array.&lt;String>} formats  An array of strings containing the identification of the formats you want to request. These strings will be used as id for accessing scheduled Ad's properties.
  * @return {void}            
  */
 AdheseVastWrapper.prototype.requestAds = function(inHost, inLocation, inFormats) {
@@ -53,11 +80,11 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 	var xml = this.parseXML(inJson[0].tag);
 		
 	var ads = xml.getElementsByTagName("Ad");
-	for (var i=0; i<ads.length; i++) {
+	for (var i=0; i&lt;ads.length; i++) {
 		// get one or more mediafiles
 		var mediafiles = new Array();
 		var mf = ads[i].getElementsByTagName("MediaFile");
-		for (var j=0; j<mf.length; j++) {
+		for (var j=0; j&lt;mf.length; j++) {
 			mediafiles.push(
 				new AdheseVastMediaFile(
 					mf[j].firstChild.nodeValue,
@@ -69,14 +96,14 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 		//get on or more impression trackers
 		var impression = new Array();
 		var im = ads[i].getElementsByTagName("Impression");
-		for (var j=0; j<im.length; j++) {
+		for (var j=0; j&lt;im.length; j++) {
 			impression.push(im[j].firstChild.nodeValue);	
 		}
 		
 		//get Trackers and add to object, attribute is event name
 		var trackers = new Object();
 		var tr = ads[i].getElementsByTagName("Tracking");
-		for (var j=0; j<tr.length; j++) {
+		for (var j=0; j&lt;tr.length; j++) {
 			// add this uri to the array for this event
 			if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").nodeValue] = new Array();
 			trackers[tr[j].attributes.getNamedItem("event").nodeValue].push(tr[j].firstChild.nodeValue);
@@ -84,7 +111,7 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 
 		// get ClickTracking uri's and add them to the tracking array as well, with the event name "click"
 		var ctr = ads[i].getElementsByTagName("ClickTracking");
-		for (var j=0; j<tr.length; j++) {
+		for (var j=0; j&lt;tr.length; j++) {
 			// add this uri to the array for this event
 			if (!trackers["click"]) trackers["click"] = new Array();
 			if (ctr[j] && ctr[j].firstChild.nodeValue && ctr[j].firstChild.nodeValue!="") {
@@ -95,7 +122,7 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 		//get ClickThrough
 		var click = "";
 		var ci = ads[i].getElementsByTagName("ClickThrough");
-		for (var j=0; j<ci.length; j++) {
+		for (var j=0; j&lt;ci.length; j++) {
 			click = ci[j].firstChild.nodeValue;
 		}
 
@@ -156,7 +183,7 @@ AdheseVastWrapper.prototype.addEventListener = function(event, listener) {
  * @fires AdheseVastWrapper#ADS_LOADED
  */
 AdheseVastWrapper.prototype.fireAdsLoaded = function() {
-	for (var i=0; i<this.eventListeners.length; i++) {
+	for (var i=0; i&lt;this.eventListeners.length; i++) {
 		if (this.eventListeners[i].getEvent()=="ADS_LOADED") {
 			if (this.debug) console.log("ADS_LOADED sent to listener");
 			this.eventListeners[i].getListener().apply();
@@ -173,7 +200,7 @@ AdheseVastWrapper.prototype.fireAdsLoaded = function() {
  * var schedule = wrapper.getSchedule();
  * // if only one of the two ads is actually scheduled, the array contains only one item
  * // fi.: ["preroll"]
- * @return {Array.<String>} Returns array of strings containing the scheduled format codes. 
+ * @return {Array.&lt;String>} Returns array of strings containing the scheduled format codes. 
  */
 AdheseVastWrapper.prototype.getSchedule = function() {
 	var arr = new Array();
@@ -232,7 +259,7 @@ AdheseVastWrapper.prototype.getTrackers = function(adId) {
  */
 AdheseVastWrapper.prototype.getMediafile = function(adId, type) {
 	var mf = this.schedule[adId].getMediafile();
-	for (var y=0; y<mf.length; y++) {
+	for (var y=0; y&lt;mf.length; y++) {
 		if (mf[y].getType() == type)
 		return mf[y].getSrc();
 	}
@@ -263,7 +290,7 @@ AdheseVastWrapper.prototype.getDurationInSeconds = function(adId) {
 };
 
 AdheseVastWrapper.prototype.track = function(uri) {
-	for (var x=0; x<uri.length; x++) {
+	for (var x=0; x&lt;uri.length; x++) {
 		// add uri to tracked, if already exists, do not track again
 		if (!this.trackedImpressions[uri[x]]) {
 			this.trackedImpressions[uri[x]] = 1;
@@ -461,3 +488,26 @@ AdheseVastHelper.prototype.openNewWindow = function(uri) {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="AdheseVastHelper.html">AdheseVastHelper</a></li><li><a href="AdheseVastWrapper.html">AdheseVastWrapper</a></li></ul><h3>Events</h3><ul><li><a href="AdheseVastWrapper.html#event:ADS_LOADED">ADS_LOADED</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon Jun 17 2013 23:56:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

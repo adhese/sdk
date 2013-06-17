@@ -48,7 +48,7 @@ function adsAreLoaded() {
 		adPlayer.addEventListener("timeupdate", function() { a.timeupdate("preroll", adPlayer.currentTime); }, true);
 		// clicks on video player should be sent to adhese for handling and reporting
 		adPlayer.addEventListener("click", function() { a.clicked("preroll", adPlayer.currentTime); }, true);
-		// when playong has ended, tell and adhese and than continue to showing content
+		// when playing has ended, tell and adhese and than continue to showing content
 		adPlayer.addEventListener("ended", function() { a.ended("preroll", adPlayer.currentTime); showActualContentAfterPreroll(); }, true);
 
 		//add the source to the video element

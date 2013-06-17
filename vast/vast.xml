@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<VAST version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd">
+  <Ad id="<ADHESE_TEMPLATE_CODE>">
+    <InLine>
+            <AdSystem version="2.0">ADHESE</AdSystem>
+      <AdTitle></AdTitle>
+      <Description></Description>
+      <Survey></Survey>
+      <Impression id="ADHESE"><![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>]]></Impression>  
+      <Creatives>
+        <Creative id="<ADHESE_CREATIVE_ID>">
+          <Linear>
+            <Duration><VIDEO_DURATION></Duration>
+            <TrackingEvents>
+				<Tracking event="start">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-start]]>
+				</Tracking>                     
+				<Tracking event="firstQuartile">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-q1]]>
+				</Tracking>                     
+				<Tracking event="midpoint">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-mid]]>
+				</Tracking>                     
+				<Tracking event="thirdQuartile">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-q3]]>
+				</Tracking>                     
+				<Tracking event="complete">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-end]]>
+				</Tracking>
+				<Tracking event="mute">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-mute]]>
+				</Tracking>                     
+				<Tracking event="pause">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-pause]]>
+				</Tracking>                     
+				<Tracking event="fullscreen">
+				<![CDATA[http://ads.pebblemedia.adhese.com/track/<ADHESE_CREATIVE_ID>-fullscreen]]>
+				</Tracking>
+            </TrackingEvents>
+            <AdParameters></AdParameters>
+            <VideoClicks>
+				<ClickThrough><![CDATA[http://clicks.pebblemedia.adhese.com/<ADHESE_CREATIVE_ID>/<TARGET_URL>]]></ClickThrough>
+              <ClickTracking id="DART"><![CDATA[<CLICKTRACK_URL>]]></ClickTracking>
+            </VideoClicks>
+            <MediaFiles>
+              <MediaFile id="1" delivery="streaming" type="video/x-flv" bitrate="1126" width="640" height="360"><![CDATA[<VIDEO_URL_FLV_STREAM>]]></MediaFile>
+              <MediaFile id="2" delivery="progressive" type="video/mp4" bitrate="709" width="450" height="374"><![CDATA[<VIDEO_URL_MP4>]]></MediaFile>
+              <MediaFile id="3" delivery="progressive" type="video/x-flv" bitrate="1126" width="640" height="360"><![CDATA[<VIDEO_URL_FLV>]]></MediaFile>
+            </MediaFiles>
+          </Linear>
+        </Creative>
+      </Creatives>
+    </InLine>
+  </Ad>
+</VAST>
