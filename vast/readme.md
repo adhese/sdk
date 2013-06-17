@@ -48,37 +48,37 @@ The main object through which you will request ads and access the response.
 **AdheseVastWrapper.init**()  
 Needs to be called whenever you want to start all over again. Resets listeners, trackers and scheduled ads.
 
-**AdheseVastWrapper.requestAds**(adhese_host, adhese_location, array_of_adhese_format_codes)  
+**AdheseVastWrapper.requestAds**(*adhese_host, adhese_location, array_of_adhese_format_codes*)  
 Gets ads from Adhese account at given host for location and given array of formats. Fires ADS_LOADED when finished.
 
 **AdheseVastWrapper.getSchedule**()  
 Returns object containing the requested format codes as properties. 
 If there is no ad available for a requested format, no property in the schedule object will exist for that format code.
 
-**AdheseVastWrapper.hasAd**(adhese_format_code)  
+**AdheseVastWrapper.hasAd**(*adhese_format_code*)  
 Returns true if an ad was sheduled for the format code.
 
-**AdheseVastWrapper.getMediaFile**(adhese_format_code, media_type)  
+**AdheseVastWrapper.getMediaFile**(*adhese_format_code, media_type*)  
 Returns the URI for the ad's media actual media file. 
 The media type parameter contains the actual mime type of the needed media file (eg: video/mp4, video/ogg).
 
-**AdheseVastWrapper.getDuration**(adhese_format_code)  
+**AdheseVastWrapper.getDuration**(*adhese_format_code*)  
 Returns a string of format hh:mm:ss containing the duration of the ad.
 
-**AdheseVastWrapper.getDurationInSeconds**(adhese_format_code)  
+**AdheseVastWrapper.getDurationInSeconds**(*adhese_format_code*)  
 Returns the duration of the ads in seconds.
 
-**AdheseVastWrapper.timeupdate**(adhese_format_code, currentTime_media_property)  
+**AdheseVastWrapper.timeupdate**(*adhese_format_code, currentTime_media_property*)  
 Callback function for player media event "timeupdate". 
 The second parameter should contain the "currentTime" property of the HTML5 video element playing the ad.
 This function will handle all tracking of impressions, progress, ...
 
-**AdheseVastWrapper.ended**(adhese_format_code, currentTime_media_property)  
+**AdheseVastWrapper.ended**(*adhese_format_code, currentTime_media_property*)  
 Callback function for player media event "ended". 
 The second parameter should contain the "currentTime" property of the HTML5 video element playing the ad.
 This function will track completion of the ad.
 
-**AdheseVastWrapper.clicked**(adhese_format_code, currentTime_media_property)  
+**AdheseVastWrapper.clicked**(*adhese_format_code, currentTime_media_property*)  
 Callback function for "click" on player (or any container defined as clickable by you). 
 The second parameter should contain the "currentTime" property of the HTML5 video element playing the ad.
 This function will track the click and open a new window containing the click-through url of the ad.
