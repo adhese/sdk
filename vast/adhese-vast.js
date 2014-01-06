@@ -100,9 +100,10 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 		}
 
 		// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
-		if (this.debug) console.log(ads[i].attributes.getNamedItem("id").nodeValue);
-		this.schedule[ads[i].attributes.getNamedItem("id").nodeValue] = new AdheseVastAd(
-			ads[i].attributes.getNamedItem("id").nodeValue,
+		// id is replaced by code in the advar template so a change has to be made here too
+		if (this.debug) console.log(ads[i].attributes.getNamedItem("code").nodeValue);
+		this.schedule[ads[i].attributes.getNamedItem("code").nodeValue] = new AdheseVastAd(
+			ads[i].attributes.getNamedItem("code").nodeValue,
 			mediafiles,
 			ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue,
 			impression,
