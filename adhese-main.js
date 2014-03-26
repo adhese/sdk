@@ -352,7 +352,7 @@
  }
 
 /**
- * Populates a normalized Operating Systen, Browser and Browser version object.
+ * Populates a normalized Operating System, Browser and Browser version object.
  * Is automatically called by the Adhese.init function.
  * @return {object} an object containing an os, browser and browserVersion attribute
  */
