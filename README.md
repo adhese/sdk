@@ -31,12 +31,12 @@ Use the adhese.min.js directly in your webpage.
 
 4. For each ad you want to include on a page, you should create a DIV with a unique id and make a call to a the adhese.tag function
 
-	<div id="leaderboard">
-	<script type="text/javascript" charset="utf-8">
-		var ad = adhese.tag("leaderboard", {write:true});
-		document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad, {'type':'json'}));
-	</script>
-	</div>	
+		<div id="leaderboard">
+		<script type="text/javascript" charset="utf-8">
+			var ad = adhese.tag("leaderboard", {write:true});
+			document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad, {'type':'json'}));
+		</script>
+		</div>	
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
