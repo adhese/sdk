@@ -21,13 +21,12 @@
 	<meta property="article:tag" content="sean penn" />
 	<meta property="article:tag" content="venezuela" />
 	<title>new basic tag test</title>
-	<script type="text/javascript" charset="utf-8" src="adhese-main.js"></script>
+	<script type="text/javascript" charset="utf-8" src="dist/adhese.min.js"></script>
 	<script type="text/javascript">
 		function getLocation() {
-			return "_nbo_home_";
+			return "_demo_test_";
 		}
-		// var adhese = new Adhese(); adhese.init({debug:true, host:"http://ads.adhese.be/", location:"_dso_home_" })
-		var adhese = new Adhese(); adhese.init({debug:true, host:"http://ads.adhese.be/", location: getLocation })
+		var adhese = new Adhese(); adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation })
 
 	</script>
 	<style type="text/css" media="screen">
@@ -37,19 +36,11 @@
 </head>
 
 <body>
-<h2>adhese.tag("BAN");</h2>
-<div id="BAN">
+<h2>adhese.tag("leaderboard", {write:true});</h2>
+<div id="leaderboard">
 <script type="text/javascript" charset="utf-8">
-	var ad = adhese.tag("BAN");
-	document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad));
-</script>
-</div>	
-
-<h2>adhese.tag("BAN", {write:true});</h2>
-<div id="BAN">
-<script type="text/javascript" charset="utf-8">
-	var ad2 = adhese.tag("BAN", {write:true});
-	document.write("Request URI of new ad with format " + ad2.format + "<br/>" + adhese.getRequestUri(ad2));
+	var ad = adhese.tag("leaderboard", {write:true});
+	document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad, {'type':'json'}));
 </script>
 </div>	
 

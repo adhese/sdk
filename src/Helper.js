@@ -251,15 +251,6 @@
  	return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
  }
 
-/**
- * Internal function for async loading of an ad request. When loaded, this triggers an AdLoaded event.
- * @param  {object} ad 
- * @return {void}    
- */
- Adhese.prototype.Helper.prototype.load = function(ad){
-
- }
-
  Adhese.prototype.Helper.prototype.merge = function(a, b){
  	var c = {};
  	for (var k in a) { 
@@ -270,3 +261,4 @@
  	}
  	return c;
  }
+

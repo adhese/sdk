@@ -47,10 +47,12 @@
 
  	this.userAgent = this.helper.getUserAgent();
 
- 	this.request.rn = Math.round(Math.random()*10000);
- 	this.request.br = 'screen3;desktop;';
+ 	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
+ 	this.registerRequestParameter('br', 'screen3');
+ 	this.registerRequestParameter('br', 'desktop');
+ 	
  	for (var p in this.userAgent) {
- 		this.request.br += this.userAgent[p] + ';';
+ 		this.registerRequestParameter('br', this.userAgent[p]);
  	}
 
  	if (this.config.debug) {
@@ -59,6 +61,19 @@
  	}		
 
  };
+
+/**
+ * Function to add target parameters to an Adhese instance. These parameters will be appended to each request.
+ * @param  {string} key   the prefix for this target
+ * @param  {string} value the value to be added
+ * @return {void}       
+ */
+Adhese.prototype.registerRequestParameter = function(key, value) {
+	var v = this.request[key];
+	if (!v) v = new Array();
+	v.push(value);
+	this.request[key] = v;
+}
 
 /**
  * The tag function is the default function to be called from within an ad container.
@@ -85,9 +100,9 @@
  */
  Adhese.prototype.write = function(ad) {
  	if (this.config.debug) {
- 		console.log('Adhese: request uri: ' + this.getRequestUri(ad));
+ 		console.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
  	}
- 	document.write('<xmp><script language="text/javascript" src="' + this.getRequestUri(ad) + '"></script></xmp>');
+ 	document.write('<scri'+'pt language="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
  };
 
 /**
@@ -96,7 +111,7 @@
  * @return {void}
  */
  Adhese.prototype.track = function(uri) {
-	// body...
+	this.helper.addTrackingPixel(uri);
 };
 
 /**
@@ -107,9 +122,30 @@
  * @return {string}
  */
  Adhese.prototype.getRequestUri = function(ad, options) {
- 	var uri = this.config.host + 'ad3/sl' + this.config.location + '-' + ad.format + '/';
+ 	var uri = this.config.host;
+ 	
+ 	if (!options) options = {'type':'js'};
+
+ 	switch(options.type) {
+ 		case 'json':
+ 		uri += 'json/sl' + this.config.location + '-' + ad.format + '/';
+ 		break;
+
+ 		case 'jsonp':
+ 		uri += 'jsonp/callback/sl' + this.config.location + '-' + ad.format + '/';
+ 		break;
+
+ 		default:
+ 		uri += 'ad/sl' + this.config.location + '-' + ad.format + '/';
+ 		break;
+ 	}
+ 	
  	for (var a in this.request) {
- 		uri += a + this.request[a] + '/';
+ 		var s = a;
+ 		for (var x=0; x<this.request[a].length; x++) { 			
+ 			s += this.request[a][x] + (this.request[a].length-1>x?';':'');
+ 		}
+ 		uri += s + '/';
  	}
  	uri += '?t=' + new Date().getTime();
  	return uri;
