@@ -29,12 +29,11 @@ Use the adhese.min.js directly in your webpage.
 		var adhese = new Adhese(); 
 		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation });
 
-4. For each ad you want to include on a page, you should create a DIV with a unique id and make a call to a the adhese.tag function
+4. For each ad you want to include on a page, you should create a DIV with a unique id that is the same as the requested format. Then make a call to a the adhese.tag function
 
 		<div id="leaderboard">
 		<script type="text/javascript" charset="utf-8">
 			var ad = adhese.tag("leaderboard", {write:true});
-			document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad, {'type':'json'}));
 		</script>
 		</div>	
 
