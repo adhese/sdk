@@ -7,13 +7,14 @@ The Adhese javascript SDK is a minified javascript library that can be included 
 It allows a uniform way to identify request parameters and include advertising from your Adhese account.
 
 ###Build from source
-Checkout this repository and type make
+Checkout this repository and type 'make' in the root of the SDK directory. To build the SDK without ajax support, use 'make noajax'
 
 ###Use compressed distribution
 Use the adhese.min.js directly in your web page.
 
 ###Getting started
 1. Load the javascript in the HEAD of the page
+
 		<script type="text/javascript" src="adhese.min.js"></script>
 
 2. Provide a local function that returns the content identification
@@ -37,9 +38,10 @@ Use the adhese.min.js directly in your web page.
 		</script>
 		</div>	
 
-###Asynchronous requests using your own asynch request handler
+###Asynchronous requests
 
 Asynchronous requests allow you to perform a request first and visualize the response later. The implementing client is responsible for correct ad reports. A tracker uri that is passed in the response should be requested when visualizing the ad.
+The SDK can be built with an extra Ajax request handler. If you plan to implement in a client that is already capable of performing async requests, you can omit this part of the SDK from the dist file by running 'make noajax'.
 
 ####Request and track
 
@@ -49,10 +51,21 @@ Asynchronous requests allow you to perform a request first and visualize the res
 
 2. Retrieve the ad uri to perform the asynch request
 		
-		var adUri = adhese.getRequest(ad);
-		var response = yourAsynchSolution.request(adUri);
+		var adUri = adhese.getRequest(ad, {type:'json'});
+		var response = AdheseAjax.request({
+    		url: adUri,
+    		method: 'get',
+    		json: true
+		})
+		.done(function(result) {
+    		if (response.ext == 'js') {
+				myElement.innerHTML = response.body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
+			} else {
+				myElement.innerHTML = response.tag; // for hosted creatives
+			}
+		});
 
-3. Use the body property of the response and append it to a container of your choice
+3. Use the body or tag property of the response and append it to a container of your choice
 
 		if (response.ext == 'js') {
 			myElement.innerHTML = response.body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
@@ -61,15 +74,17 @@ Asynchronous requests allow you to perform a request first and visualize the res
 		}
 		
 		
-
 4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
 
-		yourAsynchSolution.request(response.tracker + '?t=' + new Date().getTime());
+		AdheseAjax.request.({
+    		url: response.tracker + '?t=' + new Date().getTime(),
+    		method: 'get'
+		});
 
 ####Response object structure
 
 	The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
-	
+
 		{
 		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
 		    

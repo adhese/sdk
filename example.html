@@ -20,7 +20,7 @@
 	<meta property="article:tag" content="hugo chavez" />
 	<meta property="article:tag" content="sean penn" />
 	<meta property="article:tag" content="venezuela" />
-	<title>new basic tag test</title>
+	<title>Adhese SDK Tagging Examples</title>
 	<script type="text/javascript" charset="utf-8" src="dist/adhese.min.js"></script>
 	<script type="text/javascript">
 		function getLocation() {
@@ -38,13 +38,67 @@
 </head>
 
 <body>
-<h2>adhese.tag("leaderboard", {write:true});</h2>
-<div id="leaderboard">
-<script type="text/javascript" charset="utf-8">
-	var ad = adhese.tag("leaderboard", {write:true});
-	document.write("Request URI of new ad with format " + ad.format + "<br/>" + adhese.getRequestUri(ad, {'type':'json'}));
-</script>
-</div>	
+	<h1>Adhese SDK Tagging Examples</h1>
+	<p>This page demonstrates several ways of implementing Adhese tags client side to track inventory and show advertisements. The SDK is available at https://github.com/adhese/sdk</p>
+	
+	<h2>Legacy document.write tag</h2>
+	<p>
+		The legacy implementation uses a call for a specific format and writes it directly to the body with a document.write statement.
+		This is not applicable in asynchronous requests, and is not the recommended approach when using more complex features like viewable inventory forecasting.
+	</p>
+	<xmp>
+	adhese.tag("leaderboard", {write:true});
+	</xmp>
+	<div id="leaderboard">
+	<script type="text/javascript" charset="utf-8">
+		adhese.tag("leaderboard", {write:true});
+	</script>
+	</div>	
+
+	<h2>Multiple formats in one request</h2>
+	<p>When several ads are needed for a given page or view in an application, it is more efficient to request all ads at once.</p>
+	<p>To create such a request, you first create the ad instances, one for each format you need and add them to an array. </p>
+	<xmp>
+	var adArray = new Array();
+	adArray.push(adhese.tag("rectangle"));
+	adArray.push(adhese.tag("skyscraper"));
+	</xmp>
+	<p>You can then pass the array to the adhese.getMultipleRequestUri function to obtain a URI that will return an array of JSON Ad objects, each containing the format reference you passed.</p>
+	<xmp>
+	adhese.getMultipleRequestUri(adArray, {'type':'jsonp', callbackFunctionName: 'callbackFunction'})
+	</xmp>
+	<p>Request this url and catch the response to insert the return ads in their respective containers.</p>
+	<xmp>
+	AdheseAjax.request({
+    		url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
+    		method: 'get',
+    		json: true
+	})
+	.done(function(result) {
+    		for (var i = result.length - 1; i >= 0; i--) {
+    			document.getElementById(result[i].adType).innerHTML = result[i].tag;
+    		};
+	});
+	</xmp>
+	<div id="rectangle"></div>
+	<div id="skyscraper"></div>
+	<script type="text/javascript" charset="utf-8">
+		
+		var adArray = new Array();
+		adArray.push(adhese.tag("rectangle"));
+		adArray.push(adhese.tag("skyscraper"));
+		
+		AdheseAjax.request({
+    		url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
+    		method: 'get',
+    		json: true
+		})
+		.done(function(result) {
+    		for (var i = result.length - 1; i >= 0; i--) {
+    			document.getElementById(result[i].adType).innerHTML = result[i].tag;
+    		};
+		});
+	</script>
 
 </body>
 </html>

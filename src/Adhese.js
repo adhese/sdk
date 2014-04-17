@@ -115,38 +115,55 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 };
 
 /**
+ * This function can be used to create a request for several slots at once. For each ad object passed, a sl part is added to the request. The target parameters are added once.
+ * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
+ * @param  {object} options Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'
+ * @return {string}         The URI to be used to retrieve an array of ads.
+ */
+Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
+	var uri = this.config.host;
+ 	if (!options) options = {'type':'js'};
+
+ 	// add prefix depending on request type
+ 	switch(options.type) {
+	 	case 'json':
+	 	uri += 'json/';
+	 	break;
+
+	 	case 'jsonp':
+	 	if (!options.callbackFunctionName) options.callbackFunctionName = 'callback';
+	 	uri += 'jsonp/' + options.callbackFunctionName + '/';
+	 	break;
+
+	 	default:
+	 	uri += 'ad/';
+	 	break;
+	}
+
+	 // add an sl clause for each Ad in adArray
+	for (var i = adArray.length - 1; i >= 0; i--) {
+		uri += 'sl' + this.config.location + '-' + adArray[i].format + '/';
+	}
+
+	for (var a in this.request) {
+		var s = a;
+		for (var x=0; x<this.request[a].length; x++) { 			
+			s += this.request[a][x] + (this.request[a].length-1>x?';':'');
+		}
+		uri += s + '/';
+	}
+	uri += '?t=' + new Date().getTime();
+	return uri;
+}
+
+/**
  * Returns the uri to execute the actual request for this ad
  *
- * @param {object} ad the Ad instance whose uri is needed
+ * @param {Ad} ad the Ad instance whose uri is needed
  * @param {object} options Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'
  * @return {string}
  */
  Adhese.prototype.getRequestUri = function(ad, options) {
- 	var uri = this.config.host;
- 	
- 	if (!options) options = {'type':'js'};
-
- 	switch(options.type) {
- 		case 'json':
- 		uri += 'json/sl' + this.config.location + '-' + ad.format + '/';
- 		break;
-
- 		case 'jsonp':
- 		uri += 'jsonp/callback/sl' + this.config.location + '-' + ad.format + '/';
- 		break;
-
- 		default:
- 		uri += 'ad/sl' + this.config.location + '-' + ad.format + '/';
- 		break;
- 	}
- 	
- 	for (var a in this.request) {
- 		var s = a;
- 		for (var x=0; x<this.request[a].length; x++) { 			
- 			s += this.request[a][x] + (this.request[a].length-1>x?';':'');
- 		}
- 		uri += s + '/';
- 	}
- 	uri += '?t=' + new Date().getTime();
- 	return uri;
+ 	var adArray = [ad];
+ 	return this.getMultipleRequestUri(adArray, options);
  };
