@@ -8,7 +8,10 @@ It allows a uniform way to identify request parameters and include advertising f
 
 ###Build from source
 The Makefile uses UglifyJS2 to compress the javascript files. For more information: https://github.com/mishoo/UglifyJS2
-Checkout this repository and type 'make' in the root of the SDK directory. To build the SDK without ajax support, use 'make noajax'
+
+Checkout this repository and type 'make' in the root of the SDK directory. 
+
+To build the SDK without ajax support, use 'make noajax'. This results in a slightly smaller file (1.4k less).
 
 ###Use compressed distribution
 Use the adhese.min.js directly in your web page. This distribution includes the ajax library.
