@@ -30,7 +30,11 @@ Use the adhese.min.js directly in your web page.
 		var adhese = new Adhese(); 
 		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation });
 
-4. For each ad you want to include on a page, you should create a DIV with a unique id that is the same as the requested format. Then make a call to a the adhese.tag function
+
+###Legacy requests (document.write)
+The legacy requests are implemented as a script fragment inside the container where they will be visualized. The client will execute the request and insert the response in the container with a document.write statement. This type of implementation is not recommended if you want to take advantage of 'viewable tracking and forecasting'. It also has performance drawbacks, as the client's document build up will block while requesting and advertisement.
+
+For each ad you want to include on a page, you should create a DIV with a unique id that is the same as the requested format. Then make a call to a the adhese.tag function
 
 		<div id="leaderboard">
 		<script type="text/javascript" charset="utf-8">
