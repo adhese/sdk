@@ -37,5 +37,89 @@ Use the adhese.min.js directly in your webpage.
 		</script>
 		</div>	
 
+###Asynchronous requests using your own asynch request handler
+
+Asynchronous requests allow you to perform a request first and visualise the response later. The implementing client is responsible for correct ad reports. A tracker uri that is passed in the response should be requested when visualising the ad.
+
+####Request and track
+
+1. Create the ad
+
+		var ad = adhese.tag("leaderboard");
+
+2. Retreive the ad uri to perform the asynch request
+		
+		var adUri = adhese.getRequest(ad);
+		var response = yourAsynchSolution.request(adUri);
+
+3. Use the body property of the response and append it to a container of your choice
+
+		if (response.ext == 'js') {
+			myElement.innerHTML = response.body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
+		} else {
+			myElement.innerHTML = response.tag; // for hosted creatives
+		}
+		
+		
+
+4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
+
+		yourAsynchSolution.request(response.tracker + '?t=' + new Date().getTime());
+
+####Response object structure
+
+		{
+		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
+		    
+		    "body": "<ADHESE_BODY>", // the third party code to be inserted in a container (if applicable)
+		    
+		    
+		    "ext": "swf", // the file type extension
+		    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
+		    "adType": "SKY", // format name as requested (determined by your Adhese account)
+		    
+		    "extraField1": "", // optional field used by the uploader
+		    "extraField2": "", // second optional field used by uploader
+		    
+		    "url": "http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419", // click-through URI
+		    "tracker": "http://ads.adhese.be/track/295057//sl242///////inadttr12842;adttrbiz;adttrfood;adttrhealth;adttrimmo;adttrlifestyle;adttrmultimedia;adttrsport;adttrtrav;adttrvoetbal;adttrwielrennen/brTelenet N.V./coBE/rgBE11///isTelenet N.V.//////////A2141.135.96.213.1395820307192918/O_/A_/C_", // tracker URI to be requested for counting an impression
+		    "trackingUrl": "http://track.adform.net/adfserve/?bn=3515419;1x1inv=1;srctype=3;ord=", // 3rd party tracking URI to be requested when visualising
+
+		    "swfSrc": "http://1.adhesecdn.be/pool/lib/96393.swf", // the URI of the primary file for this creative
+		    "swfSrc2nd": "", // URI of 2nd file
+		    "swfSrc3rd": "", // URI of 3rd file
+		    "swfSrc4th": "", // URI of 4th file
+
+		    "width": "160", // width in pixels of the primary file
+		    "height": "600", // height in pixels of primary creative
+		    "widthLarge": "0", // width in pixels of secondary file
+		    "heightLarge": "0", // height in pixels of 2nd file
+
+		    "adDuration": "0", // duration in seconds of primary creative (if applicable)
+		    "adDuration3rd": "0", // duration in seconds of 3rd file
+		    "adDuration2nd": "0", // duration in second of 2nd file
+		    "adDuration4th": "0", // the optional duration of the 4th file
+		    
+		    "orderId": "16643", // the Adhese campaign ID
+		    "adspaceId": "61721", // the Adhese booking ID
+		    "adspaceKey": "0", // an optional creative Foreign Key 
+		    "advertiserId": "2326" // Adhese ID of the advertiser
+		    "priority": "1", // priority of this campaign
+		    "id": "295057", // the Adhese ID determining the link between an uploaded creative and a booking
+		    "libId": "96393", // Adhese ID of the uploaded creative
+		    "share": "0", // an optional number indicating the weight for this creative
+		    "orderProperty": "eadc185cbe8bcd05a5deaf7b99064d56-5d032fa3e52a1abe1392a6b4adbdd519", // optional comma seperated list of properties containing codes defined by your Adhese account
+			"timeStamp": "1396357433000", // the timestamp of the latest change to this creative (can be used for caching)
+		    
+		    "comment": "", // optional free text comment
+		    "altText": "", // optional text to be shown as ALT attribute of the container
+		    
+		    "poolPath": "<ADHESE_POOL_PATH>", // an optional path to a CDN where files for this creative can be retreived
+		    "tagUrl": "<ADHESE_TAG_URL>", // optional URI of the tag content
+  		}
+
+
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
+
+
