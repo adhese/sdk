@@ -176,7 +176,7 @@
 /**
  * Adds a listener to a DOM event
  * @param  {string} event The name of the DOM event. 
- * @param  {function} listener The function name that was llistening to the event.
+ * @param  {function} listener The function name that was listening to the event.
  * @return {void}
  */
  Adhese.prototype.Helper.prototype.removeEventListener = function(event, listener){
@@ -222,7 +222,7 @@
 
 /**
  * Internal method for determining the Operating System identification in the UserAgent 
- * @param  {string} data The list of normalized values to mathc the found user-agent string with.
+ * @param  {string} data The list of normalized values to match the found user-agent string with.
  * @return {string}      A string containing the User Agent name.
  */
  Adhese.prototype.Helper.prototype.searchString = function (data) {
@@ -242,7 +242,7 @@
 
 /**
  * Internal method for determining the User Agent version
- * @param  {array} dataString The list of normalized values to mathc the found user-agent string with.
+ * @param  {array} dataString The list of normalized values to match the found user-agent string with.
  * @return {string}            A string containing the User Agent name and version number
  */
  Adhese.prototype.Helper.prototype.searchVersion = function (dataString) {

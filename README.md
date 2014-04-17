@@ -1,6 +1,6 @@
 #Adhese SDK
 
-This repository contains all code for implementing Adhese adserving in webpages, applications, video/radio players, ...
+This repository contains all code for implementing Adhese ad serving in web pages, applications, video/radio players, ...
 
 ###Introduction
 The Adhese javascript SDK is a minified javascript library that can be included in a javascript enabled client.
@@ -10,7 +10,7 @@ It allows a uniform way to identify request parameters and include advertising f
 Checkout this repository and type make
 
 ###Use compressed distribution
-Use the adhese.min.js directly in your webpage.
+Use the adhese.min.js directly in your web page.
 
 ###Getting started
 1. Load the javascript in the HEAD of the page
@@ -39,7 +39,7 @@ Use the adhese.min.js directly in your webpage.
 
 ###Asynchronous requests using your own asynch request handler
 
-Asynchronous requests allow you to perform a request first and visualise the response later. The implementing client is responsible for correct ad reports. A tracker uri that is passed in the response should be requested when visualising the ad.
+Asynchronous requests allow you to perform a request first and visualize the response later. The implementing client is responsible for correct ad reports. A tracker uri that is passed in the response should be requested when visualizing the ad.
 
 ####Request and track
 
@@ -47,7 +47,7 @@ Asynchronous requests allow you to perform a request first and visualise the res
 
 		var ad = adhese.tag("leaderboard");
 
-2. Retreive the ad uri to perform the asynch request
+2. Retrieve the ad uri to perform the asynch request
 		
 		var adUri = adhese.getRequest(ad);
 		var response = yourAsynchSolution.request(adUri);
@@ -68,12 +68,13 @@ Asynchronous requests allow you to perform a request first and visualise the res
 
 ####Response object structure
 
+	The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
+	
 		{
 		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
 		    
 		    "body": "<ADHESE_BODY>", // the third party code to be inserted in a container (if applicable)
-		    
-		    
+		    		    
 		    "ext": "swf", // the file type extension
 		    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
 		    "adType": "SKY", // format name as requested (determined by your Adhese account)

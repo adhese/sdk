@@ -15,15 +15,15 @@
 /**
  * Initializes the object. Resets all saved objects.
  * This method should be called at least just after creation of the Adhese object.
- * In most cases re-initialsation is not need, but depending on your implementation, 
+ * In most cases re-initialization is not need, but depending on your implementation, 
  * it is available by simply calling init on an existing instance of Adhese.
  *
  * The options object can contain the following attributes:
  * debug: true/false, for setting debug logging, not intended for production use
  * host: the host of your adhese account, available in your support account
- * location: can be either a string containing the actual location to be passed ot the adserver or a function to be called to retreive the location 
+ * location: can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location 
  * 
- * The method will check if jQuery is available, and if so, mkae it available for ad templates as well.
+ * The method will check if jQuery is available, and if so, make it available for ad templates as well.
  *
  * @param  {object} options An object that contains properties defined by your Adhese implementation
  * @return {void}
@@ -94,7 +94,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 
 /**
  * Executes a document.write and creates a script tag when called. 
- * The script tag requests a javascript advertisment from the server. 
+ * The script tag requests a javascript advertisement from the server. 
  * @param  {object} ad The Ad object instance to be written to the document.
  * @return {void}
  */
@@ -118,7 +118,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * Returns the uri to execute the actual request for this ad
  *
  * @param {object} ad the Ad instance whose uri is needed
- * @param {object} options Possible options: type:'js'|'json'|'jsonp', when useing type:'jsonp' you can alos provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'
+ * @param {object} options Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'
  * @return {string}
  */
  Adhese.prototype.getRequestUri = function(ad, options) {
