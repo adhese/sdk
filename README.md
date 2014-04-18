@@ -142,6 +142,11 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		    "tagUrl": "<ADHESE_TAG_URL>", // optional URI of the tag content
   		}
 
+###Registering target parameters
+Through the adhese.registerRequestParameter(key, value) you can add one or more target parameters to the requests.
+Simply register each value once, and all consequent getRequest function calls will include the parameters.
+
+		adhese.registerRequestParameter('ag', 40); // will add a target with prefix 'ag' and value '40' to each request
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
