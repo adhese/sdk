@@ -102,7 +102,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  	if (this.config.debug) {
  		console.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
  	}
- 	document.write('<scri'+'pt language="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
+ 	document.write('<scri'+'pt type="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
  };
 
 /**
