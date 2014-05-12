@@ -49,69 +49,104 @@ AdheseVastWrapper.prototype.requestAds = function(inHost, inLocation, inFormats)
     document.getElementsByTagName("head")[0].appendChild(newScript);     
 }
 
-AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
-	var xml = this.parseXML(inJson[0].tag);
-		
-	var ads = xml.getElementsByTagName("Ad");
-	for (var i=0; i<ads.length; i++) {
-		// get one or more mediafiles
-		var mediafiles = new Array();
-		var mf = ads[i].getElementsByTagName("MediaFile");
-		for (var j=0; j<mf.length; j++) {
-			mediafiles.push(
-				new AdheseVastMediaFile(
-					mf[j].firstChild.nodeValue,
-					mf[j].attributes.getNamedItem("type").nodeValue
-				)
-			);
-		}
-
-		//get on or more impression trackers
-		var impression = new Array();
-		var im = ads[i].getElementsByTagName("Impression");
-		for (var j=0; j<im.length; j++) {
-			impression.push(im[j].firstChild.nodeValue);	
-		}
-		
-		//get Trackers and add to object, attribute is event name
-		var trackers = new Object();
-		var tr = ads[i].getElementsByTagName("Tracking");
-		for (var j=0; j<tr.length; j++) {
-			// add this uri to the array for this event
-			if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").nodeValue] = new Array();
-			trackers[tr[j].attributes.getNamedItem("event").nodeValue].push(tr[j].firstChild.nodeValue);
-		}
-
-		// get ClickTracking uri's and add them to the tracking array as well, with the event name "click"
-		var ctr = ads[i].getElementsByTagName("ClickTracking");
-		for (var j=0; j<tr.length; j++) {
-			// add this uri to the array for this event
-			if (!trackers["click"]) trackers["click"] = new Array();
-			if (ctr[j] && ctr[j].firstChild.nodeValue && ctr[j].firstChild.nodeValue!="") {
-				trackers["click"].push(ctr[j].firstChild.nodeValue);
-			}			
-		}
-
-		//get ClickThrough
-		var click = "";
-		var ci = ads[i].getElementsByTagName("ClickThrough");
-		for (var j=0; j<ci.length; j++) {
-			click = ci[j].firstChild.nodeValue;
-		}
-
-		// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
-		// id is replaced by code in the advar template so a change has to be made here too
-		if (this.debug) console.log(ads[i].attributes.getNamedItem("code").nodeValue);
-		this.schedule[ads[i].attributes.getNamedItem("code").nodeValue] = new AdheseVastAd(
-			ads[i].attributes.getNamedItem("code").nodeValue,
-			mediafiles,
-			ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue,
-			impression,
-			this.helper.getDurationInSeconds(ads[i].getElementsByTagName("Duration")[0].firstChild.nodeValue),
-			trackers,
-			click
+AdheseVastWrapper.prototype.parseInLine = function(ad) {
+	// get one or more mediafiles
+	var mediafiles = new Array();
+	var mf = ad.getElementsByTagName("MediaFile");
+	for (var j=0; j<mf.length; j++) {
+		mediafiles.push(
+			new AdheseVastMediaFile(
+				mf[j].firstChild.nodeValue,
+				mf[j].attributes.getNamedItem("type").nodeValue
+			)
 		);
-		if (this.debug) console.log(this.schedule);
+	}
+
+	//get on or more impression trackers
+	var impression = new Array();
+	var im = ad.getElementsByTagName("Impression");
+	for (var j=0; j<im.length; j++) {
+		impression.push(im[j].firstChild.nodeValue);	
+	}
+	
+	//get Trackers and add to object, attribute is event name
+	var trackers = new Object();
+	var tr = ad.getElementsByTagName("Tracking");
+	for (var j=0; j<tr.length; j++) {
+		// add this uri to the array for this event
+		if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").nodeValue] = new Array();
+		trackers[tr[j].attributes.getNamedItem("event").nodeValue].push(tr[j].firstChild.nodeValue);
+	}
+
+	// get ClickTracking uri's and add them to the tracking array as well, with the event name "click"
+	var ctr = ad.getElementsByTagName("ClickTracking");
+	for (var j=0; j<tr.length; j++) {
+		// add this uri to the array for this event
+		if (!trackers["click"]) trackers["click"] = new Array();
+		if (ctr[j] && ctr[j].firstChild.nodeValue && ctr[j].firstChild.nodeValue!="") {
+			trackers["click"].push(ctr[j].firstChild.nodeValue);
+		}			
+	}
+
+	//get ClickThrough
+	var click = "";
+	var ci = ad.getElementsByTagName("ClickThrough");
+	for (var j=0; j<ci.length; j++) {
+		click = ci[j].firstChild.nodeValue;
+	}
+
+	// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
+	// id is replaced by code in the advar template so a change has to be made here too
+	// console.log(ads2);
+	var code = ad.attributes.getNamedItem("code") ? ad.attributes.getNamedItem("code").nodeValue : "preroll";
+	if (this.debug) console.log(code);
+	this.schedule[code] = new AdheseVastAd(
+		code,
+		mediafiles,
+		ad.getElementsByTagName("Duration")[0].firstChild.nodeValue,
+		impression,
+		this.helper.getDurationInSeconds(ad.getElementsByTagName("Duration")[0].firstChild.nodeValue),
+		trackers,
+		click
+	);
+	if (this.debug) console.log(this.schedule);
+}
+
+AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
+	var xml = this.parseXML(inJson[0].tag);		
+	var ads = xml.getElementsByTagName("Ad");
+	var that = this;
+	for (var i=0; i<ads.length; i++) {
+		// InLine ads, parse and execute
+		if (ads[i].getElementsByTagName("InLine").length>0) {
+			this.parseInLine(ads[i]);		
+		}
+		else { // Wrapper ads, need to be executed to get the xml
+			var code = ads[i].attributes.getNamedItem("code").nodeValue;
+			var impressionNodes = ads[i].getElementsByTagName("Impression");
+			
+			AdheseAjax.request({
+	    		url: ads[i].getElementsByTagName("VASTAdTagURI")[0].firstChild.nodeValue,
+	    		method: 'get',
+	    		json: false
+			})
+			.done(function(result) {
+	    		var xml2 = that.parseXML(result);
+	    		var ads2 = xml2.getElementsByTagName("Ad");
+	    		for (var j=0; j<ads2.length; j++) {
+	    			ads2[j].setAttribute("code", code);
+	    			for (var z=0; z<impressionNodes.length; z++) {
+	    				ads2[j].getElementsByTagName("InLine")[0].insertBefore(impressionNodes[z], ads2[j].getElementsByTagName("Impression")[0]);
+	    			}
+	    			if (ads2[j].getElementsByTagName("InLine").length>0) {
+	    				that.parseInLine(ads2[j]);		
+					} else {
+						if (that.debug) console.log("Too many redirects");
+					}
+	    		}
+	    		that.fireAdsLoaded();
+			});
+		}		
 	}
 	this.fireAdsLoaded();
 };

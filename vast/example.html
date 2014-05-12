@@ -1,6 +1,6 @@
 <html>
 <head>
-<script type="text/javascript" src="adhese-vast.js"></script>
+	<script type="text/javascript" src="dist/adhese-vast.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +20,7 @@ var infoContainer = document.getElementById("info");
 var a = new AdheseVastWrapper(true);
 a.init();
 a.addEventListener("ADS_LOADED", adsAreLoaded);
-a.requestAds("http://ads.pebblemedia.adhese.com", "_test_home_", ["preroll","postroll"]);
+a.requestAds("http://ads.pebblemedia.adhese.com", "_mediahuis_content-vrt_", ["preroll","postroll"]);
 
 function adsAreLoaded() {
 
