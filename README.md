@@ -11,7 +11,8 @@ The Makefile uses UglifyJS2 to compress the javascript files. For more informati
 
 Checkout this repository and type 'make' in the root of the SDK directory. 
 
-To build the SDK without ajax support, use 'make noajax'. This results in a slightly smaller file (1.4k less).
+To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less).
+To build without vast support, just use 'make novast'. A version that only contains vast support can be built by using 'make vastonly'.
 
 ###Use compressed distribution
 Use the adhese.min.js directly in your web page. This distribution includes the ajax library.
