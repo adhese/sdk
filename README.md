@@ -60,7 +60,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 
 2. Retrieve the ad uri to perform the asynch request
 		
-		var adUri = adhese.getRequest(ad, {type:'json'});
+		var adUri = adhese.getRequestUri(ad, {type:'json'});
 		var response = AdheseAjax.request({
     		url: adUri,
     		method: 'get',
