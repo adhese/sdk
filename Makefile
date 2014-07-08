@@ -1,5 +1,5 @@
 all: 
-	uglifyjs src/*.js src/ajax/*.js vast/adhese-vast.js -m -v -c -o dist/adhese.min.js
+	uglifyjs src/*.js src/ajax/*.js src/fingerprint/*.js vast/adhese-vast.js -m -v -c -o dist/adhese.min.js
 
 novastnoajax: 
 	uglifyjs src/*.js -m -v -c -o dist/adhese.min.js
@@ -12,3 +12,6 @@ vastonly:
 
 nocompression: 
 	uglifyjs src/*.js src/ajax/*.js vast/adhese-vast.js -b -v -o dist/adhese.min.js
+
+nofingerprint:
+	uglifyjs src/*.js src/ajax/*.js vast/adhese-vast.js -m -v -c -o dist/adhese.min.js

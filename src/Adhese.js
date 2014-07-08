@@ -49,6 +49,7 @@
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
 	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
+	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer));
  	
  	this.userAgent = this.helper.getUserAgent();
 	for (var p in this.userAgent) {
