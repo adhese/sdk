@@ -45,13 +45,11 @@
  	else if (options.location && typeof options.location=="string")
  		this.config.location = options.location;
 
- 	this.userAgent = this.helper.getUserAgent();
-
- 	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
- 	this.registerRequestParameter('br', 'screen3');
- 	this.registerRequestParameter('br', 'desktop');
  	
- 	for (var p in this.userAgent) {
+ 	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
+ 	
+ 	this.userAgent = this.helper.getUserAgent();
+	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
  	}
 
@@ -142,7 +140,11 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 
 	 // add an sl clause for each Ad in adArray
 	for (var i = adArray.length - 1; i >= 0; i--) {
-		uri += 'sl' + this.config.location + '-' + adArray[i].format + '/';
+		if (adArray[i].options.location) {
+			uri += "sl" + adArray[i].options.location + "-" + adArray[i].format + "/";
+    	} else {
+    		uri += "sl" + this.config.location + "-" + adArray[i].format + "/";
+    	} 
 	}
 
 	for (var a in this.request) {
