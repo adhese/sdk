@@ -67,10 +67,10 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
     		json: true
 		})
 		.done(function(result) {
-    		if (response.ext == 'js') {
-				myElement.innerHTML = response.body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
+    		if (result && result[0] && result[0].ext == 'js') {
+				myElement.innerHTML = result[0].body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
 			} else {
-				myElement.innerHTML = response.tag; // for hosted creatives
+				myElement.innerHTML = result[0].tag; // for hosted creatives
 			}
 		});
 
