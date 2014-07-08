@@ -50,6 +50,8 @@
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
  	this.registerRequestParameter('br', 'screen3');
  	this.registerRequestParameter('br', 'desktop');
+	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
+	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
  	
  	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
