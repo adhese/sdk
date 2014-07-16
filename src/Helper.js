@@ -276,4 +276,46 @@ Adhese.prototype.Helper.prototype.stringToHex = function(str) {
 	  result += ("000"+hex).slice(-4);
 	}
 	return result;
-};
+}
+
+/**
+ * Function that creates a new cookie or overwrites an existing one with the same name
+ * @param  {string} name  the name of this cookie, if it already exists, it will be overwrittem
+ * @param  {string} value the value to be stored in the cookie
+ * @param  {number} days  the number of days this cookie will remain valid
+ * @return {void}       
+ */
+Adhese.prototype.Helper.prototype.createCookie = function(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+/**
+ * Function to read the value of a cookie with a specific name
+ * @param  {string} name the name of the cookie to be read
+ * @return {string}      the value of the cookie, of no cookie exists, null is returned
+ */
+Adhese.prototype.Helper.prototype.readCookie = function(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+/**
+ * Function to remove a cookie
+ * @param  {string} name the name of the cookie to be removed
+ * @return {void}      
+ */
+Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
+	createCookie(name,"",-1);
+}
