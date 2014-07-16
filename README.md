@@ -86,7 +86,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
 
 		AdheseAjax.request.({
-    		url: response.tracker + '?t=' + new Date().getTime(),
+    		url: result[0].tracker + '?t=' + new Date().getTime(),
     		method: 'get'
 		});
 
