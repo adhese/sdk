@@ -319,3 +319,20 @@ Adhese.prototype.Helper.prototype.readCookie = function(name) {
 Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
 	createCookie(name,"",-1);
 }
+
+/**
+ * Function to get the values from meta elements
+ * @param {string} the name or property of the meta elements
+ * @return {array} list of contents from the matching elements
+ */
+Adhese.prototype.Helper.prototype.getMetaContent = function(meta_name) {
+	var meta_elements = document.getElementsByTagName("META");
+	var meta_contents = [];
+	for (var i = meta_elements.length - 1; i >= 0; i--){
+		var meta_element = meta_elements[i];
+		if(meta_element && (meta_element.name === meta_name || meta_element.getAttribute("property") === meta_name) && meta_element.content){
+			meta_contents.push(meta_element.content);
+		}
+	}
+	return meta_contents;
+};
