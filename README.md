@@ -9,7 +9,7 @@ It allows a uniform way to identify request parameters and include advertising f
 ###Build from source
 The Makefile uses UglifyJS2 to compress the javascript files. For more information: https://github.com/mishoo/UglifyJS2
 
-Checkout this repository and type 'make' in the root of the SDK directory. 
+Checkout this repository and type 'make' in the root of the SDK directory.
 
 To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less).
 To build without vast support, just use 'make novast'. A version that only contains vast support can be built by using 'make vastonly'.
@@ -23,7 +23,7 @@ Use the adhese.min.js directly in your web page. This distribution includes the 
 		<script type="text/javascript" src="adhese.min.js"></script>
 
 2. Provide a local function that returns the content identification
-		
+
 		<script type="text/javascript">
 			function getLocation() {
 				return "_demo_test_";
@@ -32,7 +32,7 @@ Use the adhese.min.js directly in your web page. This distribution includes the 
 
 3. Initialize the adhese instance
 
-		var adhese = new Adhese(); 
+		var adhese = new Adhese();
 		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation });
 
 
@@ -45,7 +45,7 @@ For each ad you want to include on a page, you should create a DIV with a unique
 		<script type="text/javascript" charset="utf-8">
 			var ad = adhese.tag("leaderboard", {write:true});
 		</script>
-		</div>	
+		</div>
 
 ###Asynchronous requests
 
@@ -59,7 +59,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		var ad = adhese.tag("leaderboard");
 
 2. Retrieve the ad uri to perform the asynch request
-		
+
 		var adUri = adhese.getRequestUri(ad, {type:'json'});
 		var response = AdheseAjax.request({
     		url: adUri,
@@ -81,11 +81,11 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		} else {
 			myElement.innerHTML = response.tag; // for hosted creatives
 		}
-		
-		
+
+
 4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
 
-		AdheseAjax.request.({
+		AdheseAjax.request({
     		url: result[0].tracker + '?t=' + new Date().getTime(),
     		method: 'get'
 		});
@@ -96,16 +96,16 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 
 		{
 		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
-		    
+
 		    "body": "<ADHESE_BODY>", // the third party code to be inserted in a container (if applicable)
-		    		    
+
 		    "ext": "swf", // the file type extension
 		    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
 		    "adType": "SKY", // format name as requested (determined by your Adhese account)
-		    
+
 		    "extraField1": "", // optional field used by the uploader
 		    "extraField2": "", // second optional field used by uploader
-		    
+
 		    "url": "http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419", // click-through URI
 		    "tracker": "http://ads.adhese.be/track/295057//sl242///////inadttr12842;adttrbiz;adttrfood;adttrhealth;adttrimmo;adttrlifestyle;adttrmultimedia;adttrsport;adttrtrav;adttrvoetbal;adttrwielrennen/brTelenet N.V./coBE/rgBE11///isTelenet N.V.//////////A2141.135.96.213.1395820307192918/O_/A_/C_", // tracker URI to be requested for counting an impression
 		    "trackingUrl": "http://track.adform.net/adfserve/?bn=3515419;1x1inv=1;srctype=3;ord=", // 3rd party tracking URI to be requested when visualising
@@ -124,10 +124,10 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		    "adDuration3rd": "0", // duration in seconds of 3rd file
 		    "adDuration2nd": "0", // duration in second of 2nd file
 		    "adDuration4th": "0", // the optional duration of the 4th file
-		    
+
 		    "orderId": "16643", // the Adhese campaign ID
 		    "adspaceId": "61721", // the Adhese booking ID
-		    "adspaceKey": "0", // an optional creative Foreign Key 
+		    "adspaceKey": "0", // an optional creative Foreign Key
 		    "advertiserId": "2326" // Adhese ID of the advertiser
 		    "priority": "1", // priority of this campaign
 		    "id": "295057", // the Adhese ID determining the link between an uploaded creative and a booking
@@ -135,10 +135,10 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		    "share": "0", // an optional number indicating the weight for this creative
 		    "orderProperty": "eadc185cbe8bcd05a5deaf7b99064d56-5d032fa3e52a1abe1392a6b4adbdd519", // optional comma seperated list of properties containing codes defined by your Adhese account
 			"timeStamp": "1396357433000", // the timestamp of the latest change to this creative (can be used for caching)
-		    
+
 		    "comment": "", // optional free text comment
 		    "altText": "", // optional text to be shown as ALT attribute of the container
-		    
+
 		    "poolPath": "<ADHESE_POOL_PATH>", // an optional path to a CDN where files for this creative can be retreived
 		    "tagUrl": "<ADHESE_TAG_URL>", // optional URI of the tag content
   		}
@@ -148,11 +148,9 @@ Through the adhese.registerRequestParameter(key, value) you can add one or more 
 Simply register each value once, and all consequent getRequest function calls will include the parameters.
 
 The available target parameters and their prefixes are determined by your Adhese account configuration.
-		
+
 		// will add a target with prefix 'ag' and value '40' to each request
-		adhese.registerRequestParameter('ag', 40); 
+		adhese.registerRequestParameter('ag', 40);
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
-
-
