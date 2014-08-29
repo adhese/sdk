@@ -24,8 +24,10 @@ var AdheseAjax = {
             process: function(ops) {
                 var self = this;
                 this.xhr = null;
-                if(window.ActiveXObject) { this.xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
-                else if(window.XMLHttpRequest) { this.xhr = new XMLHttpRequest(); }
+                try { this.xhr = new ActiveXObject("Msxml2.XMLHTTP"); } // old Microsoft
+                catch (e) { try { this.xhr = new ActiveXObject("Microsoft.XMLHTTP"); } // Mircrosoft
+                catch (e) { try { this.xhr = new XMLHttpRequest(); } // default
+                 catch (e) { this.xhr = false; }}}
                 if(this.xhr) {
                     this.xhr.onreadystatechange = function() {
                         if(self.xhr.readyState == 4 && self.xhr.status == 200) {
@@ -51,9 +53,9 @@ var AdheseAjax = {
                 }
                 if(ops.headers && typeof ops.headers == 'object') {
                     this.setHeaders(ops.headers);
-                }       
-                setTimeout(function() { 
-                    ops.method == 'get' ? self.xhr.send() : self.xhr.send(getParams(ops.data)); 
+                }
+                setTimeout(function() {
+                    ops.method == 'get' ? self.xhr.send() : self.xhr.send(getParams(ops.data));
                 }, 20);
                 return this;
             },
