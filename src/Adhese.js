@@ -15,7 +15,7 @@
 /**
  * Initializes the object. Resets all saved objects.
  * This method should be called at least just after creation of the Adhese object.
- * In most cases re-initialization is not need, but depending on your implementation,
+ * In most cases re-initialization is not needed, but depending on your implementation,
  * it is available by simply calling init on an existing instance of Adhese.
  *
  * The options object can contain the following attributes:
@@ -48,7 +48,7 @@
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
   if(typeof(Fingerprint) === "function"){
-      this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());      
+      this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
   }
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
 	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer));
