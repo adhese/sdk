@@ -106,10 +106,10 @@
  */
  Adhese.prototype.Helper.prototype.log = function(msg){
  	console.log(msg)
- } 
+ }
 
 /**
- * Looks for META tags in the document with name inName. 
+ * Looks for META tags in the document with name inName.
  * @param  {string} inName	Name of the META tag to read.
  * @param  {number} limitReturn	Limits the length of the returning array. If omitted or -1, the full array is returned..
  * @return {array}	Returns an array of strings.
@@ -159,7 +159,7 @@
 
 /**
  * Adds a listener to a DOM event
- * @param  {string} event The name of the DOM event. 
+ * @param  {string} event The name of the DOM event.
  * @param  {function} listener A function name that will be called when the event is fired.
  * @return {void}
  */
@@ -175,7 +175,7 @@
 
 /**
  * Adds a listener to a DOM event
- * @param  {string} event The name of the DOM event. 
+ * @param  {string} event The name of the DOM event.
  * @param  {function} listener The function name that was listening to the event.
  * @return {void}
  */
@@ -221,7 +221,7 @@
  }
 
 /**
- * Internal method for determining the Operating System identification in the UserAgent 
+ * Internal method for determining the Operating System identification in the UserAgent
  * @param  {string} data The list of normalized values to match the found user-agent string with.
  * @return {string}      A string containing the User Agent name.
  */
@@ -255,7 +255,7 @@
 
  Adhese.prototype.Helper.prototype.merge = function(a, b){
  	var c = {};
- 	for (var k in a) { 
+ 	for (var k in a) {
  		c[k] = a[k];
  	}
  	for (var k in b) {
@@ -283,7 +283,7 @@ Adhese.prototype.Helper.prototype.stringToHex = function(str) {
  * @param  {string} name  the name of this cookie, if it already exists, it will be overwrittem
  * @param  {string} value the value to be stored in the cookie
  * @param  {number} days  the number of days this cookie will remain valid
- * @return {void}       
+ * @return {void}
  */
 Adhese.prototype.Helper.prototype.createCookie = function(name,value,days) {
 	if (days) {
@@ -314,7 +314,7 @@ Adhese.prototype.Helper.prototype.readCookie = function(name) {
 /**
  * Function to remove a cookie
  * @param  {string} name the name of the cookie to be removed
- * @return {void}      
+ * @return {void}
  */
 Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
 	createCookie(name,"",-1);
@@ -335,4 +335,26 @@ Adhese.prototype.Helper.prototype.getMetaContent = function(meta_name) {
 		}
 	}
 	return meta_contents;
+};
+
+/**
+ * Function to check if an element is visible or not
+ * @param {string or HTMLElement} the id from the element to be checked or the element itself
+ * @return {boolean} true if visible, false if not
+ */
+ Adhese.prototype.Helper.prototype.adhElementInViewport = function(element) {
+  if(typeof(element) == "string"){
+    element = document.getElementById(element);
+  }
+	if(element){
+    	var rect = element.getBoundingClientRect();
+			return (
+					rect.top >= 0 &&
+					rect.left >= 0 &&
+					rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+					rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+			);
+		}else{
+			return false;
+		}
 };
