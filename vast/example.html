@@ -1,6 +1,7 @@
 <html>
 <head>
 	<script type="text/javascript" src="dist/adhese-vast.min.js"></script>
+	<!--<script type="text/javascript" src="dist/adhese-vast.js"></script>-->
 </head>
 <body>
 
@@ -20,9 +21,10 @@ var infoContainer = document.getElementById("info");
 var a = new AdheseVastWrapper(true);
 a.init();
 a.addEventListener("ADS_LOADED", adsAreLoaded);
-a.requestAds("http://ads.pebblemedia.adhese.com", "_mediahuis_content-vrt_", ["preroll","postroll"]);
+a.requestAds("http://ads.pebblemedia.adhese.com", "_pebblemedia_test-preroll_", ["preroll"]);
 
 function adsAreLoaded() {
+	console.log("adsAreLoaded")
 
 	// if has preroll, show it
 	if (a.hasAd("preroll")) {
@@ -34,16 +36,16 @@ function adsAreLoaded() {
 		adSrc.src = a.getMediafile("preroll","video/mp4");
 		adSrc.type = "video/mp4";
 
-	    // create desired video element 
+	    // create desired video element
 		var adPlayer = document.createElement("video");
 
 	    adPlayer.width = 640;
 	    adPlayer.height = 480;
 	    adPlayer.autoplay = "true";
-		
+
 	    // if using a flash based player: make sure adPlayer is a reference to the flash object and allowScripAccess is true
 	    // event names will be different in flash as well, depending on how video playback is implemented
-	    
+
 		// attach to timeupdate event for passing the currentTime, this allows adhese to track the actual viewing of the ad
 		adPlayer.addEventListener("timeupdate", function() { a.timeupdate("preroll", adPlayer.currentTime); }, true);
 		// clicks on video player should be sent to adhese for handling and reporting

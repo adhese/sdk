@@ -1,5 +1,5 @@
 /**
- * @class 
+ * @class
  * The Adhese Vast JS library is meant to ease the integration of VAST (2.0 & 3.0) ads in video players.
  * It contains cross-domain safe methods for requesting ads from your adhese account as well as convenience methods for playing and tracking the ads.
  * It is however not a player on its own and it does not insert anything in the DOM.
@@ -14,11 +14,11 @@ function AdheseVastWrapper(inDebug) {
 }
 
 /**
- * Needs to be called after constructing or whenever you want to start your use of the wrapper all over again. 
+ * Needs to be called after constructing or whenever you want to start your use of the wrapper all over again.
  * Resets listeners, trackers and scheduled ads.
  * @example
  * wrapper.init();
- * @return {void} 
+ * @return {void}
  */
 AdheseVastWrapper.prototype.init = function() {
 	this.eventListeners = new Array(); // stores registered event listeners
@@ -34,7 +34,7 @@ AdheseVastWrapper.prototype.init = function() {
  * @param  {string} host     The protocol and host of your Adhese account
  * @param  {string} location The location indentification for the Ad position you are requesting.
  * @param  {Array.<String>} formats  An array of strings containing the identification of the formats you want to request. These strings will be used as id for accessing scheduled Ad's properties.
- * @return {void}            
+ * @return {void}
  */
 AdheseVastWrapper.prototype.requestAds = function(inHost, inLocation, inFormats) {
 	var uri = inHost + "/jsonp/a.parseVastJson";
@@ -44,9 +44,9 @@ AdheseVastWrapper.prototype.requestAds = function(inHost, inLocation, inFormats)
 	uri += "/?t=" + new Date().getTime();
 
 	var newScript = document.createElement("script");
-    newScript.type = "text/javascript";  
+    newScript.type = "text/javascript";
     newScript.src = uri;
-    document.getElementsByTagName("head")[0].appendChild(newScript);     
+    document.getElementsByTagName("head")[0].appendChild(newScript);
 }
 
 AdheseVastWrapper.prototype.parseInLine = function(ad) {
@@ -57,7 +57,7 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 		mediafiles.push(
 			new AdheseVastMediaFile(
 				mf[j].firstChild.nodeValue,
-				mf[j].attributes.getNamedItem("type").nodeValue
+				mf[j].attributes.getNamedItem("type").value
 			)
 		);
 	}
@@ -66,15 +66,15 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 	var impression = new Array();
 	var im = ad.getElementsByTagName("Impression");
 	for (var j=0; j<im.length; j++) {
-		impression.push(im[j].firstChild.nodeValue);	
+		impression.push(im[j].firstChild.nodeValue);
 	}
-	
+
 	//get Trackers and add to object, attribute is event name
 	var trackers = new Object();
 	var tr = ad.getElementsByTagName("Tracking");
 	for (var j=0; j<tr.length; j++) {
 		// add this uri to the array for this event
-		if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").nodeValue] = new Array();
+		if (!trackers[tr[j].attributes.getNamedItem("event").nodeValue]) trackers[tr[j].attributes.getNamedItem("event").value] = new Array();
 		trackers[tr[j].attributes.getNamedItem("event").nodeValue].push(tr[j].firstChild.nodeValue);
 	}
 
@@ -85,7 +85,7 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 		if (!trackers["click"]) trackers["click"] = new Array();
 		if (ctr[j] && ctr[j].firstChild.nodeValue && ctr[j].firstChild.nodeValue!="") {
 			trackers["click"].push(ctr[j].firstChild.nodeValue);
-		}			
+		}
 	}
 
 	//get ClickThrough
@@ -98,14 +98,21 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 	// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
 	// id is replaced by code in the advar template so a change has to be made here too
 	// console.log(ads2);
-	var code = ad.attributes.getNamedItem("code") ? ad.attributes.getNamedItem("code").nodeValue : "preroll";
+	var code = ad.attributes.getNamedItem("code") ? ad.attributes.getNamedItem("code").value : "preroll";
 	if (this.debug) console.log(code);
+	var durationTag = ad.getElementsByTagName("Duration")[0].firstChild,
+	duration;
+	if(durationTag !== null) {
+		duration = ad.getElementsByTagName("Duration")[0].firstChild.nodeValue;
+	}else {
+  	duration = 0;
+	}
 	this.schedule[code] = new AdheseVastAd(
 		code,
 		mediafiles,
-		ad.getElementsByTagName("Duration")[0].firstChild.nodeValue,
+		duration,
 		impression,
-		this.helper.getDurationInSeconds(ad.getElementsByTagName("Duration")[0].firstChild.nodeValue),
+		this.helper.getDurationInSeconds(duration),
 		trackers,
 		click
 	);
@@ -113,18 +120,23 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 }
 
 AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
-	var xml = this.parseXML(inJson[0].tag);		
+	var xml = this.parseXML(inJson[0].tag);
 	var ads = xml.getElementsByTagName("Ad");
 	var that = this;
+	if(ads.length === 0) {
+		this.fireAdsLoaded();
+		return;
+	}
 	for (var i=0; i<ads.length; i++) {
 		// InLine ads, parse and execute
 		if (ads[i].getElementsByTagName("InLine").length>0) {
-			this.parseInLine(ads[i]);		
+			this.parseInLine(ads[i]);
+			this.fireAdsLoaded();
 		}
 		else { // Wrapper ads, need to be executed to get the xml
 			var code = ads[i].attributes.getNamedItem("code").nodeValue;
 			var impressionNodes = ads[i].getElementsByTagName("Impression");
-			
+
 			AdheseAjax.request({
 	    		url: ads[i].getElementsByTagName("VASTAdTagURI")[0].firstChild.nodeValue,
 	    		method: 'get',
@@ -139,16 +151,15 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 	    				ads2[j].getElementsByTagName("InLine")[0].insertBefore(impressionNodes[z], ads2[j].getElementsByTagName("Impression")[0]);
 	    			}
 	    			if (ads2[j].getElementsByTagName("InLine").length>0) {
-	    				that.parseInLine(ads2[j]);		
+	    				that.parseInLine(ads2[j]);
 					} else {
 						if (that.debug) console.log("Too many redirects");
 					}
 	    		}
 	    		that.fireAdsLoaded();
 			});
-		}		
+		}
 	}
-	this.fireAdsLoaded();
 };
 
 AdheseVastWrapper.prototype.parseXML = function(inXml) {
@@ -166,13 +177,13 @@ AdheseVastWrapper.prototype.parseXML = function(inXml) {
 };
 
 /**
- * Add a listener for the "ADS_LOADED" event. 
+ * Add a listener for the "ADS_LOADED" event.
  * Every time you perform a call to requestAds, the event will be fired and you will be able to handle the Ads through your callback function.
  * @example
  * wrapper.addEventListener("ADS_LOADED", yourPlayerInstance.yourCallBackFunction);
  * @param  {string} event    The name of the event. "ADS_LOADED" is currently the only option.
  * @param  {function} callBackFunction The name of the function to be executed when the event is fired.
- * @return {void}          
+ * @return {void}
  */
 AdheseVastWrapper.prototype.addEventListener = function(event, listener) {
 	this.eventListeners.push(
@@ -209,7 +220,7 @@ AdheseVastWrapper.prototype.fireAdsLoaded = function() {
  * var schedule = wrapper.getSchedule();
  * // if only one of the two ads is actually scheduled, the array contains only one item
  * // fi.: ["preroll"]
- * @return {Array.<String>} Returns array of strings containing the scheduled format codes. 
+ * @return {Array.<String>} Returns array of strings containing the scheduled format codes.
  */
 AdheseVastWrapper.prototype.getSchedule = function() {
 	var arr = new Array();
@@ -239,7 +250,7 @@ AdheseVastWrapper.prototype.hasAd = function(adId) {
  * @return {string}      Returns a string containing the URI for tracking a "VAST Impression Event".
  */
 AdheseVastWrapper.prototype.getImpression = function(adId) {
-	return this.schedule[adId].getImpression();	
+	return this.schedule[adId].getImpression();
 };
 
 /**
@@ -248,11 +259,11 @@ AdheseVastWrapper.prototype.getImpression = function(adId) {
  * @return {string}      		Returns a string containing the URI for tracking a "VAST ClickThrough".
  */
 AdheseVastWrapper.prototype.getClick = function(adId) {
-	return this.schedule[adId].getClick();	
+	return this.schedule[adId].getClick();
 };
 
 AdheseVastWrapper.prototype.getTrackers = function(adId) {
-	return this.schedule[adId].getTrackers();	
+	return this.schedule[adId].getTrackers();
 };
 
 /**
@@ -284,7 +295,7 @@ AdheseVastWrapper.prototype.getMediafile = function(adId, type) {
  * @return {string}      		Returns a string of format hh:mm:ss.
  */
 AdheseVastWrapper.prototype.getDuration = function(adId) {
-	return this.schedule[adId].getDuration();	
+	return this.schedule[adId].getDuration();
 };
 
 /**
@@ -295,7 +306,7 @@ AdheseVastWrapper.prototype.getDuration = function(adId) {
  * @return {number}      		A positive integer number.
  */
 AdheseVastWrapper.prototype.getDurationInSeconds = function(adId) {
-	return this.schedule[adId].getDurationInSeconds();	
+	return this.schedule[adId].getDurationInSeconds();
 };
 
 AdheseVastWrapper.prototype.track = function(uri) {
@@ -305,8 +316,8 @@ AdheseVastWrapper.prototype.track = function(uri) {
 			this.trackedImpressions[uri[x]] = 1;
 			var i = document.createElement("img");
 			i.src = uri[x] + ((uri[x].indexOf("?")==-1?"?adhche=":"&adhche=") + new Date().getTime());
-		}		
-	}	
+		}
+	}
 };
 
 /**
@@ -316,7 +327,7 @@ AdheseVastWrapper.prototype.track = function(uri) {
  * adPlayer.addEventListener("timeupdate", function() { wrapper.timeupdate("preroll", adPlayer.currentTime); }, true);
  * @param  {string} formatCode 	The format to identify the Ad.
  * @param  {number} currentTime The current time of the player, in seconds.
- * @return {void}             
+ * @return {void}
  */
 AdheseVastWrapper.prototype.timeupdate = function(adId, currentTime) {
 	if (this.debug) console.log(adId + " timeupdate @" + currentTime + " sec.");
@@ -370,7 +381,7 @@ AdheseVastWrapper.prototype.clicked = function(adId, currentTime) {
  * adPlayer.addEventListener("ended", function() { wrapper.ended("preroll", adPlayer.currentTime);
  * @param  {string} formatCode 	The format to identify the Ad.
  * @param  {number} currentTime The current time of the player, in seconds.
- * @return {void}             
+ * @return {void}
  */
 AdheseVastWrapper.prototype.ended = function(adId, currentTime) {
 	if (this.debug) console.log(adId + " ended @" + currentTime);
@@ -474,16 +485,16 @@ AdheseVastHelper.prototype.getDurationInSeconds = function(inDuration) {
 			//assume seconds
 			return parseInt(d[0]);
 		}
-		return 0;	
+		return 0;
 	}
 	return 0;
 };
 
 /**
- * Method to open a new window ("_blank") from the DOM window object and give it focus. 
+ * Method to open a new window ("_blank") from the DOM window object and give it focus.
  * If now window object is available, nothing happens.
  * @param  {string} uri The URI to be used as the location of the new window.
- * @return {void}     
+ * @return {void}
  */
 AdheseVastHelper.prototype.openNewWindow = function(uri) {
 	if (window) {
@@ -491,9 +502,3 @@ AdheseVastHelper.prototype.openNewWindow = function(uri) {
 	  	win.focus();
 	}
 };
-
-
-
-
-
-
