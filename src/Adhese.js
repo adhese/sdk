@@ -9,7 +9,8 @@
  	this.ads = [];
  	this.that = this;
  	this.helper = new this.Helper();
- 	return this;
+  this.detection = new this.Detection();
+  return this;
  }
 
 /**
@@ -57,6 +58,9 @@
 	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
  	}
+  if(typeof(this.Detection) === "function"){
+      this.registerRequestParameter('dt', new this.detection.device());
+  }
 
  	if (this.config.debug) {
  		this.helper.log('Adhese: initialized with config:');
