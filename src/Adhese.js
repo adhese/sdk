@@ -59,7 +59,7 @@
  		this.registerRequestParameter('br', this.userAgent[p]);
  	}
   if(typeof(this.Detection) === "function"){
-      this.registerRequestParameter('dt', new this.detection.device());
+      this.registerRequestParameter('dt', this.detection.device());
   }
 
  	if (this.config.debug) {
