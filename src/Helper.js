@@ -67,7 +67,7 @@
  		string: navigator.userAgent,
  		subString: "Chrome",
  		identity: "Chrome"
- 	}, {
+  },{
  		string: navigator.vendor,
  		subString: "Apple",
  		identity: "Safari",
@@ -104,9 +104,43 @@
  * Log function used in debug mode. Simply logs to the console and saves the log messages in a private array
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.log = function(msg){
- 	console.log(msg)
- }
+ Adhese.prototype.Helper.prototype.log = function(){
+ 	this.logObjs = this.logObjs || {};
+	this.logs = this.logs || [];
+	var logArgs = '';
+	var logTime = new Date().getTime();
+	for (var i = 0, a = arguments; i < a.length; i++) {
+		if (a[i]) {
+			logArgs += a[i] + ' ';
+		}
+	}
+	this.logObjs[logTime] = logObj = {
+		msg: logArgs
+	};
+	//this.logs.push(logTime + ": " + logArgs);
+	this.logs.push([logTime, arguments]);
+	if (window.location.search.match("debug")) {
+		console.log(logTime, arguments)
+	};
+};
+
+
+/*helper.debug()
+prints all log messages
+*/
+
+
+Adhese.prototype.Helper.prototype.debug = function() {
+	for (var i in this.logs) {
+    var l = this.logs[i];
+		console.log(l[0], l[1]);
+	}
+};
+Adhese.prototype.Helper.prototype.debugTable = function() {
+	if (typeof console.table == 'function') {
+		console.table(this.logObjs);
+	}
+}
 
 /**
  * Looks for META tags in the document with name inName.

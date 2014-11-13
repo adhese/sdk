@@ -30,11 +30,8 @@
  * @return {void}
  */
  Adhese.prototype.init = function(options) {
- 	if (options.debug)
- 		this.config.debug = options.debug;
-
- 	if (this.config.debug)
- 		this.helper.log("Adhese: initializing...");
+ 	this.config.debug = options.debug;
+  this.helper.log("Adhese: initializing...");
 
  	this.config.jquery =  typeof jQuery !== 'undefined';
 
@@ -62,11 +59,7 @@
       this.registerRequestParameter('dt', this.detection.device());
   }
 
- 	if (this.config.debug) {
- 		this.helper.log('Adhese: initialized with config:');
- 		this.helper.log(this.config);
- 	}
-
+ 	this.helper.log('Adhese: initialized with config:', JSON.stringify(this.config));
  };
 
 /**
@@ -91,7 +84,8 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @return {object}	The newly created Ad object.
  */
  Adhese.prototype.tag = function(formatCode, options) {
- 	var ad = new this.Ad(this, formatCode, options);
+ 	this.helper.log(formatCode, JSON.stringify(options));
+  var ad = new this.Ad(this, formatCode, options);
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
  		this.write(ad);
@@ -106,9 +100,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @return {void}
  */
  Adhese.prototype.write = function(ad) {
- 	if (this.config.debug) {
- 		console.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
- 	}
+ 	this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
  	document.write('<scri'+'pt type="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
  };
 
