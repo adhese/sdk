@@ -197,13 +197,13 @@ Adhese.prototype.Helper.prototype.debugTable = function() {
  * @param  {function} listener A function name that will be called when the event is fired.
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.addEventListener = function(event, listener){
+ Adhese.prototype.Helper.prototype.addEventListener = function(e, l){
  	if(adhese.config.jquery){
- 		$(window).bind(t, f);
+ 		$(window).bind(e, l);
 	}else if(window.addEventListener){ // W3C standard
-		window.addEventListener(t, f, false); // NB 'load' **not** 'onload'
+		window.addEventListener(e, l, false); // NB 'load' **not** 'onload'
 	}else if(window.attachEvent){ // Microsoft
-		window.attachEvent('on'+t, f);
+		window.attachEvent('on'+e, l);
 	}
 }
 
@@ -213,13 +213,13 @@ Adhese.prototype.Helper.prototype.debugTable = function() {
  * @param  {function} listener The function name that was listening to the event.
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.removeEventListener = function(event, listener){
+ Adhese.prototype.Helper.prototype.removeEventListener = function(e, l){
  	if(adhese.config.jquery) {
- 		$(window).unbind(t, f);
+ 		$(window).unbind(e, l);
  	} else if(window.removeEventListener) {
- 		window.removeEventListener(t, f, false);
+ 		window.removeEventListener(e, l, false);
  	} else if(window.detachEvent) {
- 		window.detachEvent('on'+t, f);
+ 		window.detachEvent('on'+e, l);
  	}
  }
 
