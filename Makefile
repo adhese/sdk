@@ -16,5 +16,8 @@ vastonly:
 nofingerprint:
 	uglifyjs src/*.js src/detection/*.js src/ajax/*.js vast/adhese-vast.js -m -v -c -o dist/adhese.min.js
 
+novastnoajaxnofingerprint:
+	uglifyjs src/*.js src/detection/*.js -m -v -c -o dist/adhese.novastnoajaxnofingerprint.min.js
+
 debug:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js vast/adhese-vast.js -b -v -o dist/adhese.debug.js
