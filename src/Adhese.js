@@ -141,11 +141,18 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 
 	 // add an sl clause for each Ad in adArray
 	for (var i = adArray.length - 1; i >= 0; i--) {
-		if (adArray[i].options.location) {
-			uri += "sl" + adArray[i].options.location + "-" + adArray[i].format + "/";
-    	} else {
-    		uri += "sl" + this.config.location + "-" + adArray[i].format + "/";
-    	}
+    var ad = adArray[i];
+    var u = "";
+    if(ad.options.position && ad.options.location){
+      u = this.options.location + ad.options.position;
+    }else if(ad.options.position){
+      u = this.config.location + ad.options.position;
+    }else if (ad.options.location) {
+			u = ad.options.location;
+    } else {
+    	u = this.config.location;
+    }
+    uri += "sl" + u  + "-" + ad.format + "/";
 	}
 
 	for (var a in this.request) {
