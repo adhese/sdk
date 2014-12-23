@@ -170,7 +170,8 @@ Adhese.prototype.Helper.prototype.debugTable = function() {
  */
  Adhese.prototype.Helper.prototype.addTrackingPixel = function(uri) {
  	var img = document.createElement('img');
- 	img.src = uri + this.timestamp(s);
+ 	//img.src = uri + this.timestamp(uri);
+ 	img.src = uri;
  	img.style.height = "1px";
  	img.style.width = "1px";
  	img.style.margin = "-1px";
