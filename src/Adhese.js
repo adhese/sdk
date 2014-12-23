@@ -109,10 +109,12 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @param  {string} uri The URI used for tracking.
  * @return {void}
  */
- Adhese.prototype.track = function(uri) {
+Adhese.prototype.track = function(uri) {
 	this.helper.addTrackingPixel(uri);
 };
-
+Adhese.prototype.trackByUrl = function (uri) {
+  this.helper.addTrackingPixel(uri);
+};
 /**
  * This function can be used to create a request for several slots at once. For each ad object passed, a sl part is added to the request. The target parameters are added once.
  * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
