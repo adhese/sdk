@@ -1,7 +1,6 @@
 <html>
 <head>
 	<script type="text/javascript" src="dist/adhese-vast.min.js"></script>
-	<!--<script type="text/javascript" src="dist/adhese-vast.js"></script>-->
 </head>
 <body>
 
@@ -21,7 +20,7 @@ var infoContainer = document.getElementById("info");
 var a = new AdheseVastWrapper(true);
 a.init();
 a.addEventListener("ADS_LOADED", adsAreLoaded);
-a.requestAds("http://ads.pebblemedia.adhese.com", "_pebblemedia_test-preroll_", ["preroll"]);
+a.requestAds("http://ads.demo.adhese.com", "_sdk_example_", ["preroll"]);
 
 function adsAreLoaded() {
 	console.log("adsAreLoaded")
