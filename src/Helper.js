@@ -30,11 +30,11 @@
  		subString: "Windows 98",
  		identity: "Windows98"
  	},
- 	{
- 		string: navigator.platform,
- 		subString: "Linux",
- 		identity: "Linux"
- 	},
+  {
+   string: navigator.userAgent,
+   subString: "Android",
+   identity: "Android"
+  },
  	{
  		string: navigator.userAgent,
  		subString: "iPhone",
@@ -50,11 +50,11 @@
  		subString: "Mac",
  		identity: "OSX"
  	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Android",
- 		identity: "Android"
- 	}
+  {
+   string: navigator.platform,
+   subString: "Linux",
+   identity: "Linux"
+  }
  	];
 
  	this.browserlist = [
