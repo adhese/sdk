@@ -310,12 +310,14 @@ AdheseVastWrapper.prototype.getDurationInSeconds = function(adId) {
 };
 
 AdheseVastWrapper.prototype.track = function(uri) {
-	for (var x=0; x<uri.length; x++) {
-		// add uri to tracked, if already exists, do not track again
-		if (!this.trackedImpressions[uri[x]]) {
-			this.trackedImpressions[uri[x]] = 1;
-			var i = document.createElement("img");
-			i.src = uri[x] + ((uri[x].indexOf("?")==-1?"?adhche=":"&adhche=") + new Date().getTime());
+	if (uri) {
+		for (var x=0; x<uri.length; x++) {
+			// add uri to tracked, if already exists, do not track again
+			if (!this.trackedImpressions[uri[x]]) {
+				this.trackedImpressions[uri[x]] = 1;
+				var i = document.createElement("img");
+				i.src = uri[x] + ((uri[x].indexOf("?")==-1?"?adhche=":"&adhche=") + new Date().getTime());
+			}
 		}
 	}
 };

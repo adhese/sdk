@@ -39,7 +39,7 @@ It is however not a player on its own and it does not insert anything in the DOM
 	From then on you can access several properties of the wrapper object to get info on the ads.
 
 
-For a full example, check the exmaple.html page.
+For a full example, check the example.html page.
 
 ##API Documentation
 
