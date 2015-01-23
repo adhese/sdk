@@ -38,10 +38,15 @@
  	if (options.host)
  		this.config.host = options.host;
 
- 	if (options.location && typeof options.location=="function")
+ 	if (options.location && typeof options.location=="function"){
  		this.config.location = options.location();
- 	else if (options.location && typeof options.location=="string")
+     this.helper.log('options.location=="function"')
+ 	}else if (options.location && typeof options.location=="string"){
  		this.config.location = options.location;
+     this.helper.log('options.location=="string"')
+  }else{
+    this.config.location = 'testlocation'
+  }
 
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
