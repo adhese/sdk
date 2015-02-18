@@ -5,7 +5,17 @@
  */
  Adhese.prototype.Helper = function() {
  	this.oslist = [
- 	{
+   {
+     string: navigator.userAgent,
+    subString: "Windows Phone",
+    identity: "WindowsPhone"
+ },
+ {
+       string: navigator.userAgent,
+      subString: "Windows NT 6.3",
+      identity: "Windows8.1"
+  },
+  {
  		string: navigator.userAgent,
  		subString: "Windows NT 6.2",
  		identity: "Windows8"
