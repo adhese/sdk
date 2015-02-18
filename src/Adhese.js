@@ -55,6 +55,7 @@
   }
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
 	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer));
+	this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
 
  	this.userAgent = this.helper.getUserAgent();
 	for (var p in this.userAgent) {
@@ -62,6 +63,7 @@
  	}
   if(typeof(this.Detection) === "function"){
       this.registerRequestParameter('dt', this.detection.device());
+      this.registerRequestParameter('br', this.detection.device());
   }
 
  	this.helper.log('Adhese: initialized with config:', JSON.stringify(this.config));
