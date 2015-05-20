@@ -9,9 +9,12 @@ It allows a uniform way to identify request parameters and include advertising f
 ###Build from source
 The Makefile uses UglifyJS2 to compress the javascript files. For more information: https://github.com/mishoo/UglifyJS2
 
-Checkout this repository and type 'make' in the root of the SDK directory.
+Checkout this repository and type 'make' or 'make display' in the root of the SDK directory.
 
-To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less).
+The default make target will include all files. The 'display' make target includes all but VAST support, as video advertising is not always needed in a Display Advertising context.
+
+To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less). 
+
 To build without vast support, just use 'make novast'. A version that only contains vast support can be built by using 'make vastonly'.
 
 ###Use compressed distribution
