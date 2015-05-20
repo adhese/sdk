@@ -11,7 +11,7 @@ The Makefile uses UglifyJS2 to compress the javascript files. For more informati
 
 Checkout this repository and type 'make' or 'make display' in the root of the SDK directory.
 
-The default make target will include all files. The 'display' make target includes all but VAST support, as video advertising is not always needed in a Display Advertising context.
+The default make target will include all files. The 'novast' make target includes all but VAST support, as video advertising is not always needed in a Display Advertising context.
 
 To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less). 
 
@@ -154,6 +154,9 @@ The available target parameters and their prefixes are determined by your Adhese
 
 		// will add a target with prefix 'ag' and value '40' to each request
 		adhese.registerRequestParameter('ag', 40);
+
+###Synching user id with RTB networks
+Through a generic synching method, Adhese allows cookie synching with an external network. The current implementation supports Rubicon's User Sync service.
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
