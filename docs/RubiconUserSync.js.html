@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Ad.js</title>
+    <title>JSDoc: Source: rtb/RubiconUserSync.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: Ad.js</h1>
+    <h1 class="page-title">Source: rtb/RubiconUserSync.js</h1>
     
     
 
@@ -26,25 +26,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class
- * Ad object represents an internal advertisement that can be requested from the server.
- * Both request and response are defined by this object. An ad can be found in the mainObject.ads array, through it's format code.
- *
- * Options can be passed to determine how the ad will behave:
- * write: true/false, if true, Ad will immediately be written to the document via document.write when .tag is called
- * 
- * 
- * @formatCode {string} The format code for this Ad, will be used as id in further reference to this Ad.
- * @options	{object}	An object containing the available options for this Ad.
- * @return {void}
- */
- Adhese.prototype.Ad = function(adhese, formatCode, options) {
- 	var defaults = { write:false };
- 	this.format = formatCode;
- 	this.options = adhese.helper.merge(defaults, options);
- 	return this;
- };
-</code></pre>
+* Method to check and if needed sync the Adhese user with a known Rubicon user. If a match exists, the next request performed by this client will contain a rubicon_uid cookie that will be used for Bid Requests.
+* @param  {number} option Object containing one attribute: rp_account: the id for the implementing Rubicon account. This is the same id as passed by the 'rp_account' variable in the legacy Javascript implementation of Rubicon scripts.
+* @return {void}
+*/
+Adhese.prototype.rubiconUserSync = function(option) {
+	// if no account given, do nothing
+	if (option &amp;&amp; option.rp_account &amp;&amp; option.rp_account!='') {
+		// if no cookies has been set yet
+		if(document.cookie.indexOf("rubicon_uid")==-1) {
+			// do request to Rubicon, ignore response, next requests to .adhese.com will have rubicon_uid cookie
+			new Image().src = "http://pixel-eu.rubiconproject.com/exchange/sync.php?p=" + option.rp_account;
+		}
+	}
+};</code></pre>
         </article>
     </section>
 

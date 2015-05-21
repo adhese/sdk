@@ -32,7 +32,17 @@
  */
  Adhese.prototype.Helper = function() {
  	this.oslist = [
- 	{
+   {
+     string: navigator.userAgent,
+    subString: "Windows Phone",
+    identity: "WindowsPhone"
+ },
+ {
+       string: navigator.userAgent,
+      subString: "Windows NT 6.3",
+      identity: "Windows8.1"
+  },
+  {
  		string: navigator.userAgent,
  		subString: "Windows NT 6.2",
  		identity: "Windows8"
@@ -57,11 +67,11 @@
  		subString: "Windows 98",
  		identity: "Windows98"
  	},
- 	{
- 		string: navigator.platform,
- 		subString: "Linux",
- 		identity: "Linux"
- 	},
+  {
+   string: navigator.userAgent,
+   subString: "Android",
+   identity: "Android"
+  },
  	{
  		string: navigator.userAgent,
  		subString: "iPhone",
@@ -77,11 +87,11 @@
  		subString: "Mac",
  		identity: "OSX"
  	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Android",
- 		identity: "Android"
- 	}
+  {
+   string: navigator.platform,
+   subString: "Linux",
+   identity: "Linux"
+  }
  	];
 
  	this.browserlist = [
@@ -94,7 +104,7 @@
  		string: navigator.userAgent,
  		subString: "Chrome",
  		identity: "Chrome"
- 	}, {
+  },{
  		string: navigator.vendor,
  		subString: "Apple",
  		identity: "Safari",
@@ -131,12 +141,46 @@
  * Log function used in debug mode. Simply logs to the console and saves the log messages in a private array
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.log = function(msg){
- 	console.log(msg)
- } 
+ Adhese.prototype.Helper.prototype.log = function(){
+ 	this.logObjs = this.logObjs || {};
+	this.logs = this.logs || [];
+	var logArgs = '';
+	var logTime = new Date().getTime();
+	for (var i = 0, a = arguments; i &lt; a.length; i++) {
+		if (a[i]) {
+			logArgs += a[i] + ' ';
+		}
+	}
+	this.logObjs[logTime] = logObj = {
+		msg: logArgs
+	};
+	//this.logs.push(logTime + ": " + logArgs);
+	this.logs.push([logTime, arguments]);
+	if (window.location.search.match("debug")) {
+		console.log(logTime, arguments)
+	};
+};
+
+
+/*helper.debug()
+prints all log messages
+*/
+
+
+Adhese.prototype.Helper.prototype.debug = function() {
+	for (var i in this.logs) {
+    var l = this.logs[i];
+		console.log(l[0], l[1]);
+	}
+};
+Adhese.prototype.Helper.prototype.debugTable = function() {
+	if (typeof console.table == 'function') {
+		console.table(this.logObjs);
+	}
+}
 
 /**
- * Looks for META tags in the document with name inName. 
+ * Looks for META tags in the document with name inName.
  * @param  {string} inName	Name of the META tag to read.
  * @param  {number} limitReturn	Limits the length of the returning array. If omitted or -1, the full array is returned..
  * @return {array}	Returns an array of strings.
@@ -163,7 +207,8 @@
  */
  Adhese.prototype.Helper.prototype.addTrackingPixel = function(uri) {
  	var img = document.createElement('img');
- 	img.src = uri + this.timestamp(s);
+ 	//img.src = uri + this.timestamp(uri);
+ 	img.src = uri;
  	img.style.height = "1px";
  	img.style.width = "1px";
  	img.style.margin = "-1px";
@@ -186,33 +231,33 @@
 
 /**
  * Adds a listener to a DOM event
- * @param  {string} event The name of the DOM event. 
+ * @param  {string} event The name of the DOM event.
  * @param  {function} listener A function name that will be called when the event is fired.
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.addEventListener = function(event, listener){
+ Adhese.prototype.Helper.prototype.addEventListener = function(e, l){
  	if(adhese.config.jquery){
- 		$(window).bind(t, f);
+ 		$(window).bind(e, l);
 	}else if(window.addEventListener){ // W3C standard
-		window.addEventListener(t, f, false); // NB 'load' **not** 'onload'
+		window.addEventListener(e, l, false); // NB 'load' **not** 'onload'
 	}else if(window.attachEvent){ // Microsoft
-		window.attachEvent('on'+t, f);
+		window.attachEvent('on'+e, l);
 	}
 }
 
 /**
  * Adds a listener to a DOM event
- * @param  {string} event The name of the DOM event. 
- * @param  {function} listener The function name that was llistening to the event.
+ * @param  {string} event The name of the DOM event.
+ * @param  {function} listener The function name that was listening to the event.
  * @return {void}
  */
- Adhese.prototype.Helper.prototype.removeEventListener = function(event, listener){
+ Adhese.prototype.Helper.prototype.removeEventListener = function(e, l){
  	if(adhese.config.jquery) {
- 		$(window).unbind(t, f);
+ 		$(window).unbind(e, l);
  	} else if(window.removeEventListener) {
- 		window.removeEventListener(t, f, false);
+ 		window.removeEventListener(e, l, false);
  	} else if(window.detachEvent) {
- 		window.detachEvent('on'+t, f);
+ 		window.detachEvent('on'+e, l);
  	}
  }
 
@@ -248,8 +293,8 @@
  }
 
 /**
- * Internal method for determining the Operating System identification in the UserAgent 
- * @param  {string} data The list of normalized values to mathc the found user-agent string with.
+ * Internal method for determining the Operating System identification in the UserAgent
+ * @param  {string} data The list of normalized values to match the found user-agent string with.
  * @return {string}      A string containing the User Agent name.
  */
  Adhese.prototype.Helper.prototype.searchString = function (data) {
@@ -269,7 +314,7 @@
 
 /**
  * Internal method for determining the User Agent version
- * @param  {array} dataString The list of normalized values to mathc the found user-agent string with.
+ * @param  {array} dataString The list of normalized values to match the found user-agent string with.
  * @return {string}            A string containing the User Agent name and version number
  */
  Adhese.prototype.Helper.prototype.searchVersion = function (dataString) {
@@ -278,9 +323,11 @@
  	return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
  }
 
+
+
  Adhese.prototype.Helper.prototype.merge = function(a, b){
  	var c = {};
- 	for (var k in a) { 
+ 	for (var k in a) {
  		c[k] = a[k];
  	}
  	for (var k in b) {
@@ -288,7 +335,115 @@
  	}
  	return c;
  }
+/**
+ * Internal method for generating a hexadecimal representation of a string
+ * @param  {string} The string to be converted to a hexadecimal value
+ * @return {number} A hexadecimal number generated from the input string
+ */
+Adhese.prototype.Helper.prototype.stringToHex = function(str) {
+	var hex, i;
+	var result = "";
+	for (i=0; i&lt;str.length; i++) {
+	  hex = str.charCodeAt(i).toString(16);
+	  result += ("000"+hex).slice(-4);
+	}
+	return result;
+}
 
+/**
+ * Function that creates a new cookie or overwrites an existing one with the same name
+ * @param  {string} name  the name of this cookie, if it already exists, it will be overwrittem
+ * @param  {string} value the value to be stored in the cookie
+ * @param  {number} days  the number of days this cookie will remain valid
+ * @return {void}
+ */
+Adhese.prototype.Helper.prototype.createCookie = function(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+/**
+ * Function to read the value of a cookie with a specific name
+ * @param  {string} name the name of the cookie to be read
+ * @return {string}      the value of the cookie, of no cookie exists, null is returned
+ */
+Adhese.prototype.Helper.prototype.readCookie = function(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i &lt; ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+/**
+ * Function to remove a cookie
+ * @param  {string} name the name of the cookie to be removed
+ * @return {void}
+ */
+Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
+	this.createCookie(name,"",-1);
+}
+
+/**
+ * Function to test if the client will eat our cookies.
+ * @return {boolean}	returns true if user accepts cookie, false if not
+ */
+Adhese.prototype.Helper.prototype.eatsCookie = function() {
+	this.createCookie("adheseTestCookie","",1);
+	if (this.readCookie("adheseTestCookie")) { 
+		this.eraseCookie("adheseTestCookie"); 
+		return true; 
+	} else { 
+		return false; 
+	}
+}
+
+/**
+ * Function to get the values from meta elements
+ * @param {string} the name or property of the meta elements
+ * @return {array} list of contents from the matching elements
+ */
+Adhese.prototype.Helper.prototype.getMetaContent = function(meta_name) {
+	var meta_elements = document.getElementsByTagName("META");
+	var meta_contents = [];
+	for (var i = meta_elements.length - 1; i >= 0; i--){
+		var meta_element = meta_elements[i];
+		if(meta_element &amp;&amp; (meta_element.name === meta_name || meta_element.getAttribute("property") === meta_name) &amp;&amp; meta_element.content){
+			meta_contents.push(meta_element.content);
+		}
+	}
+	return meta_contents;
+};
+
+/**
+ * Function to check if an element is visible or not
+ * @param {string} the id from the element to be checked or the element itself
+ * @return {boolean} true if visible, false if not
+ */
+ Adhese.prototype.Helper.prototype.adhElementInViewport = function(element) {
+  if(typeof(element) == "string"){
+    element = document.getElementById(element);
+  }
+	if(element){
+    	var rect = element.getBoundingClientRect();
+			return (
+					rect.top >= 0 &amp;&amp;
+					rect.left >= 0 &amp;&amp;
+					rect.bottom &lt;= (window.innerHeight || document.documentElement.clientHeight) &amp;&amp;
+					rect.right &lt;= (window.innerWidth || document.documentElement.clientWidth)
+			);
+		}else{
+			return false;
+		}
+};
 </code></pre>
         </article>
     </section>
@@ -299,13 +454,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Helper.html">Helper</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Helper.html">Helper</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AdheseAjax">AdheseAjax</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed Apr 16 2014 17:01:20 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed May 20 2015 20:30:58 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

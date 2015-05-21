@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Ad.js</title>
+    <title>JSDoc: Source: events/Events.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: Ad.js</h1>
+    <h1 class="page-title">Source: events/Events.js</h1>
     
     
 
@@ -26,24 +26,44 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class
- * Ad object represents an internal advertisement that can be requested from the server.
- * Both request and response are defined by this object. An ad can be found in the mainObject.ads array, through it's format code.
- *
- * Options can be passed to determine how the ad will behave:
- * write: true/false, if true, Ad will immediately be written to the document via document.write when .tag is called
- * 
- * 
- * @formatCode {string} The format code for this Ad, will be used as id in further reference to this Ad.
- * @options	{object}	An object containing the available options for this Ad.
- * @return {void}
+ * Events
  */
- Adhese.prototype.Ad = function(adhese, formatCode, options) {
- 	var defaults = { write:false };
- 	this.format = formatCode;
- 	this.options = adhese.helper.merge(defaults, options);
- 	return this;
- };
+
+/**
+ * add event
+ * @param {string} type of event: scroll, load, ...
+ * @param {function} to call when event is fired
+ * @param {HTMLElement} optional, the element to attach the event on, defaults to window object
+ * @return nothing
+ */
+Adhese.prototype.Events = function(){};
+Adhese.prototype.Events.prototype.add = function(type, handler, element) {
+  if (!element) {
+    element = window;
+  }
+  if (window.addEventListener) {
+    element.addEventListener(type, handler, false);
+  } else if (window.attachEvent) {
+    element.attachEvent('on' + type, handler);
+  }
+}
+/**
+* remove
+* @param {string} type of event: scroll, load, ...
+* @param {function} the function attached to be removed
+* @param {HTMLElement} optional, the element the event was attach to, defaults to window object
+* @return nothing
+*/
+Adhese.prototype.Events.prototype.remove = function(type, handler, element) {
+  if (!element) {
+    element = window;
+  }
+  if (window.removeEventListener) {
+    element.removeEventListener(type, handler, false);
+  } else if (window.attachEvent) {
+    element.detachEvent('on' + type, handler);
+  }
+}
 </code></pre>
         </article>
     </section>

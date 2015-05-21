@@ -30,7 +30,7 @@
     Adhese
     </h2>
     
-        <div class="class-description">This file contains the main Adhese object used for most implementations of Adhese on webpages. 
+        <div class="class-description">This file contains the main Adhese object used for most implementations of Adhese on webpages.
 It defines a number of private objects.</div>
     
 </header>  
@@ -132,6 +132,335 @@ It defines a number of private objects.</div>
         <dl>
             
 <dt>
+    <h4 class="name" id="Events"><span class="type-signature"></span>Events<span class="signature">(type, to, optional,)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        add event
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">of event: scroll, load, ...</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">call when event is fired</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>optional,</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">the element to attach the event on, defaults to window object</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    nothing
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getMultipleRequestUri"><span class="type-signature"></span>getMultipleRequestUri<span class="signature">(adArray, options)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        This function can be used to create a request for several slots at once. For each ad object passed, a sl part is added to the request. The target parameters are added once.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>adArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Ad[]</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">An array of Ad objects that need to be included in the URI</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The URI to be used to retrieve an array of ads.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getRequestUri"><span class="type-signature"></span>getRequestUri<span class="signature">(ad, options)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
     
@@ -180,7 +509,7 @@ It defines a number of private objects.</div>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Ad</span>
 
 
             
@@ -213,7 +542,7 @@ It defines a number of private objects.</div>
             
             
             
-            <td class="description last">Possible options: type:'js'|'json'|'jsonp', when useing type:'jsonp' you can alos provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'</td>
+            <td class="description last">Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'</td>
         </tr>
 	
 	
@@ -297,15 +626,15 @@ It defines a number of private objects.</div>
     <div class="description">
         Initializes the object. Resets all saved objects.
 This method should be called at least just after creation of the Adhese object.
-In most cases re-initialsation is not need, but depending on your implementation, 
+In most cases re-initialization is not needed, but depending on your implementation,
 it is available by simply calling init on an existing instance of Adhese.
 
 The options object can contain the following attributes:
 debug: true/false, for setting debug logging, not intended for production use
 host: the host of your adhese account, available in your support account
-location: can be either a string containing the actual location to be passed ot the adserver or a function to be called to retreive the location 
+location: can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
 
-The method will check if jQuery is available, and if so, mkae it available for ad templates as well.
+The method will check if jQuery is available, and if so, make it available for ad templates as well.
     </div>
     
 
@@ -511,6 +840,293 @@ The method will check if jQuery is available, and if so, mkae it available for a
             
             
             <td class="description last">the value to be added</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">void</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rubiconUserSync"><span class="type-signature"></span>rubiconUserSync<span class="signature">(option)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Method to check and if needed sync the Adhese user with a known Rubicon user. If a match exists, the next request performed by this client will contain a rubicon_uid cookie that will be used for Bid Requests.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>option</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object containing one attribute: rp_account: the id for the implementing Rubicon account. This is the same id as passed by the 'rp_account' variable in the legacy Javascript implementation of Rubicon scripts.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">void</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="syncUser"><span class="type-signature"></span>syncUser<span class="signature">(network, identification)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Generic syn method that passes the option object to the internal synching method for each known network.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>network</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">String to select the correct network. Current options: "rubicon"</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>identification</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Account identification with the selected network. See network-specific methods elsewhere in this doc.</td>
         </tr>
 	
 	
@@ -885,8 +1501,8 @@ The function creates an Ad object
     
     
     <div class="description">
-        Executes a document.write and creates a script tag when called. 
-The script tag requests a javascript advertisment from the server.
+        Executes a document.write and creates a script tag when called.
+The script tag requests a javascript advertisement from the server.
     </div>
     
 
@@ -1023,13 +1639,13 @@ The script tag requests a javascript advertisment from the server.
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Helper.html">Helper</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Helper.html">Helper</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AdheseAjax">AdheseAjax</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed Apr 16 2014 17:01:20 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed May 20 2015 20:30:58 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

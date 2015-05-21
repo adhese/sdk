@@ -9,7 +9,7 @@ Adhese.prototype.rubiconUserSync = function(option) {
 		// if no cookies has been set yet
 		if(document.cookie.indexOf("rubicon_uid")==-1) {
 			// do request to Rubicon, ignore response, next requests to .adhese.com will have rubicon_uid cookie
-			new Image().src = "http://pixel-eu.rubiconproject.com/exchange/sync.php?p=" + option.rp_account;
+			new Image().src = "https://pixel-eu.rubiconproject.com/exchange/sync.php?p=" + option.rp_account;
 		}
 	}
 };
