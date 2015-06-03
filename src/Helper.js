@@ -96,22 +96,6 @@
  		identity: "Firefox"
  	}
  	];
-
- 	this.devicelist = [
- 	{
- 		string:navigator.userAgent,
- 		subString: "iPad",
- 		identity: "iPad"
- 	},{
- 		string:navigator.userAgent,
- 		subString: "iPhone",
- 		identity: "iPhone"
- 	},{
- 		string:navigator.userAgent,
- 		subString: "Mac",
- 		identity: "Mac"
- 	}
- 	];
  };
 
 /**
