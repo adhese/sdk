@@ -27,9 +27,19 @@
 			return "_sdk_example_";
 		}
 		
-		var adhese = new Adhese(); 
+		// create Adhese object and initialize
+		var adhese = new Adhese();
 		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation });
+
+		// register a user related parameter
 		adhese.registerRequestParameter('ag', 40);
+
+		// sync user with Rubicon for RTB Gateway purposes, pass your Rubicon ID
+		// if (adhese.helper.eatsCookie()) {
+		if (true) {
+			adhese.syncUser("rubicon",{rp_account:"10027"});
+		}		
+		
 	</script>
 	<style type="text/css" media="screen">
 		#leaderboard { width:728px; height: 90px; }

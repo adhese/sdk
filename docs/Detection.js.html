@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Ad.js</title>
+    <title>JSDoc: Source: detection/Detection.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: Ad.js</h1>
+    <h1 class="page-title">Source: detection/Detection.js</h1>
     
     
 
@@ -25,25 +25,27 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @class
- * Ad object represents an internal advertisement that can be requested from the server.
- * Both request and response are defined by this object. An ad can be found in the mainObject.ads array, through it's format code.
- *
- * Options can be passed to determine how the ad will behave:
- * write: true/false, if true, Ad will immediately be written to the document via document.write when .tag is called
- * 
- * 
- * @formatCode {string} The format code for this Ad, will be used as id in further reference to this Ad.
- * @options	{object}	An object containing the available options for this Ad.
- * @return {void}
- */
- Adhese.prototype.Ad = function(adhese, formatCode, options) {
- 	var defaults = { write:false };
- 	this.format = formatCode;
- 	this.options = adhese.helper.merge(defaults, options);
- 	return this;
- };
+            <pre class="prettyprint source linenums"><code>Adhese.prototype.Detection = function(){
+	return this;
+}
+/**
+* Detects the type of device the user is using based on the user agent.
+* @param  {string} optionally, the user agent can be passed as argument
+* @return {string}	Returns the device type detecte: desktop, tablet or phone
+*/
+Adhese.prototype.Detection.prototype.device = function(ua) {
+	ua = ua ? ua : window.navigator.userAgent;
+  if (ua.match(/webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari|SymbianOS/i) &amp;&amp; !ua.match(/Android/i)){
+      this.deviceType = "phone";
+	}else if(ua.match(/Mobile/i) &amp;&amp; ua.match(/Android/i)) {
+		this.deviceType = "phone";
+	}else if(ua.match(/iPad|Android|Tablet|Silk/i)){
+			this.deviceType = "tablet";
+	}else{
+		this.deviceType = "desktop";
+	}
+	return this.deviceType;
+};
 </code></pre>
         </article>
     </section>

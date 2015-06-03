@@ -350,7 +350,21 @@ Adhese.prototype.Helper.prototype.readCookie = function(name) {
  * @return {void}
  */
 Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
-	createCookie(name,"",-1);
+	this.createCookie(name,"",-1);
+}
+
+/**
+ * Function to test if the client will eat our cookies.
+ * @return {boolean}	returns true if user accepts cookie, false if not
+ */
+Adhese.prototype.Helper.prototype.eatsCookie = function() {
+	this.createCookie("adheseTestCookie","",1);
+	if (this.readCookie("adheseTestCookie")) { 
+		this.eraseCookie("adheseTestCookie"); 
+		return true; 
+	} else { 
+		return false; 
+	}
 }
 
 /**
@@ -372,7 +386,7 @@ Adhese.prototype.Helper.prototype.getMetaContent = function(meta_name) {
 
 /**
  * Function to check if an element is visible or not
- * @param {string or HTMLElement} the id from the element to be checked or the element itself
+ * @param {string} the id from the element to be checked or the element itself
  * @return {boolean} true if visible, false if not
  */
  Adhese.prototype.Helper.prototype.adhElementInViewport = function(element) {

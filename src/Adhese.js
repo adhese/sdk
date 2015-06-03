@@ -9,8 +9,8 @@
  	this.ads = [];
  	this.that = this;
  	this.helper = new this.Helper();
-  this.detection = new this.Detection();
-  return this;
+  	this.detection = new this.Detection();
+  	return this;
  }
 
 /**
@@ -31,7 +31,7 @@
  */
  Adhese.prototype.init = function(options) {
  	this.config.debug = options.debug;
-  this.helper.log("Adhese: initializing...");
+  	this.helper.log("Adhese: initializing...");
 
  	this.config.jquery =  typeof jQuery !== 'undefined';
 
@@ -40,19 +40,18 @@
 
  	if (options.location && typeof options.location=="function"){
  		this.config.location = options.location();
-     this.helper.log('options.location=="function"')
- 	}else if (options.location && typeof options.location=="string"){
+     	this.helper.log('options.location=="function"')
+ 	} else if (options.location && typeof options.location=="string"){
  		this.config.location = options.location;
-     this.helper.log('options.location=="string"')
-  }else{
-    this.config.location = 'testlocation'
-  }
-
+     	this.helper.log('options.location=="string"')
+  	} else {
+    	this.config.location = 'testlocation'
+  	}
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
-  if(typeof(Fingerprint) === "function"){
-      this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
-  }
+  	if(typeof(Fingerprint) === "function"){
+      	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
+  	}
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
 	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer));
 	this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
@@ -61,10 +60,10 @@
 	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
  	}
-  if(typeof(this.Detection) === "function"){
-      this.registerRequestParameter('dt', this.detection.device());
-      this.registerRequestParameter('br', this.detection.device());
-  }
+  	if(typeof(this.Detection) === "function"){
+      	this.registerRequestParameter('dt', this.detection.device());
+      	this.registerRequestParameter('br', this.detection.device());
+  	}
 
  	this.helper.log('Adhese: initialized with config:', JSON.stringify(this.config));
  };
@@ -186,3 +185,15 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
  	var adArray = [ad];
  	return this.getMultipleRequestUri(adArray, options);
  };
+
+/**
+ * Generic syn method that passes the option object to the internal synching method for each known network.
+ * @param  {string} network        String to select the correct network. Current options: "rubicon"
+ * @param  {object} identification Account identification with the selected network. See network-specific methods elsewhere in this doc.
+ * @return {void}
+ */
+ Adhese.prototype.syncUser = function(network, identification) {
+ 	if (network=="rubicon") {
+ 		this.rubiconUserSync(identification);
+ 	}
+ }
