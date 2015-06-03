@@ -69,6 +69,11 @@
 
  	this.browserlist = [
  	{
+        string: navigator.userAgent,
+        subString: "Trident/7",
+        identity: "Explorer",
+        versionSearch: "rv"
+    },{
  		string: navigator.userAgent,
  		subString: "MSIE",
  		identity: "Explorer",
@@ -106,7 +111,6 @@
  		subString: "Mac",
  		identity: "Mac"
  	}
-
  	];
  };
 
