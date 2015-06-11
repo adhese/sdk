@@ -319,12 +319,12 @@ Adhese.prototype.Helper.prototype.stringToHex = function(str) {
  * @return {void}
  */
 Adhese.prototype.Helper.prototype.createCookie = function(name,value,days) {
+	var expires = "";
 	if (days) {
 		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
+		date.setTime( date.getTime() + (days*24*60*60*1000) - (date.getTimezoneOffset()*60*1000) );
+		expires = "; expires="+date.toUTCString();
 	}
-	else var expires = "";
 	document.cookie = name+"="+value+expires+"; path=/";
 }
 
@@ -359,7 +359,7 @@ Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
  */
 Adhese.prototype.Helper.prototype.eatsCookie = function() {
 	this.createCookie("adheseTestCookie","",1);
-	if (this.readCookie("adheseTestCookie")) { 
+	if (this.readCookie("adheseTestCookie")!=null) { 
 		this.eraseCookie("adheseTestCookie"); 
 		return true; 
 	} else { 

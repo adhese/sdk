@@ -24,10 +24,26 @@ var AdheseAjax = {
             process: function(ops) {
                 var self = this;
                 this.xhr = null;
-                try { this.xhr = new ActiveXObject("Msxml2.XMLHTTP"); } // old Microsoft
-                catch (e) { try { this.xhr = new ActiveXObject("Microsoft.XMLHTTP"); } // Mircrosoft
-                catch (e) { try { this.xhr = new XMLHttpRequest(); } // default
-                 catch (e) { this.xhr = false; }}}
+                
+                if (document.all && !window.atob) { // IE9 and older
+                    try { 
+                        this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
+                    }
+                    catch(e) {
+                        try { 
+                            this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                        } 
+                        catch (e) {this.xhr = false; }
+                    }                        
+                } else {
+                    try { 
+                        this.xhr = new XMLHttpRequest(); 
+                    }
+                    catch (e) { 
+                        this.xhr = false; 
+                    }
+                }                    
+                                
                 if(this.xhr) {
                     this.xhr.onreadystatechange = function() {
                         if(self.xhr.readyState == 4 && self.xhr.status == 200) {
