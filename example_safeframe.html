@@ -21,7 +21,7 @@
 	<meta property="article:tag" content="sean penn" />
 	<meta property="article:tag" content="venezuela" />
 	<title>Adhese SDK Tagging Examples</title>
-	<script type="text/javascript" charset="utf-8" src="dist/adhese.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="dist/adhese.debug.js"></script>
 	<script type="text/javascript">
 		function getLocation() {
 			return "_sdk_example_";
@@ -29,7 +29,7 @@
 		
 		// create Adhese object and initialize
 		var adhese = new Adhese();
-		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation, safeframe: true });
+		adhese.init({debug:true, host:"http://ads-demo.adhese.com/", location: getLocation, safeframe: true });
 
 		// register a user related parameter
 		adhese.registerRequestParameter('ag', 40);
@@ -41,10 +41,15 @@
 		}		
 		
 	</script>
+
+	<script type="text/javascript">
+		
+    </script>
+
 	<style type="text/css" media="screen">
 		#leaderboard { width:728px; height: 90px; }
-		#imu { border: 2px dashed #ffcc00; width: 300px; height: 250px; padding: 5px;}
-		#skyscraper { border: 1px solid #ff0000; width: 120px; height: 600px; padding: 4px; margin: 4px;}
+		#imu { width: 300px; height: 250px; padding: 0px;}
+		#skyscraper { width: 120px; height: 600px; padding: 0px; margin: 0px;}
 	</style>
 	
 </head>
@@ -62,11 +67,11 @@
 	adhese.tag("leaderboard", {write:true});
 	</xmp>
 	<div id="leaderboard">
+	</div>	
 	<script type="text/javascript" charset="utf-8">
 		adhese.tag("leaderboard", {write:true});
 	</script>
-	</div>	
-
+	
 	<h2>Multiple formats in one request</h2>
 	<p>When several ads are needed for a given page or view in an application, it is more efficient to request all ads at once.</p>
 	<p>To create such a request, you first create the ad instances, one for each format you need and add them to an array. </p>
@@ -82,14 +87,15 @@
 	<p>Request this url and catch the response to insert the return ads in their respective containers.</p>
 	<xmp>
 	AdheseAjax.request({
-    		url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
-    		method: 'get',
-    		json: true
+    	url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
+    	method: 'get',
+    	json: true
 	})
 	.done(function(result) {
-    		for (var i = result.length - 1; i >= 0; i--) {
-    			document.getElementById(result[i].adType).innerHTML = result[i].tag;
-    		};
+		adhese.safeframe.addPositions(result);
+		for (var i = result.length - 1; i >= 0; i--) {
+			adhese.safeframe.render(result[i].adType);
+    	};    		
 	});
 	</xmp>
 	<div id="imu"></div>
@@ -105,10 +111,12 @@
     		json: true
 		})
 		.done(function(result) {
-    		for (var i = result.length - 1; i >= 0; i--) {
-    			document.getElementById(result[i].adType).innerHTML = result[i].tag;
-    		};
+			adhese.safeframe.addPositions(result);
+			for (var i = result.length - 1; i >= 0; i--) {
+				adhese.safeframe.render(result[i].adType);
+    		};    		
 		});
+		
 	</script>
 
 </body>

@@ -23,7 +23,8 @@
  * debug: true/false, for setting debug logging, not intended for production use
  * host: the host of your adhese account, available in your support account
  * location: can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
- *
+ * safeframe: true/false, for switching on the use of the IAB SafeFrame standard, the default value is true
+ * 
  * The method will check if jQuery is available, and if so, make it available for ad templates as well.
  *
  * @param  {object} options An object that contains properties defined by your Adhese implementation
@@ -47,6 +48,13 @@
   	} else {
     	this.config.location = 'testlocation'
   	}
+
+ 	if (options.safeframe) {
+ 		this.config.safeframe = options.safeframe;
+ 		this.safeframe = new this.SafeFrame("http://pool-demo.adhese.com"); 		
+ 	} else { 
+ 	 	this.config.safeframe = false;
+ 	}
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
   	if(typeof(Fingerprint) === "function"){
@@ -91,7 +99,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  */
  Adhese.prototype.tag = function(formatCode, options) {
  	this.helper.log(formatCode, JSON.stringify(options));
-  var ad = new this.Ad(this, formatCode, options);
+  	var ad = new this.Ad(this, formatCode, options);
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
  		this.write(ad);
@@ -106,8 +114,24 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @return {void}
  */
  Adhese.prototype.write = function(ad) {
- 	this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
- 	document.write('<scri'+'pt type="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
+ 	if (this.config.safeframe) {
+ 		AdheseAjax.request({
+    		url: this.getRequestUri(ad, {'type':'json'}),
+    		method: 'get',
+    		json: true
+		}).done(function(result) {
+			adhese.safeframe.addPositions(result);
+			for (var i = result.length - 1; i >= 0; i--) {
+				adhese.safeframe.render(result[i].adType);
+    		};    		
+		});
+
+		this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'json'}) + ', safeframe enabled');
+ 			
+ 	} else {
+ 		this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
+ 		document.write('<scri'+'pt type="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
+ 	}
  };
 
 /**
@@ -196,4 +220,5 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
  	if (network=="rubicon") {
  		this.rubiconUserSync(identification);
  	}
- }
+ };
+

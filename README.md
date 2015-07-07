@@ -70,21 +70,18 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
     		json: true
 		})
 		.done(function(result) {
-    		if (result && result[0] && result[0].ext == 'js') {
-				myElement.innerHTML = result[0].body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
-			} else {
-				myElement.innerHTML = result[0].tag; // for hosted creatives
-			}
+    		adhese.safeframe.addPositions(result);
+			for (var i = result.length - 1; i >= 0; i--) {
+				adhese.safeframe.render(result[i].adType);
+    		};
 		});
 
 3. Use the body or tag property of the response and append it to a container of your choice
 
-		if (response.ext == 'js') {
-			myElement.innerHTML = response.body; // for 3rd party creatives, these often contain document.write instructions, so they should be passed through a library like postscribe [https://github.com/krux/postscribe]
-		} else {
-			myElement.innerHTML = response.tag; // for hosted creatives
-		}
-
+		adhese.safeframe.addPositions(result);
+		for (var i = result.length - 1; i >= 0; i--) {
+			adhese.safeframe.render(result[i].adType);
+    	};
 
 4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
 
