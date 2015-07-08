@@ -29,14 +29,18 @@
 		
 		// create Adhese object and initialize
 		var adhese = new Adhese();
-		adhese.init({debug:true, host:"http://ads-demo.adhese.com/", location: getLocation, safeframe: true });
+		adhese.init({
+			debug:true, 
+			account:"demo", 
+			location: getLocation, 
+			safeframe: true 
+		});
 
 		// register a user related parameter
 		adhese.registerRequestParameter('ag', 40);
 
 		// sync user with Rubicon for RTB Gateway purposes, pass your Rubicon ID
-		// if (adhese.helper.eatsCookie()) {
-		if (true) {
+		if (adhese.helper.eatsCookie()) {
 			adhese.syncUser("rubicon",{rp_account:"adhese"});
 		}		
 		

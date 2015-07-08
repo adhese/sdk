@@ -1,8 +1,7 @@
 /**
  * @class
- * This file contains the main Adhese object used for most implementations of Adhese on webpages.
- * It defines a number of private objects.
- */
+ * This class contains the main Adhese object used for most implementations of Adhese on webpages.
+  */
  function Adhese() {
  	this.config = {debug:false};
  	this.request = {};
@@ -18,16 +17,15 @@
  * This method should be called at least just after creation of the Adhese object.
  * In most cases re-initialization is not needed, but depending on your implementation,
  * it is available by simply calling init on an existing instance of Adhese.
- *
- * The options object can contain the following attributes:
- * debug: true/false, for setting debug logging, not intended for production use
- * host: the host of your adhese account, available in your support account
- * location: can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
- * safeframe: true/false, for switching on the use of the IAB SafeFrame standard, the default value is true
- * 
  * The method will check if jQuery is available, and if so, make it available for ad templates as well.
  *
- * @param  {object} options An object that contains properties defined by your Adhese implementation
+ * @param {object} options An object that contains properties defined by your Adhese implementation
+ * @param {boolean} options.debug for setting debug logging, not intended for production use
+ * @param {string} options.account the identification of your Adhese account, available through the support portal.
+ * @param {string} options.host (optional) the host of your adhese account, available in your support account
+ * @param {string} options.poolHost (optional) the host of your CDN
+ * @param {string} options.location  can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
+ * @param {boolean} options.safeframe true/false, for switching on the use of the IAB SafeFrame standard, the default value is true
  * @return {void}
  */
  Adhese.prototype.init = function(options) {
@@ -36,9 +34,19 @@
 
  	this.config.jquery =  typeof jQuery !== 'undefined';
 
- 	if (options.host)
+ 	if (options.account) {
+ 		this.config.account = options.account;
+ 		var protocol = "http:";
+ 		if (window.location.protocol != "file:") {
+ 			protocol = window.location.protocol;
+ 		}
+ 		this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
+ 		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
+ 		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
+ 	} else if (options.host) {
  		this.config.host = options.host;
-
+ 	}
+ 	
  	if (options.location && typeof options.location=="function"){
  		this.config.location = options.location();
      	this.helper.log('options.location=="function"')
@@ -51,7 +59,7 @@
 
  	if (options.safeframe) {
  		this.config.safeframe = options.safeframe;
- 		this.safeframe = new this.SafeFrame("http://pool-demo.adhese.com"); 		
+ 		this.safeframe = new this.SafeFrame(this.config.poolHost); 		
  	} else { 
  	 	this.config.safeframe = false;
  	}
@@ -94,7 +102,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * It requires at least the formatCode parameter.
  * The function creates an Ad object
  * @param  {string} formatCode Contains the format code as defined in Adhese
- * @param  {object} options An object that contains properties that define targeting, location and other request properties defined by your Adhese implementation
+ * @param  {object} options An object containing the configuration of the Adhese.Ad object to be created. See Adhese.Ad documentaion for a full list of options.
  * @return {object}	The newly created Ad object.
  */
  Adhese.prototype.tag = function(formatCode, options) {
