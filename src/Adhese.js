@@ -43,10 +43,15 @@
  		this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
  		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
  		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
+ 		this.config.previewHost = "https://" + account + ".adhese.org/";
  	} else if (options.host) {
  		this.config.host = options.host;
  	}
  	
+	if (options.previewHost) {
+		this.config.previewHost = options.previewHost;
+	}
+
  	if (options.location && typeof options.location=="function"){
  		this.config.location = options.location();
      	this.helper.log('options.location=="function"')
@@ -80,7 +85,7 @@
       	this.registerRequestParameter('dt', this.detection.device());
       	this.registerRequestParameter('br', this.detection.device());
   	}
-
+	this.checkPreview();
  	this.helper.log('Adhese: initialized with config:', JSON.stringify(this.config));
  };
 
@@ -106,10 +111,23 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @return {object}	The newly created Ad object.
  */
  Adhese.prototype.tag = function(formatCode, options) {
+  console.log('tag ', formatCode);
+  console.log(this.helper);
+	var that = this;
  	this.helper.log(formatCode, JSON.stringify(options));
   	var ad = new this.Ad(this, formatCode, options);
  	this.ads.push([formatCode, ad]);
- 	if (ad.options.write) {
+ 	if (this.previewActive) {
+		 var pf = this.previewFormats
+		for (var key in pf) {
+			if (key  == formatCode) {
+				var previewformat = pf[formatCode];
+				document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
+				//that.helper.addEventListener("load", that.showPreviewSign);// this in window in called function, need to be fixed
+        that.showPreviewSign();
+			}
+		}
+	 }else if (ad.options.write) {
  		this.write(ad);
  	}
  	return ad;
