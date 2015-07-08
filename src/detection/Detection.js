@@ -1,3 +1,7 @@
+/**
+ * @class
+ * The Detection class uses the User-Agent string from the browser to detect which platform we are on.
+ */
 Adhese.prototype.Detection = function(){
 	return this;
 }
