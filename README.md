@@ -36,7 +36,8 @@ Use the adhese.min.js directly in your web page. This distribution includes the 
 3. Initialize the adhese instance
 
 		var adhese = new Adhese();
-		adhese.init({debug:true, host:"http://ads.demo.adhese.com/", location: getLocation });
+		adhese.init({debug:true, account:"demo", location: getLocation });
+		// value of the account attribute can be found in your Adhese subscription information or through our support portal.
 
 
 ###Legacy requests (document.write)
