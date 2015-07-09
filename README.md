@@ -13,9 +13,8 @@ Checkout this repository and type 'make' or 'make display' in the root of the SD
 
 The default make target will include all files. The 'novast' make target includes all but VAST support, as video advertising is not always needed in a Display Advertising context.
 
-To build the SDK without ajax and vast support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less). 
-
-To build without vast support, just use 'make novast'. A version that only contains vast support can be built by using 'make vastonly'.
+To build the SDK without Ajax and VAST support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less). 
+To build without VAST support, just use 'make novast'. A version that only contains VAST support can be built by using 'make vastonly'.
 
 ###Use compressed distribution
 Use the adhese.min.js directly in your web page. This distribution includes the ajax library.
