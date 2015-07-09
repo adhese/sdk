@@ -3,24 +3,24 @@
 This repository contains all code for implementing Adhese ad serving in web pages, applications, video/radio players, ...
 
 ###Introduction
-The Adhese javascript SDK is a minified javascript library that can be included in a javascript enabled client.
+The Adhese JavaScript SDK is a minified JavaScript library that can be included in a JavaScript enabled client.
 It allows a uniform way to identify request parameters and include advertising from your Adhese account.
 
 ###Build from source
-The Makefile uses UglifyJS2 to compress the javascript files. For more information: https://github.com/mishoo/UglifyJS2
+The Makefile uses UglifyJS2 to compress the JavaScript files. For more information: https://github.com/mishoo/UglifyJS2
 
-Checkout this repository and type 'make' or 'make display' in the root of the SDK directory.
+Check out this repository and type 'make' or 'make display' in the root of the SDK directory.
 
-The default make target will include all files. The 'novast' make target includes all but VAST support, as video advertising is not always needed in a Display Advertising context.
+The default make target will include all files. The 'novast' make target includes all but VAST support, as video advertising is not always needed in a display advertising context.
 
 To build the SDK without Ajax and VAST support, use 'make novastnoajax'. This results in a slightly smaller file (1.4k less). 
 To build without VAST support, just use 'make novast'. A version that only contains VAST support can be built by using 'make vastonly'.
 
 ###Use compressed distribution
-Use the adhese.min.js directly in your web page. This distribution includes the ajax library.
+Use adhese.min.js directly in your web page. This distribution includes the Ajax library.
 
 ###Getting started
-1. Load the javascript in the HEAD of the page
+1. Load the JavaScript in the HEAD of the page
 
 		<script type="text/javascript" src="adhese.min.js"></script>
 
@@ -51,9 +51,8 @@ For each ad you want to include on a page, you should create a DIV with a unique
 		</div>
 
 ###Asynchronous requests
-
 Asynchronous requests allow you to perform a request first and visualize the response later. The implementing client is responsible for correct ad reports. A tracker uri that is passed in the response should be requested when visualizing the ad.
-The SDK can be built with an extra Ajax request handler. If you plan to implement in a client that is already capable of performing async requests, you can omit this part of the SDK from the dist file by running 'make noajax'.
+The SDK can be built with an extra Ajax request handler. If you plan to implement in a client that is already capable of performing asynchronous requests, you can omit this part of the SDK from the dist file by running 'make noajax'.
 
 ####Request and track
 
@@ -61,7 +60,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 
 		var ad = adhese.tag("leaderboard");
 
-2. Retrieve the ad uri to perform the asynch request
+2. Retrieve the ad URI to perform the asynchronous request
 
 		var adUri = adhese.getRequestUri(ad, {type:'json'});
 		var response = AdheseAjax.request({
@@ -83,7 +82,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 			adhese.safeframe.render(result[i].adType);
     	};
 
-4. Perform a request to the response.tracker uri. Make sure it is not cached. The response of this tracker uri can be ignored.
+4. Perform a request to the response.tracker URI. Make sure it is not cached. The response of this tracker URI can be ignored.
 
 		AdheseAjax.request({
     		url: result[0].tracker + '?t=' + new Date().getTime(),
@@ -91,8 +90,7 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 		});
 
 ####Response object structure
-
-	The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
+The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
 
 		{
 		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
