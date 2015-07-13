@@ -38,6 +38,14 @@ Use adhese.min.js directly in your web page. This distribution includes the Ajax
 		adhese.init({debug:true, account:"demo", location: getLocation });
 		// value of the account attribute can be found in your Adhese subscription information or through our support portal.
 
+###IAB SafeFrame
+Adhese recommends the use of IAB SafeFrame's standard where possible. The SDK has built-in SafeFrame support, turned on by default.
+To turn off SafeFrame support, initialise your Adhese instance with option "safeframe" set to false.
+
+		var adhese = new Adhese();
+		adhese.init({debug:true, account:"demo", location: getLocation, safeframe: false });
+
+More about SafeFrame at http://www.iab.net/safeframe.
 
 ###Legacy requests (document.write)
 The legacy requests are implemented as a script fragment inside the container where they will be visualized. The client will execute the request and insert the response in the container with a document.write statement. This type of implementation is not recommended if you want to take advantage of 'viewable tracking and forecasting'. It also has performance drawbacks, as the client's document build up will block while requesting and advertisement.
@@ -155,13 +163,15 @@ The request returns a JSON object with the fields described below. If no ad shou
 Through the adhese.registerRequestParameter(key, value) you can add one or more target parameters to the requests.
 Simply register each value once, and all consequent getRequest function calls will include the parameters.
 
-The available target parameters and their prefixes are determined by your Adhese account configuration.
+The available target parameters and their prefixes are determined by your Adhese account configuration. 
+Please contact our support departement for more details.
 
-		// will add a target with prefix 'ag' and value '40' to each request
+		// will add an age target with prefix 'ag' and value '40' to each request
 		adhese.registerRequestParameter('ag', 40);
 
 ###Synching user id with RTB networks
 Through a generic synching method, Adhese allows cookie synching with an external network. The current implementation supports Rubicon's User Sync service.
+Please contact our support departement for more details.
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.

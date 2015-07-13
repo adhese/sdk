@@ -1,8 +1,8 @@
 /**
- * The checkPreview function checks if preview parameters are present in the url.
- * If present, the parameters are used to generate a live preview for the ad.
- * if an adhese_preview cookie exists the saved ids will be used to generate a live preview.
- * This lets a user surf the site in 'preview mode'. The ad being previewed will show up on every page where there is a corresponding format tag present
+ * Function to check for preview parameters in the query string of the page location.
+ * If present, the parameters are used to generate a live preview for the ad and are saved in a cookie named adhese_preview.
+ * If no parameters are present but an adhese_preview cookie exists, the cookies value will be used to generate a live preview.
+ * The parameters we are looking for are adhesePreviewCreativeId, adhesePreviewSlotId, adhesePreviewCreativeTemplate, adhesePreviewCreativeWidth, adhesePreviewCreativeHeight.
  */
 
 Adhese.prototype.checkPreview = function () {
@@ -12,10 +12,13 @@ Adhese.prototype.checkPreview = function () {
 	}
 	if (window.location.search.indexOf("adhesePreview")!=-1) {
 		this.helper.log("checking for preview");
-	var p = window.location.search.substring(1).split("&");
+		var p = window.location.search.substring(1).split("&");
 		var c = '';
 		var s = '';
 		var t = '';
+		var tf = '';
+		var w = 0;
+		var h = 0;
 		for (var x=0; x<p.length; x++) {
 			if (p[x].split("=")[0]=="adhesePreviewCreativeId") {
 				c = unescape(p[x].split("=")[1]);
@@ -24,19 +27,40 @@ Adhese.prototype.checkPreview = function () {
 				s = p[x].split("=")[1];
 		    }
 			if (p[x].split("=")[0]=="adhesePreviewCreativeTemplate") {
-				t = p[x].split("=")[1];
-				this.previewFormats[t] = {slot:s,creative:c}; // this will not work with two times the same format
+				t = p[x].split("=")[1];				
 			}
+			if (p[x].split("=")[0]=="adhesePreviewTemplateFile") {
+				tf = p[x].split("=")[1];				
+			}
+			if (p[x].split("=")[0]=="adhesePreviewWidth") {
+				w = p[x].split("=")[1];
+			}
+			if (p[x].split("=")[0]=="adhesePreviewHeight") {
+				h = p[x].split("=")[1];
+			}			
 		}
+		if (s!='' && c!='') {
+			this.previewFormats[t] = {
+				slot: s,
+				creative: c,
+				templateFile: tf,
+				width: w,
+				height: h
+			};
+		}
+		console.log(this.previewFormats);
+
 		var c=[];
-		for(k in this.previewFormats){c.push(k + "," + this.previewFormats[k].creative+ "," + this.previewFormats[k].slot);}
+		for(k in this.previewFormats){
+			c.push(k + "," + this.previewFormats[k].creative + "," + this.previewFormats[k].slot + "," + this.previewFormats[k].template + "," + this.previewFormats[k].width + "," + this.previewFormats[k].height);
+		}
 		this.helper.createCookie("adhese_preview",c.join('|'),0);
 		this.previewActive = true;
 	} else if (this.helper.readCookie("adhese_preview")) {
 		var v = this.helper.readCookie("adhese_preview").split("|");
 		for (var x=0; x<v.length; x++) {
 			var c = v[x].split(",");
-			this.previewFormats[c[0]] = {creative: c[1], slot: c[2]};
+			this.previewFormats[c[0]] = {creative: c[1], slot: c[2], template: c[3], width: c[4], height: c[5]};
 		}
 		this.previewActive = true;
 	}
@@ -47,8 +71,6 @@ Adhese.prototype.checkPreview = function () {
  */
 Adhese.prototype.showPreviewSign = function () {
 	var that = this;
-	console.log("showing preview sign");
-	console.log(this.helper);
 	var p = document.createElement('DIV');
 	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:18px; text-align:center; background-color: #C8EDCE; color: #9E9E9E; position:fixed; top:0px; /* left: auto; */ padding:4px; border-style:dashed; border:2px; border-color:#000000;z-index:9999;width: 80%;margin-left: 10%;height: 23px;top: 2px;"><b>Adhese preview active. Click to disable</div>';
 	p.innerHTML = msg;

@@ -43,7 +43,7 @@
  		this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
  		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
  		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
- 		this.config.previewHost = "https://" + account + ".adhese.org/";
+ 		this.config.previewHost = "https://" + options.account + ".adhese.org/";
  	} else if (options.host) {
  		this.config.host = options.host;
  	}
@@ -111,23 +111,33 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  * @return {object}	The newly created Ad object.
  */
  Adhese.prototype.tag = function(formatCode, options) {
-  console.log('tag ', formatCode);
-  console.log(this.helper);
 	var that = this;
  	this.helper.log(formatCode, JSON.stringify(options));
+
   	var ad = new this.Ad(this, formatCode, options);
- 	this.ads.push([formatCode, ad]);
  	if (this.previewActive) {
-		 var pf = this.previewFormats
+ 		var pf = this.previewFormats
 		for (var key in pf) {
 			if (key  == formatCode) {
 				var previewformat = pf[formatCode];
-				document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
-				//that.helper.addEventListener("load", that.showPreviewSign);// this in window in called function, need to be fixed
-        that.showPreviewSign();
+				// create Ad for preview
+				var previewAd = new this.Ad(this, formatCode, {"write":true});
+				previewAd.adType = formatCode;
+				previewAd.ext = "js";
+				previewAd.swfSrc = that.config.previewHost + '/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot;
+				previewAd.width = previewformat.width;
+				previewAd.height = previewformat.height;
+				console.log("preview");
+				console.log(previewAd);
+				ad = previewAd;
+				// document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
+				that.showPreviewSign();
 			}
 		}
-	 }else if (ad.options.write) {
+ 	}
+
+ 	this.ads.push([formatCode, ad]);
+ 	if (ad.options.write) {
  		this.write(ad);
  	}
  	return ad;
@@ -141,8 +151,17 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
  */
  Adhese.prototype.write = function(ad) {
  	if (this.config.safeframe) {
+ 		var adUrl = "";
+ 		if (this.previewActive) {
+ 			adUrl = ad.swfSrc;
+ 		} else {
+ 			adUrl = this.getRequestUri(ad, {'type':'json'});
+ 		}
+
+		this.helper.log('Adhese.write: request uri: ' + adUrl + ', safeframe enabled');
+
  		AdheseAjax.request({
-    		url: this.getRequestUri(ad, {'type':'json'}),
+    		url: adUrl,
     		method: 'get',
     		json: true
 		}).done(function(result) {
@@ -151,12 +170,18 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 				adhese.safeframe.render(result[i].adType);
     		};    		
 		});
-
-		this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'json'}) + ', safeframe enabled');
  			
  	} else {
- 		this.helper.log('Adhese.write: request uri: ' + this.getRequestUri(ad, {type:'js'}));
- 		document.write('<scri'+'pt type="text/javascript" src="' + this.getRequestUri(ad, {type:'js'}) + '"></scr'+'ipt>');
+
+ 		var adUrl = "";
+ 		if (this.previewActive) {
+ 			adUrl = ad.swfSrc;
+ 		} else {
+ 			adUrl = this.getRequestUri(ad, {'type':'js'});
+ 		}
+
+ 		this.helper.log('Adhese.write: request uri: ' + adUrl);
+ 		document.write('<scri'+'pt type="text/javascript" src="' + adUrl + '"></scr'+'ipt>');
  	}
  };
 
