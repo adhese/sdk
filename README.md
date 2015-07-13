@@ -92,54 +92,64 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
 ####Response object structure
 The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
 
-		{
-		    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
-
-		    "body": "<ADHESE_BODY>", // the third party code to be inserted in a container (if applicable)
-
-		    "ext": "swf", // the file type extension
-		    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
-		    "adType": "SKY", // format name as requested (determined by your Adhese account)
-
-		    "extraField1": "", // optional field used by the uploader
-		    "extraField2": "", // second optional field used by uploader
-
-		    "url": "http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419", // click-through URI
-		    "tracker": "http://ads.adhese.be/track/295057//sl242///////inadttr12842;adttrbiz;adttrfood;adttrhealth;adttrimmo;adttrlifestyle;adttrmultimedia;adttrsport;adttrtrav;adttrvoetbal;adttrwielrennen/brTelenet N.V./coBE/rgBE11///isTelenet N.V.//////////A2141.135.96.213.1395820307192918/O_/A_/C_", // tracker URI to be requested for counting an impression
-		    "trackingUrl": "http://track.adform.net/adfserve/?bn=3515419;1x1inv=1;srctype=3;ord=", // 3rd party tracking URI to be requested when visualising
-
-		    "swfSrc": "http://1.adhesecdn.be/pool/lib/96393.swf", // the URI of the primary file for this creative
-		    "swfSrc2nd": "", // URI of 2nd file
-		    "swfSrc3rd": "", // URI of 3rd file
-		    "swfSrc4th": "", // URI of 4th file
-
-		    "width": "160", // width in pixels of the primary file
-		    "height": "600", // height in pixels of primary creative
-		    "widthLarge": "0", // width in pixels of secondary file
-		    "heightLarge": "0", // height in pixels of 2nd file
-
-		    "adDuration": "0", // duration in seconds of primary creative (if applicable)
-		    "adDuration3rd": "0", // duration in seconds of 3rd file
-		    "adDuration2nd": "0", // duration in second of 2nd file
-		    "adDuration4th": "0", // the optional duration of the 4th file
-
-		    "orderId": "16643", // the Adhese campaign ID
-		    "adspaceId": "61721", // the Adhese booking ID
-		    "adspaceKey": "0", // an optional creative Foreign Key
-		    "advertiserId": "2326" // Adhese ID of the advertiser
-		    "priority": "1", // priority of this campaign
-		    "id": "295057", // the Adhese ID determining the link between an uploaded creative and a booking
-		    "libId": "96393", // Adhese ID of the uploaded creative
-		    "share": "0", // an optional number indicating the weight for this creative
-		    "orderProperty": "eadc185cbe8bcd05a5deaf7b99064d56-5d032fa3e52a1abe1392a6b4adbdd519", // optional comma seperated list of properties containing codes defined by your Adhese account
-			"timeStamp": "1396357433000", // the timestamp of the latest change to this creative (can be used for caching)
-
-		    "comment": "", // optional free text comment
-		    "altText": "", // optional text to be shown as ALT attribute of the container
-
-		    "poolPath": "<ADHESE_POOL_PATH>", // an optional path to a CDN where files for this creative can be retreived
-		    "tagUrl": "<ADHESE_TAG_URL>", // optional URI of the tag content
-  		}
+{
+	"adDuration": "0", // duration in seconds of primary creative (if applicable)
+	"adDuration2nd": "0", // duration in second of 2nd file
+	"adDuration3rd": "0", // duration in seconds of 3rd file
+	"adDuration4th": "0", // the optional duration of the 4th file
+	"adDuration5th": "0", // the optional duration of the 5th file
+    "adDuration6th": "0", // the optional duration of the 6th file
+    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
+	"adspaceId": "61721", // the Adhese booking ID
+	"adspaceKey": "0", // an optional creative Foreign Key
+	"adspaceEnd": "1483225199000", // the start date of this booking in ms since epoch
+    "adspaceStart": "1433714400000", // the end date of this booking in ms since epoch
+    "adType": "SKY", // format name as requested (determined by your Adhese account)
+	"advertiserId": "2326" // Adhese ID of the advertiser
+	"altText": "", // optional text to be shown as ALT attribute of the container
+	"body": "<ADHESE_BODY>", // the third party code to be inserted in a container (if applicable)
+	"clickTag": "http://clicks-ipm.adhese.com/raylene//sl1644/brChrome/brChrome43/brOSX/dtdesktop/coBE/rgBE11/tm7/tn6/wecalm/isTelenet_N.V./A2195.144.73.34.1428505186583038/O_/A_/C_/ad42159/UR", // the click tag url used for counting clicks, which should be followed by the actual target URL
+	"comment": "", // optional free text comment
+	"creativeName": "Example Billboard News", // name of this particular creative as filled out in Adhese UI/API
+    "deliveryGroupId": "o560c0", // id of booking/creative group for all-together or one-at-a-time bookings
+    "deliveryMultiples": "free", // type of delivery
+    "dm": "dmDMGo560c0;ADV98", // delivery limitation id
+    "ext": "swf", // the file type extension
+	"extraField1": "", // optional field used by the uploader
+	"extraField2": "", // second optional field used by uploader
+	"height": "600", // height in pixels of primary creative
+	"heightLarge": "0", // height in pixels of 2nd file
+	"height3rd": "0", // height in pixels of the 3rd file
+    "height4th": "0", // height in pixels of the 4th file
+    "height5th": "0", // height in pixels of the 5th file
+    "height6th": "0", // height in pixels of the 6th file
+    "id": "295057", // the Adhese ID determining the link between an uploaded creative and a booking
+	"libId": "96393", // Adhese ID of the uploaded creative
+	"orderId": "16643", // the Adhese campaign ID
+	"orderName": "Example - BillBoard Campaign", // name of the Adhese campaign
+    "orderProperty": "eadc185cbe8bcd05a5deaf7b99064d56-5d032fa3e52a1abe1392a6b4adbdd519", // optional comma seperated list of properties containing codes defined by your Adhese account
+	"poolPath": "<ADHESE_POOL_PATH>", // an optional path to a CDN where files for this creative can be retreived
+	"priority": "1", // priority of this campaign
+	"share": "0", // an optional number indicating the weight for this creative
+	"swfSrc": "http://1.adhesecdn.be/pool/lib/96393.swf", // the URI of the primary file for this creative
+	"swfSrc2nd": "", // URI of 2nd file
+	"swfSrc3rd": "", // URI of 3rd file
+	"swfSrc4th": "", // URI of 4th file
+	"swfSrc5th": "", // URI of 5th file
+    "swfSrc6th": "", // URI of 6th file
+    "tag": "<object id='-1756524077' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH=160 HEIGHT=600><param NAME=movie VALUE='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419'/><!--[if !IE]>--><object type='application/x-shockwave-flash' data='http://1.adhesecdn.be/pool/lib/96393.swf?clickTAG=http://host4.adhese.be/295057/http%3A%2F%2Ftrack.adform.net%2FC%2F%3Fbn%3D3515419' width='160' height='600'><!--<![endif]--><param NAME='quality' VALUE='high'/><param NAME='allowScriptAccess' VALUE='always'/><param NAME='wmode' VALUE='transparent'/><a target='_blank' href='http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419'><img src='http://1.adhesecdn.be/pool/lib/96394.jpg'></a><!--[if !IE]>--></object><!--<![endif]--></object>", // the full html code for inserting in the container
+	"tagUrl": "<ADHESE_TAG_URL>", // optional URI of the tag content
+	"timeStamp": "1396357433000", // the timestamp of the latest change to this creative (can be used for caching)
+	"tracker": "http://ads.adhese.be/track/295057//sl242///////inadttr12842;adttrbiz;adttrfood;adttrhealth;adttrimmo;adttrlifestyle;adttrmultimedia;adttrsport;adttrtrav;adttrvoetbal;adttrwielrennen/brTelenet N.V./coBE/rgBE11///isTelenet N.V.//////////A2141.135.96.213.1395820307192918/O_/A_/C_", // tracker URI to be requested for counting an impression
+	"trackingUrl": "http://track.adform.net/adfserve/?bn=3515419;1x1inv=1;srctype=3;ord=", // 3rd party tracking URI to be requested when visualising
+	"url": "http://host4.adhese.be/295057/http://track.adform.net/C/?bn=3515419", // click-through URI
+	"width": "160", // width in pixels of the 1st file
+	"widthLarge": "0", // width in pixels of 2nd file
+	"width3rd": "0", // width in pixels of 3rd file
+    "width4th": "0", // width in pixels of 4th file
+    "width5th": "0", // width in pixels of 5th file
+    "width6th": "0"  // width in pixels of 6th file
+}
 
 ###Registering target parameters
 Through the adhese.registerRequestParameter(key, value) you can add one or more target parameters to the requests.
