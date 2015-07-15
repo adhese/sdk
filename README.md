@@ -139,6 +139,7 @@ The request returns a JSON object with the fields described below. If no ad shou
 			"poolPath": "<ADHESE_POOL_PATH>", // an optional path to a CDN where files for this creative can be retreived
 			"priority": "1", // priority of this campaign
 			"share": "0", // an optional number indicating the weight for this creative
+			"slotName": "_test-site_homepage_-SKY, // the value of the prefix sl as requested
 			"swfSrc": "http://1.adhesecdn.be/pool/lib/96393.swf", // the URI of the primary file for this creative
 			"swfSrc2nd": "", // URI of 2nd file
 			"swfSrc3rd": "", // URI of 3rd file
