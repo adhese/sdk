@@ -4,22 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-	 <meta http-equiv="content-language" content="nl"/>
-	<meta name="keywords" content="Nieuws, Cultuur, Doe Maar, Edison Awards, popmuziek">
-	<meta name="news_keywords" content="Nieuws, 	Cultuur, Doe Maar, Edison Awards, popmuziek">
-	<meta property="ad:subject" content="nieuws">
-	<meta property="ad:categories" content="Cultuur, Nieuws">
-	<meta property="ad:pagetype" content="artikel">
-	<meta property="og:title" content="Doe Maar krijgt Edison Oeuvreprijs">
-	<meta property="og:url" content="http://www.nrc.nl/nieuws/2012/10/09/doe-maar-krijgt-edison-oeuvreprijs/">
-	<meta property="og:image" content="http://www.nrc.nl/wp-content/uploads/2012/10/ANP-1180_20861378-300x193.jpg">
-	<meta property="og:description" content="Doe Maar is vanmiddag verrast door de organisatie van de Edison Awards. De groep krijgt in februari de Edison Oeuvreprijs, kregen de mannen op het podium van Paradiso te horen van Frits Spits.
-	Doe Maar, dat vanavond optreedt in…">
-	<meta property="og:site_name" content="nrc.nl">
-	<meta property="og:type" content="article">
-	<meta property="article:tag" content="hugo chavez" />
-	<meta property="article:tag" content="sean penn" />
-	<meta property="article:tag" content="venezuela" />
 	<title>Adhese SDK Tagging Examples</title>
 	<script type="text/javascript" charset="utf-8" src="dist/adhese.debug.js"></script>
 	<script type="text/javascript">
@@ -30,25 +14,14 @@
 		// create Adhese object and initialize
 		var adhese = new Adhese();
 		adhese.init({
-			debug:true, 
 			account:"demo", 
-			location: getLocation, 
-			safeframe: true 
+			location: getLocation
 		});
 
 		// register a user related parameter
 		adhese.registerRequestParameter('ag', 40);
-
-		// sync user with Rubicon for RTB Gateway purposes, pass your Rubicon ID
-		if (adhese.helper.eatsCookie()) {
-			adhese.syncUser("rubicon",{rp_account:"adhese"});
-		}		
 		
 	</script>
-
-	<script type="text/javascript">
-		
-    </script>
 
 	<style type="text/css" media="screen">
 		#leaderboard { width:728px; height: 90px; }
@@ -59,51 +32,16 @@
 </head>
 
 <body>
-	<h1>Adhese SDK Tagging Examples</h1>
-	<p>This page demonstrates several ways of implementing Adhese tags client side to track inventory and show advertisements. The SDK is available at https://github.com/adhese/sdk</p>
 	
-	<h2>Legacy document.write tag</h2>
-	<p>
-		The legacy implementation uses a call for a specific format and writes it directly to the body with a document.write statement.
-		This is not applicable in asynchronous requests, and is not the recommended approach when using more complex features like viewable inventory forecasting.
-	</p>
-	<xmp>
-	adhese.tag("leaderboard", {write:true});
-	</xmp>
 	<div id="leaderboard">
-	</div>	
 	<script type="text/javascript" charset="utf-8">
 		adhese.tag("leaderboard", {write:true});
 	</script>
+	</div>	
 	
-	<h2>Multiple formats in one request</h2>
-	<p>When several ads are needed for a given page or view in an application, it is more efficient to request all ads at once.</p>
-	<p>To create such a request, you first create the ad instances, one for each format you need and add them to an array. </p>
-	<xmp>
-	var adArray = new Array();
-	adArray.push(adhese.tag("rectangle"));
-	adArray.push(adhese.tag("skyscraper"));
-	</xmp>
-	<p>You can then pass the array to the adhese.getMultipleRequestUri function to obtain a URI that will return an array of JSON Ad objects, each containing the format reference you passed.</p>
-	<xmp>
-	adhese.getMultipleRequestUri(adArray, {'type':'jsonp', callbackFunctionName: 'callbackFunction'})
-	</xmp>
-	<p>Request this url and catch the response to insert the return ads in their respective containers.</p>
-	<xmp>
-	AdheseAjax.request({
-    	url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
-    	method: 'get',
-    	json: true
-	})
-	.done(function(result) {
-		adhese.safeframe.addPositions(result);
-		for (var i = result.length - 1; i >= 0; i--) {
-			adhese.safeframe.render(result[i].adType);
-    	};    		
-	});
-	</xmp>
 	<div id="imu"></div>
 	<div id="skyscraper"></div>
+	
 	<script type="text/javascript" charset="utf-8">		
 		var adArray = new Array();
 		adArray.push(adhese.tag("imu"));

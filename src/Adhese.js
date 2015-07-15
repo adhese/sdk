@@ -62,11 +62,11 @@
     	this.config.location = 'testlocation'
   	}
 
- 	if (options.safeframe) {
- 		this.config.safeframe = options.safeframe;
- 		this.safeframe = new this.SafeFrame(this.config.poolHost); 		
+ 	if (options.safeframe || options.safeframe == false) {
+ 		this.config.safeframe = false;
  	} else { 
- 	 	this.config.safeframe = false;
+ 	 	this.config.safeframe = options.safeframe;
+ 		this.safeframe = new this.SafeFrame(this.config.poolHost);
  	}
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
