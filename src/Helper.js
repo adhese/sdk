@@ -5,10 +5,15 @@
  */
  Adhese.prototype.Helper = function() {
  	this.oslist = [
-   {
+ {
      string: navigator.userAgent,
     subString: "Windows Phone",
     identity: "WindowsPhone"
+ },
+ {
+   string: navigator.userAgent,
+   subString: "Windows NT 10.0",
+   identity: "Windows10"
  },
  {
        string: navigator.userAgent,
@@ -358,11 +363,11 @@ Adhese.prototype.Helper.prototype.eraseCookie = function(name) {
  */
 Adhese.prototype.Helper.prototype.eatsCookie = function() {
 	this.createCookie("adheseTestCookie","",1);
-	if (this.readCookie("adheseTestCookie")!=null) { 
-		this.eraseCookie("adheseTestCookie"); 
-		return true; 
-	} else { 
-		return false; 
+	if (this.readCookie("adheseTestCookie")!=null) {
+		this.eraseCookie("adheseTestCookie");
+		return true;
+	} else {
+		return false;
 	}
 }
 
