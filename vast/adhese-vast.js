@@ -98,7 +98,14 @@ AdheseVastWrapper.prototype.parseInLine = function(ad) {
 	// insert the AdheseVastAd object in the schedule array using the ad's id as index to allow the palyer to retrieve it by id (as requested)
 	// id is replaced by code in the advar template so a change has to be made here too
 	// console.log(ads2);
-	var code = ad.attributes.getNamedItem("code") ? ad.attributes.getNamedItem("code").value : "preroll";
+	var code = '';//ad.attributes.getNamedItem("code") ? ad.attributes.getNamedItem("code").nodeValue : "preroll";
+	if (ad.attributes.getNamedItem("id") && isNaN(ad.attributes.getNamedItem("id").nodeValue)) {
+		code = ad.attributes.getNamedItem("id").nodeValue;
+	}else if (ad.attributes.getNamedItem("code")) {
+		code = ad.attributes.getNamedItem("code").nodeValue;
+	} else {
+		code = 'preroll';
+	}
 	if (this.debug) console.log(code);
 	var durationTag = ad.getElementsByTagName("Duration")[0].firstChild,
 	duration;
@@ -134,8 +141,17 @@ AdheseVastWrapper.prototype.parseVastJson = function(inJson) {
 			this.fireAdsLoaded();
 		}
 		else { // Wrapper ads, need to be executed to get the xml
-			var code = ads[i].attributes.getNamedItem("code").nodeValue;
-			var impressionNodes = ads[i].getElementsByTagName("Impression");
+			var code = '';//ads[i].attributes.getNamedItem("code").nodeValue;
+			var ad = ads[i];
+			if (ad.attributes.getNamedItem("id") && isNaN(ad.attributes.getNamedItem("id").nodeValue)) {
+				code = ad.attributes.getNamedItem("id").nodeValue;
+			}else if (ad.attributes.getNamedItem("code")) {
+				code = ad.attributes.getNamedItem("code").nodeValue;
+			} else {
+				code = 'preroll';
+			}
+
+			var impressionNodes = ad.getElementsByTagName("Impression");
 
 			AdheseAjax.request({
 	    		url: ads[i].getElementsByTagName("VASTAdTagURI")[0].firstChild.nodeValue,
