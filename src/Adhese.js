@@ -47,7 +47,7 @@
  	} else if (options.host) {
  		this.config.host = options.host;
  	}
- 	
+
 	if (options.previewHost) {
 		this.config.previewHost = options.previewHost;
 	}
@@ -64,7 +64,7 @@
 
  	if (options.safeframe || options.safeframe == false) {
  		this.config.safeframe = false;
- 	} else { 
+ 	} else {
  	 	this.config.safeframe = options.safeframe;
  		this.safeframe = new this.SafeFrame(this.config.poolHost);
  	}
@@ -74,7 +74,7 @@
       	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
   	}
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
-	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer));
+	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
 	this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
 
  	this.userAgent = this.helper.getUserAgent();
@@ -168,9 +168,9 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 			adhese.safeframe.addPositions(result);
 			for (var i = result.length - 1; i >= 0; i--) {
 				adhese.safeframe.render(result[i].adType);
-    		};    		
+    		};
 		});
- 			
+
  	} else {
 
  		var adUrl = "";
@@ -272,4 +272,3 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
  		this.rubiconUserSync(identification);
  	}
  };
-
