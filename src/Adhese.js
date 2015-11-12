@@ -86,6 +86,11 @@
       	this.registerRequestParameter('br', this.detection.device());
   	}
 	this.checkPreview();
+    if(this.checkVisible){
+        addEventListener("load", this.checkVisible.bind(this), false);
+        addEventListener("scroll", this.checkVisible.bind(this), false);
+    }
+
  	this.helper.log('Adhese: initialized with config:', JSON.stringify(this.config));
  };
 
