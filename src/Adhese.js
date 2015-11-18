@@ -5,6 +5,7 @@
  function Adhese() {
  	this.config = {debug:false};
  	this.request = {};
+ 	this.requestExtra = [];
  	this.ads = [];
  	this.that = this;
  	this.helper = new this.Helper();
@@ -106,6 +107,15 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 	v.push(value);
 	this.request[key] = v;
 }
+
+/**
+ * Function to add a string to an Adhese instance. This string will be appended to each request.
+ * @param  {string} value the string to be added
+ * @return {void}
+ */
+Adhese.prototype.addRequestString = function(value) {
+    this.requestExtra.push(value);
+};
 
 /**
  * The tag function is the default function to be called from within an ad container.
@@ -250,6 +260,12 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 		}
 		uri += s + '/';
 	}
+	
+	for (var i = 0, a = this.requestExtra; i < a.length; i++) {
+        if (a[i]) {
+            uri += a[i] + "/";
+        }
+    }
 	uri += '?t=' + new Date().getTime();
 	return uri;
 }
