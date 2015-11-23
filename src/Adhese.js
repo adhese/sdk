@@ -146,7 +146,7 @@ Adhese.prototype.addRequestString = function(value) {
 				console.log(previewAd);
 				ad = previewAd;
 				// document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
-				that.showPreviewSign();
+                addEventListener("load", that.showPreviewSign.bind(that))
 			}
 		}
  	}
@@ -260,7 +260,7 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 		}
 		uri += s + '/';
 	}
-	
+
 	for (var i = 0, a = this.requestExtra; i < a.length; i++) {
         if (a[i]) {
             uri += a[i] + "/";
