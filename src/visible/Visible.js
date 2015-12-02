@@ -23,7 +23,7 @@ Adhese.prototype.checkVisible = function() {
                 ad.active = false;
             }
         }else{
-            console.log("Can't find <div> width id: " + ad.uid);
+            this.helper.log("Can't find <div> width id: " + ad.uid);
             // because we do not want to see this error more than once
             ad.tracked = true;
         }
