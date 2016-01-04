@@ -316,6 +316,22 @@ Adhese.prototype.Helper.prototype.stringToHex = function(str) {
 }
 
 /**
+ * Internal method for generating a string representation of a hexadecimal
+ * @param  {number} A hexadecimal number generated from the input string
+ * @return {string} The string to be converted to a hexadecimal value
+ */
+ Adhese.prototype.Helper.prototype.hexToString = function(hex){
+    var j;
+    var hexes = hex.match(/.{1,2}/g) || [];
+    var back = "";
+    for(j = 0; j<hexes.length; j++) {
+        back += String.fromCharCode(parseInt("00"+hexes[j], 16));
+    }
+    return back;
+}
+
+
+/**
  * Function that creates a new cookie or overwrites an existing one with the same name
  * @param  {string} name  the name of this cookie, if it already exists, it will be overwrittem
  * @param  {string} value the value to be stored in the cookie
