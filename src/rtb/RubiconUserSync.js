@@ -16,6 +16,7 @@ Adhese.prototype.rubiconUserSync = function(option) {
 			var diff = date.getTime() - new Date().getTime();
 			this.helper.createCookie("rubicon_uid_last_sync", diff, (diff/24/60/60/1000));
 			// also create domain cookie, so do a request to an .adhese.com endpoint with the current domain as qs param
+			if (this.config.hostname) new Image().src = "https://user-sync.adhese.com/handlers/rubicon/user_sync_discovery?domain=" + this.config.hostname;
 			// this endpoint wil create a cookie on .adhese.com containing the domain as passed
 		}
 	}
@@ -35,6 +36,7 @@ Adhese.prototype.rubiconUserSync = function(option) {
 Adhese.prototype.rubiconMultiSync = function(rp_account) {
 	var script = document.createElement("SCRIPT");
 	script.type = "text\/javascript";
+	script.setAttribute("id","multisync");
 	script.setAttribute("data-partner",rp_account);
 	script.setAttribute("data-region","eu");
 	script.setAttribute("data-country","be");

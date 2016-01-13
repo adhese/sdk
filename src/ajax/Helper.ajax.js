@@ -24,27 +24,30 @@ var AdheseAjax = {
             process: function(ops) {
                 var self = this;
                 this.xhr = null;
-                
+
                 if (document.all && !window.atob) { // IE9 and older
-                    try { 
+                    try {
                         this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
                     }
                     catch(e) {
-                        try { 
+                        try {
                             this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                        } 
+                        }
                         catch (e) {this.xhr = false; }
-                    }                        
+                    }
                 } else {
-                    try { 
-                        this.xhr = new XMLHttpRequest(); 
+                    try {
+                        this.xhr = new XMLHttpRequest();
                     }
-                    catch (e) { 
-                        this.xhr = false; 
+                    catch (e) {
+                        this.xhr = false;
                     }
-                }                    
-                                
+                }
+
                 if(this.xhr) {
+                    if ("withCredentials" in this.xhr) {
+                        this.xhr.withCredentials = true;
+                    }
                     this.xhr.onreadystatechange = function() {
                         if(self.xhr.readyState == 4 && self.xhr.status == 200) {
                             var result = self.xhr.responseText;

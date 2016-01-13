@@ -45,9 +45,16 @@
  		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
  		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
  		this.config.previewHost = "https://" + options.account + ".adhese.org/";
+ 		this.config.hostname = undefined;
  	} else if (options.host) {
  		this.config.host = options.host;
+ 		//make anchor to extract some info about domain
+ 		var adHost = document.createElement("a");
+		adHost.href = this.config.host;
+		this.config.hostname = adHost.hostname;
  	}
+
+ 	
 
 	if (options.previewHost) {
 		this.config.previewHost = options.previewHost;
