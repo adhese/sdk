@@ -54,7 +54,7 @@
 		this.config.hostname = adHost.hostname;
  	}
 
- 	
+
 
 	if (options.previewHost) {
 		this.config.previewHost = options.previewHost;
@@ -143,14 +143,12 @@ Adhese.prototype.addRequestString = function(value) {
 			if (key  == formatCode) {
 				var previewformat = pf[formatCode];
 				// create Ad for preview
-				var previewAd = new this.Ad(this, formatCode, {"write":true});
+				var previewAd = new this.Ad(this, formatCode, options);
 				previewAd.adType = formatCode;
 				previewAd.ext = "js";
 				previewAd.swfSrc = that.config.previewHost + '/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot;
 				previewAd.width = previewformat.width;
 				previewAd.height = previewformat.height;
-				console.log("preview");
-				console.log(previewAd);
 				ad = previewAd;
 				// document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
                 addEventListener("load", that.showPreviewSign.bind(that))
