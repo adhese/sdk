@@ -8,6 +8,9 @@ var AdheseAjax = {
         ops.url = ops.url || '';
         ops.method = ops.method || 'get'
         ops.data = ops.data || {};
+        if(typeof ops.encodeData == "undefined"){
+            ops.encodeData = true;
+        }
         var getParams = function(data, url) {
             var arr = [], str;
             for(var name in data) {
@@ -82,7 +85,17 @@ var AdheseAjax = {
                     this.setHeaders(ops.headers);
                 }
                 setTimeout(function() {
-                    ops.method == 'get' ? self.xhr.send() : self.xhr.send(getParams(ops.data));
+                    if(ops.method == 'get'){
+                        self.xhr.send()
+                    }else{
+                        var data;
+                        if (ops.encodeData) {
+                           data = getParams(ops.data);
+                       }else {
+                           data = ops.data;
+                       }
+                       self.xhr.send(data);
+                   }
                 }, 20);
                 return this;
             },
