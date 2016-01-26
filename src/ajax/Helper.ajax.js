@@ -98,6 +98,10 @@ var AdheseAjax = {
                 this.alwaysCallback = callback;
                 return this;
             },
+            error: function(callback) {
+                this.errorCallback = callback;
+                return this;
+            },
             setHeaders: function(headers) {
                 for(var name in headers) {
                     this.xhr && this.xhr.setRequestHeader(name, headers[name]);
