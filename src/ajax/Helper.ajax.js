@@ -52,9 +52,17 @@ var AdheseAjax = {
                         if(self.xhr.readyState == 4 && self.xhr.status == 200) {
                             var result = self.xhr.responseText;
                             if(ops.json === true && typeof JSON != 'undefined') {
-                                result = JSON.parse(result);
+                                if (result){
+                                    try{
+                                        result = JSON.parse(result);
+                                        self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
+                                    }catch(e){
+                                        self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: " + e]);
+                                    }
+                                }else {
+                                    self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: Response is empty string"]);
+                                }
                             }
-                            self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
                         } else if(self.xhr.readyState == 4) {
                             self.failCallback && self.failCallback.apply(self.host, [self.xhr]);
                         }
