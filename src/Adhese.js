@@ -116,7 +116,7 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 }
 
 /**
- * Function to add remove a parameter from an Adhese instance.
+ * Function to remove a parameter from an Adhese instance.
  * @param  {string} key   the prefix for this target
  * @param  {string} value the value to be removed
  * @return {void}
@@ -262,17 +262,20 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 	for (var i = adArray.length - 1; i >= 0; i--) {
     var ad = adArray[i];
     var u = "";
-    if(ad.options.position && ad.options.location){
-      u = this.options.location + ad.options.position;
-    }else if(ad.options.position){
-      u = this.config.location + ad.options.position;
-    }else if (ad.options.location) {
-			u = ad.options.location;
-    } else {
-    	u = this.config.location;
+    if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){{
+        if(ad.options.position && ad.options.location){
+          u = this.options.location + ad.options.position;
+        }else if(ad.options.position){
+          u = this.config.location + ad.options.position;
+        }else if (ad.options.location) {
+    			u = ad.options.location;
+        } else {
+        	u = this.config.location;
+        }
+        uri += "sl" + u  + "-" + ad.format + "/";
+    	}
     }
-    uri += "sl" + u  + "-" + ad.format + "/";
-	}
+    
 
 	for (var a in this.request) {
 		var s = a;
@@ -298,10 +301,15 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
  * @param {object} options Possible options: type:'js'|'json'|'jsonp', when using type:'jsonp' you can also provide the name of a callback function callback:'callbackFunctionName'. Type 'js' is the default if no options are given. Callback 'callback' is the default for type 'jsonp'
  * @return {string}
  */
- Adhese.prototype.getRequestUri = function(ad, options) {
- 	var adArray = [ad];
- 	return this.getMultipleRequestUri(adArray, options);
- };
+Adhese.prototype.getRequestUri = function(ad, options) {
+    if(options.preview  && options.preview == true){
+       return ad.swfSrc;
+    }else{
+        var adArray = [ ad ];
+        return this.getMultipleRequestUri(adArray, options);
+    }
+    
+};
 
 /**
  * Generic syn method that passes the option object to the internal synching method for each known network.
