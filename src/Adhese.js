@@ -116,6 +116,22 @@ Adhese.prototype.registerRequestParameter = function(key, value) {
 }
 
 /**
+ * Function to add remove a parameter from an Adhese instance.
+ * @param  {string} key   the prefix for this target
+ * @param  {string} value the value to be removed
+ * @return {void}
+ */
+
+Adhese.prototype.removeRequestParameter = function(key, value) {
+	var v = this.request[key];
+    if (v){
+        var index = v.indexOf(value);
+        if(index != -1) v.splice(index,1);
+    }
+};
+
+
+/**
  * Function to add a string to an Adhese instance. This string will be appended to each request.
  * @param  {string} value the string to be added
  * @return {void}
