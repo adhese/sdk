@@ -44,7 +44,7 @@
  		this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
  		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
  		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
- 		this.config.previewHost = "https://" + options.account + ".adhese.org/";
+ 		this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
  		this.config.hostname = undefined;
  	} else if (options.host) {
  		this.config.host = options.host;
@@ -162,7 +162,9 @@ Adhese.prototype.addRequestString = function(value) {
 				var previewAd = new this.Ad(this, formatCode, options);
 				previewAd.adType = formatCode;
 				previewAd.ext = "js";
-				previewAd.swfSrc = that.config.previewHost + '/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot;
+                var previewJsonRequest = "";
+                if(!previewAd.options.write)previewJsonRequest = "json/";
+                previewAd.swfSrc = that.config.previewHost + "/creatives/preview/"+previewJsonRequest+"tag.do?id=" + previewformat.creative + "&slotId=" + previewformat.slot;
 				previewAd.width = previewformat.width;
 				previewAd.height = previewformat.height;
 				ad = previewAd;
@@ -262,7 +264,7 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 	for (var i = adArray.length - 1; i >= 0; i--) {
     var ad = adArray[i];
     var u = "";
-    if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){{
+    if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
         if(ad.options.position && ad.options.location){
           u = this.options.location + ad.options.position;
         }else if(ad.options.position){
@@ -292,7 +294,7 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
     }
 	uri += '?t=' + new Date().getTime();
 	return uri;
-}
+};
 
 /**
  * Returns the uri to execute the actual request for this ad
@@ -321,4 +323,45 @@ Adhese.prototype.getRequestUri = function(ad, options) {
  	if (network=="rubicon") {
  		this.rubiconUserSync(identification);
  	}
+ };
+/**
+ * This function can be used in a SafeFrame implementation to create a preview request and write out the result.
+ * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
+ */
+ Adhese.prototype.getSfPreview = function(sf_array){
+     var adhSelf = this;
+     for (var i = sf_array.length - 1; i >= 0; i--) {
+         var ad = sf_array[i];
+         if(ad.swfSrc && ad.swfSrc.indexOf('tag.do') > -1){
+             AdheseAjax.request({
+                 url: adhSelf.getRequestUri(ad, {'type':'json','preview':true}),
+                 method: 'get',
+                 json: true
+             })
+             .done(function(result) {
+                 adhSelf.safeframe.addPositions(result);
+                 for (var i = result.length - 1; i >= 0; i--) {
+                     adhSelf.safeframe.render(result[i].adType);
+                 };
+             });
+         }
+    }
+ };
+/**
+ * This function can be used in a SafeFrame implementation to create a request for several slots at once and write out the result. For each ad object passed, a sl part is added to the request. The target parameters are added once.
+ * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
+ */
+ Adhese.prototype.getSfAds = function(sf_array){
+     var adhSelf = this;
+     AdheseAjax.request({
+         url: adhSelf.getMultipleRequestUri(sf_array, {'type':'json'}),
+         method: 'get',
+         json: true
+     }).done(function(result){
+         adhSelf.safeframe.addPositions(result);
+         for(var i = result.length-1; i >= 0; i--){
+             adhSelf.safeframe.render(result[i].adType);
+         }
+     });
+     adhSelf.getSfPreview(sf_array);
  };
