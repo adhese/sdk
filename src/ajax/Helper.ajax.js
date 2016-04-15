@@ -8,6 +8,9 @@ var AdheseAjax = {
         ops.url = ops.url || '';
         ops.method = ops.method || 'get'
         ops.data = ops.data || {};
+        if(typeof ops.encodeData == "undefined"){
+            ops.encodeData = true;
+        }
         var getParams = function(data, url) {
             var arr = [], str;
             for(var name in data) {
@@ -52,9 +55,17 @@ var AdheseAjax = {
                         if(self.xhr.readyState == 4 && self.xhr.status == 200) {
                             var result = self.xhr.responseText;
                             if(ops.json === true && typeof JSON != 'undefined') {
-                                result = JSON.parse(result);
+                                if (result){
+                                    try{
+                                        result = JSON.parse(result);
+                                        self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
+                                    }catch(e){
+                                        self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: " + e]);
+                                    }
+                                }else {
+                                    self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: Response is empty string"]);
+                                }
                             }
-                            self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
                         } else if(self.xhr.readyState == 4) {
                             self.failCallback && self.failCallback.apply(self.host, [self.xhr]);
                         }
@@ -74,7 +85,17 @@ var AdheseAjax = {
                     this.setHeaders(ops.headers);
                 }
                 setTimeout(function() {
-                    ops.method == 'get' ? self.xhr.send() : self.xhr.send(getParams(ops.data));
+                    if(ops.method == 'get'){
+                        self.xhr.send()
+                    }else{
+                        var data;
+                        if (ops.encodeData) {
+                           data = getParams(ops.data);
+                       }else {
+                           data = ops.data;
+                       }
+                       self.xhr.send(data);
+                   }
                 }, 20);
                 return this;
             },
@@ -88,6 +109,10 @@ var AdheseAjax = {
             },
             always: function(callback) {
                 this.alwaysCallback = callback;
+                return this;
+            },
+            error: function(callback) {
+                this.errorCallback = callback;
                 return this;
             },
             setHeaders: function(headers) {

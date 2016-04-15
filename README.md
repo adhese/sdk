@@ -110,8 +110,8 @@ The request returns a JSON object with the fields described below. If no ad shou
 		    "adFormat": "wideskyscraper", // the assigned format name (determined by your Adhese account)
 			"adspaceId": "61721", // the Adhese booking ID
 			"adspaceKey": "0", // an optional creative Foreign Key
-			"adspaceEnd": "1483225199000", // the start date of this booking in ms since epoch
-		    "adspaceStart": "1433714400000", // the end date of this booking in ms since epoch
+			"adspaceEnd": "1483225199000", // the end date of this booking as UNIX timestamp
+		    "adspaceStart": "1433714400000", // the start date of this booking as UNIX timestamp
 		    "adType": "SKY", // format name as requested (determined by your Adhese account)
 			"advertiserId": "2326" // Adhese ID of the advertiser
 			"altText": "", // optional text to be shown as ALT attribute of the container
