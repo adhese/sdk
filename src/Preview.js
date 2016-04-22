@@ -12,13 +12,16 @@ Adhese.prototype.checkPreview = function () {
 	}
 	if (window.location.search.indexOf("adhesePreview")!=-1) {
 		this.helper.log("checking for preview");
-		var p = window.location.search.substring(1).split("&");
+        var b = window.location.search.substring(1);
+        var countAd = (b.match(/adhesePreviewCreativeId/g)).length;
+		var p = b.split("&");
 		var c = '';
 		var s = '';
 		var t = '';
 		var tf = '';
 		var w = 0;
 		var h = 0;
+		var tc = [];
 		for (var x=0; x<p.length; x++) {
 			if (p[x].split("=")[0]=="adhesePreviewCreativeId") {
 				c = unescape(p[x].split("=")[1]);
@@ -27,7 +30,8 @@ Adhese.prototype.checkPreview = function () {
 				s = p[x].split("=")[1];
 		    }
 			if (p[x].split("=")[0]=="adhesePreviewCreativeTemplate") {
-				t = p[x].split("=")[1];				
+				t = p[x].split("=")[1];
+				tc.push(t);				
 			}
 			if (p[x].split("=")[0]=="adhesePreviewTemplateFile") {
 				tf = p[x].split("=")[1];				
@@ -37,19 +41,24 @@ Adhese.prototype.checkPreview = function () {
 			}
 			if (p[x].split("=")[0]=="adhesePreviewHeight") {
 				h = p[x].split("=")[1];
+			}
+			if (p[x].split("=")[0] == "adhesePreviewCreativeKey") {
+				if(countAd > 1){
+					if (s != "" && tc[0] != "") {
+						for(i in tc){
+							var t = tc[i];
+							this.previewFormats[t]={slot:s,creative:c,templateFile:tf,width:w,height:h};
+						}
+					}
+					tc=[];
+				}
 			}			
 		}
-		if (s!='' && c!='') {
-			this.previewFormats[t] = {
-				slot: s,
-				creative: c,
-				templateFile: tf,
-				width: w,
-				height: h
-			};
-		}
-		console.log(this.previewFormats);
-
+ 		if(countAd == 1){
+			for(var y = 0; y<tc.length; y++){
+ 				this.previewFormats[tc[y]] = {slot:s,creative:c, templateFile:tf,width:w,height:h};
+ 			}
+ 		}
 		var c=[];
 		for(k in this.previewFormats){
 			c.push(k + "," + this.previewFormats[k].creative + "," + this.previewFormats[k].slot + "," + this.previewFormats[k].template + "," + this.previewFormats[k].width + "," + this.previewFormats[k].height);
