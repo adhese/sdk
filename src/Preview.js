@@ -31,10 +31,10 @@ Adhese.prototype.checkPreview = function () {
 		    }
 			if (p[x].split("=")[0]=="adhesePreviewCreativeTemplate") {
 				t = p[x].split("=")[1];
-				tc.push(t);				
+				tc.push(t);
 			}
 			if (p[x].split("=")[0]=="adhesePreviewTemplateFile") {
-				tf = p[x].split("=")[1];				
+				tf = p[x].split("=")[1];
 			}
 			if (p[x].split("=")[0]=="adhesePreviewWidth") {
 				w = p[x].split("=")[1];
@@ -52,7 +52,7 @@ Adhese.prototype.checkPreview = function () {
 					}
 					tc=[];
 				}
-			}			
+			}
 		}
  		if(countAd == 1){
 			for(var y = 0; y<tc.length; y++){
@@ -81,11 +81,11 @@ Adhese.prototype.checkPreview = function () {
 Adhese.prototype.showPreviewSign = function () {
 	var that = this;
 	var p = document.createElement('DIV');
-	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:18px; text-align:center; background-color: #C8EDCE; color: #9E9E9E; position:fixed; top:0px; /* left: auto; */ padding:4px; border-style:dashed; border:2px; border-color:#000000;z-index:9999;width: 80%;margin-left: 10%;height: 23px;top: 2px;"><b>Adhese preview active. Click to disable</div>';
+	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;"><b>Adhese preview active.</br> Click to disable</div>';
 	p.innerHTML = msg;
 	// once and afterload
 	document.body.appendChild(p);
-	that.helper.addEventListener("click", that.closePreviewSign.bind(that), p);
+	that.helper.addEvent("click", that.closePreviewSign.bind(that), p);
 };
 
 /**
