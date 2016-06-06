@@ -12,13 +12,16 @@ Adhese.prototype.checkPreview = function () {
 	}
 	if (window.location.search.indexOf("adhesePreview")!=-1) {
 		this.helper.log("checking for preview");
-		var p = window.location.search.substring(1).split("&");
+        var b = window.location.search.substring(1);
+        var countAd = (b.match(/adhesePreviewCreativeId/g)).length;
+		var p = b.split("&");
 		var c = '';
 		var s = '';
 		var t = '';
 		var tf = '';
 		var w = 0;
 		var h = 0;
+		var tc = [];
 		for (var x=0; x<p.length; x++) {
 			if (p[x].split("=")[0]=="adhesePreviewCreativeId") {
 				c = unescape(p[x].split("=")[1]);
@@ -27,29 +30,35 @@ Adhese.prototype.checkPreview = function () {
 				s = p[x].split("=")[1];
 		    }
 			if (p[x].split("=")[0]=="adhesePreviewCreativeTemplate") {
-				t = p[x].split("=")[1];				
+				t = p[x].split("=")[1];
+				tc.push(t);
 			}
 			if (p[x].split("=")[0]=="adhesePreviewTemplateFile") {
-				tf = p[x].split("=")[1];				
+				tf = p[x].split("=")[1];
 			}
 			if (p[x].split("=")[0]=="adhesePreviewWidth") {
 				w = p[x].split("=")[1];
 			}
 			if (p[x].split("=")[0]=="adhesePreviewHeight") {
 				h = p[x].split("=")[1];
-			}			
+			}
+			if (p[x].split("=")[0] == "adhesePreviewCreativeKey") {
+				if(countAd > 1){
+					if (s != "" && tc[0] != "") {
+						for(i in tc){
+							var t = tc[i];
+							this.previewFormats[t]={slot:s,creative:c,templateFile:tf,width:w,height:h};
+						}
+					}
+					tc=[];
+				}
+			}
 		}
-		if (s!='' && c!='') {
-			this.previewFormats[t] = {
-				slot: s,
-				creative: c,
-				templateFile: tf,
-				width: w,
-				height: h
-			};
-		}
-		console.log(this.previewFormats);
-
+ 		if(countAd == 1){
+			for(var y = 0; y<tc.length; y++){
+ 				this.previewFormats[tc[y]] = {slot:s,creative:c, templateFile:tf,width:w,height:h};
+ 			}
+ 		}
 		var c=[];
 		for(k in this.previewFormats){
 			c.push(k + "," + this.previewFormats[k].creative + "," + this.previewFormats[k].slot + "," + this.previewFormats[k].template + "," + this.previewFormats[k].width + "," + this.previewFormats[k].height);
@@ -72,11 +81,11 @@ Adhese.prototype.checkPreview = function () {
 Adhese.prototype.showPreviewSign = function () {
 	var that = this;
 	var p = document.createElement('DIV');
-	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:18px; text-align:center; background-color: #C8EDCE; color: #9E9E9E; position:fixed; top:0px; /* left: auto; */ padding:4px; border-style:dashed; border:2px; border-color:#000000;z-index:9999;width: 80%;margin-left: 10%;height: 23px;top: 2px;"><b>Adhese preview active. Click to disable</div>';
+	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;"><b>Adhese preview active.</br> Click to disable</div>';
 	p.innerHTML = msg;
 	// once and afterload
 	document.body.appendChild(p);
-	that.helper.addEventListener("click", that.closePreviewSign.bind(that), p);
+	that.helper.addEvent("click", that.closePreviewSign.bind(that), p);
 };
 
 /**
