@@ -17,7 +17,7 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 
 	// make config object for already known positions
 	this.adhesePositionConfig = new Object();
-	
+
 	if (this.ads && this.ads.length>0) {
 		for (index in this.ads) {
 			var ad = this.ads[index];
@@ -29,23 +29,23 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 			};
 		}
 	}
-	
-	// create a config										
+
+	// create a config
 	var conf = new $sf.host.Config({
 		auto: false,
 		debug: true,
 		// Should be absolute path to render file hosted on CDN
-		renderFile:	this.poolHost + "/sf/r.html",
+		renderFile:	this.poolHost + "sf/r.html",
 		positions: this.adhesePositionConfig
 	});
-	
+
 	return this;
 };
 
 /**
  * Function to add new SafeFrame positions to the context. For each passed Adehse.Ad object, a new SafeFrame Position and PositionConfig is created. The Adehse.Ad.adType identification will serve as the unique SafeFrame Position id. So if a Position with that id already exists it will be replaced by the current Position.
  * @param {Ad[]} inAds an array of Adhese.Ad objects
- * @return {void} 
+ * @return {void}
  */
 Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 	// populate the array of positions
@@ -57,7 +57,7 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 				ad.sfHtml = ad.body;
 			} else {
 				ad.sfSrc = ad.swfSrc;
-			}							
+			}
 		}
 		var posConf = new $sf.host.PosConfig({
 			"id": ad.adType,
@@ -76,9 +76,9 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 };
 
 /**
- * Function that displays the content of an added position. 
+ * Function that displays the content of an added position.
  * @param  {string} id the identficiation of the position, was based obn the Adhese.Ad.adType when created
- * @return {void}   
+ * @return {void}
  */
 Adhese.prototype.SafeFrame.prototype.render = function(id) {
 	for (var x in this.adhesePositions) {

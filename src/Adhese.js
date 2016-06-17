@@ -70,7 +70,7 @@
     	this.config.location = 'testlocation'
   	}
 
- 	if (options.safeframe || options.safeframe == false) {
+ 	if (typeof options.safeframe == 'undefined' || options.safeframe == false) {
  		this.config.safeframe = false;
  	} else {
  	 	this.config.safeframe = options.safeframe;
@@ -277,7 +277,7 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
         uri += "sl" + u  + "-" + ad.format + "/";
     	}
     }
-    
+
 
 	for (var a in this.request) {
 		var s = a;
@@ -310,7 +310,7 @@ Adhese.prototype.getRequestUri = function(ad, options) {
         var adArray = [ ad ];
         return this.getMultipleRequestUri(adArray, options);
     }
-    
+
 };
 
 /**
