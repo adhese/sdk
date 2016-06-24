@@ -25,7 +25,8 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 				"w": ad.width,
 				"h": ad.height,
 				"size" : ad.width+"x"+ad.height,
-				"dest":	ad.adType
+				"dest":	ad.adType,
+				"tgt": "_blank"
 			};
 		}
 	}
@@ -64,7 +65,8 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			"w": ad.width,
 			"h": ad.height,
 			"size" : ad.width+"x"+ad.height,
-			"dest":	ad.adType
+			"dest":	ad.adType,
+			"tgt": "_blank"
 		});
 		this.adhesePositions.push(new $sf.host.Position({
 			"id": ad.adType,
