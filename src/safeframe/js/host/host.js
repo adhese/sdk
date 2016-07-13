@@ -1560,25 +1560,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 	function _handle_msg_from_outside(evt)
 	{
-		var data		= evt && evt.data,
-			msg_win		= evt && evt.source,
-			params		= data && (data.indexOf(GUID) != -1) && ParamHash(data),
-			tgtID 		= params && params.id,
-			ifr			= tgtID && _elt(tgtID),
-			fr_win		= ifr && _ifr_view(ifr),
-			pipe  		= tgtID && msg_pipes[tgtID],
-			dataGUID	= params && params[GUID],
-			pipeGUID	= pipe && pipe[GUID],
-			cb			= pipe && pipe._xmsgcb,
-			ret			= FALSE;
-
-		if (pipeGUID && dataGUID && dataGUID == pipeGUID && msg_win && fr_win && fr_win == msg_win) {
-			try {
+		
+		try {
+			var data		= evt && evt.data,
+				msg_win		= evt && evt.source,
+				params		= data && (data.indexOf(GUID) != -1) && ParamHash(data),
+				tgtID 		= params && params.id,
+				ifr		= tgtID && _elt(tgtID),
+				fr_win		= ifr && _ifr_view(ifr),
+				pipe  		= tgtID && msg_pipes[tgtID],
+				dataGUID	= params && params[GUID],
+				pipeGUID	= pipe && pipe[GUID],
+				cb		= pipe && pipe._xmsgcb,
+				ret		= FALSE;
+				
+			if (pipeGUID && dataGUID && dataGUID == pipeGUID && msg_win && fr_win && fr_win == msg_win) {
 				ret = cb(params.msg);
-			} catch (e) {
-				ret = FALSE;
 			}
+		} catch (e) {
+			ret = FALSE;
 		}
+
 		if (ret) dom.evtCncl(evt);
 		return ret;
 	}
