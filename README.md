@@ -194,7 +194,7 @@ Three specific prefixes have been reserved for passing mobile device and locatio
 	xs - SHA1-encoded device id /xs24135b7dd7ff54aeb62d3c98e1878a2342b0c09b/
 
 ###Reserved targeting parameters for RTB
-Using the Adhese Gateway, publishers can send in information on the context and user to be shared with your RTB partner. Two special prefixes have been reserved to pass this data. They behave different than the other parameters as they contain key/value pairs to be passed to the RTB platform. The key/value pairs are separayed by semicolons.(eg. /xi{key};{value} ).
+Using the Adhese Gateway, publishers can send in information on the context and user to be shared with your RTB partner. Two special prefixes have been reserved to pass this data. They behave different than the other parameters as they contain key/value pairs to be passed to the RTB platform. The key/value pairs are separated by semicolons.(eg. /xi{key};{value} ).
 
 	xu - contains user related parameters, expects pairs of keys and values to be passed (eg. .../xuage;35;gender;female/...)
 	xi - contains onventory (context) related parameters (eg. .../xitopic;politics;language;en/...)
