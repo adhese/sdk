@@ -157,7 +157,23 @@ The request returns a JSON object with the fields described below. If no ad shou
 			"width3rd": "0", // width in pixels of 3rd file
 		    "width4th": "0", // width in pixels of 4th file
 		    "width5th": "0", // width in pixels of 5th file
-		    "width6th": "0"  // width in pixels of 6th file
+		    "width6th": "0"  // width in pixels of 6th file,
+		    "additionalCreatives": [
+		    	{
+		    		"adType": "SKY",
+        			"adFormat": "wideskyscraper",
+        			"width": "160",
+        			"height": "600",
+        			...
+           		},
+           		{
+		    		"adType": "SKY",
+        			"adFormat": "phone_skyscraper",
+        			"width": "60",
+        			"height": "200",
+        			...
+           		}
+		    ]
 		}
 
 ###Registering target parameters
@@ -170,9 +186,28 @@ Please contact our support departement for more details.
 		// will add an age target with prefix 'ag' and value '40' to each request
 		adhese.registerRequestParameter('ag', 40);
 
+###Reserved targeting parameters for mobile apps
+Three specific prefixes have been reserved for passing mobile device and location info.
+
+	xb - bundle id - for Apple IOS devices pass iTunes ID. For Android devices pass package name (e.g. /xbcom.foo.mygame/).
+	xc - coordinates - latitude;longitude - two floats separated by semicolon [-90..90];[-180..180] (e.g. /xc90;90/) 
+	xs - SHA1-encoded device id /xs24135b7dd7ff54aeb62d3c98e1878a2342b0c09b/
+
+###Reserved targeting parameters for RTB
+Using the Adhese Gateway, publishers can send in information on the context and user to be shared with your RTB partner. Two special prefixes have been reserved to pass this data. They behave different than the other parameters as they contain key/value pairs to be passed to the RTB platform. The key/value pairs are separayed by semicolons.(eg. /xi{key};{value} ).
+
+	xu - contains user related parameters, expects pairs of keys and values to be passed (eg. .../xuage;35;gender;female/...)
+	xi - contains onventory (context) related parameters (eg. .../xitopic;politics;language;en/...)
+
+
 ###Synching user id with RTB networks
 Through a generic synching method, Adhese allows cookie synching with an external network. The current implementation supports Rubicon's User Sync service.
 Please contact our support departement for more details.
+
+###Using the additional creatives array
+One of the attributes of an ad response is an array of Ad objects called "additionalCreatives". These additional creatives can be uploaded through the Adhese UI, and contain the same adType value, as they are a response to the same ad request. But each of them has a different adFormat value. The string contained in adFormat is configured in your Adhese account.
+The main creative is also repeated in the additionalCreatives array, to allow a simple loop of the array, even if only one creative is present.
+Using the additional creatives you can easily support optimised creatives for responsive websites and apps. The number of additional creatives can be different, depending on the uploaded variations for each campaign, but through the use of the adFormat values, an app can guarantee the best visual for each platform.
 
 #Adhese VAST SDK
 In the vast directory you can find the sdk for implementing VAST based ads in HTML/JavaScript players.
