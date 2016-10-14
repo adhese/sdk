@@ -140,7 +140,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		msghostfb				= NULL,
 		flash_ver 				= NULL,
 		config					= NULL;
-		
+
 	var flashActiveXVersions = [
 		"ShockwaveFlash.ShockwaveFlash.11",
 		"ShockwaveFlash.ShockwaveFlash.8",
@@ -434,13 +434,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 				var fVer = _get_flash_version();
 				src = src.replace(/\${flash_ver}/gi, fVer);
 			}
-			
-			
+
+
 		}
-		
+
 		return _cstr(["<scr","ipt type='text/javascript', src='", src, "'></scr", "ipt>"]);
 	}
-	
+
 	/**
 	* Get the falsh version number
 	*/
@@ -448,7 +448,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		if(flash_ver !== NULL){
 			return flash_ver;
 		}
-		
+
 		if(navigator.plugins && navigator.plugins.length>0){
 			var mimeTypes = navigator.mimeTypes;
             if(mimeTypes && mimeTypes[FLASH_MIME] && mimeTypes[FLASH_MIME].enabledPlugin && mimeTypes[FLASH_MIME].enabledPlugin.description){
@@ -481,9 +481,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		else{
 			flash_ver = 0;
 		}
-		
+
 		return flash_ver;
-		
+
 		var getActiveXVersion = function(activeXObj){
         var version = -1;
         try{
@@ -501,7 +501,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
 		if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
-		{ 
+		{
 			document.cookie="testcookie";
 			cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
 			if(navigator){
@@ -1562,7 +1562,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	{
 		var data		= evt && evt.data,
 			msg_win		= evt && evt.source,
-			params		= data && (data.indexOf(GUID) != -1) && ParamHash(data),
+			params		= data && (typeof data == 'string' && data.indexOf(GUID) != -1) && ParamHash(data),
 			tgtID 		= params && params.id,
 			ifr			= tgtID && _elt(tgtID),
 			fr_win		= ifr && _ifr_view(ifr),
@@ -1820,11 +1820,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 	function _fire_pub_callback(cb_name /* args to call back */)
 	{
-		var cb_args = [], args = arguments, len = args[LEN], 
-			idx = 0, f, 
-			ret = FALSE, 
+		var cb_args = [], args = arguments, len = args[LEN],
+			idx = 0, f,
+			ret = FALSE,
 			e, a;
-			
+
 		if (config) {
 			f	= config[cb_name];
 			if (f) {
@@ -1885,7 +1885,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     		geom_update_timer = 0;
     	}
     }
-	
+
 	/**
 	 * Clear the timer that fires every so often to update the geometry in side
 	 * of SafeFrames
@@ -1918,7 +1918,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     	_clear_focus_update_timer();
 		focus_update_timer = setTimeout(function() { _update_focus(in_focus); }, 2);
     }
-	
+
 	/**
 	 * Set up the timer function that updates each SafeFrame with up to date geometric information
 	 *
@@ -2044,7 +2044,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	    	}, GEOM_UPDATE_INTRVAL);
 		}
 	}
-	
+
 	/**
      * Update all SafeFrames with updated focus information
      *
@@ -2078,7 +2078,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     	_clear_focus_update_timer();
     }
 
-	
+
 	/**
 	* Handle the window focus event, which notifies ads of the change
 	*
@@ -2151,7 +2151,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     		dom.detach(win, "unload", _handle_unload);
 			dom.detach(win, "focus", _handle_win_focus);
 			dom.detach(win, "blur", _handle_win_blur);
-			
+
     		for (prop in scroll_parents_attached)
     		{
     			scr_handle = scroll_parents_attached[prop];
@@ -2237,7 +2237,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 							ret = FALSE;
 						}
 					break;
-						
+
 				}
 			}
 		}
@@ -2604,8 +2604,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 		ifr = ifrSt = par = parSt = params = msgObj = NULL;
     }
-	
-	
+
+
     /**
      * Records a reported error message to $sf.info.errors and fires any listeners
      *
@@ -2617,7 +2617,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *
      *
     */
-	
+
 	function _record_error(msgObj)
 	{
 		var posID		= (msgObj && msgObj.pos),
@@ -2629,14 +2629,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			ifrSt		= (ifr && ifr[ST]),
 			parSt		= (par && par[ST]),
 			scr_handle;
-			
+
 		if(sf && sf.info && sf.info.errs){
 			sf.info.errs.push(msgObj);
 		}
-	
+
 		_fire_pub_callback(POS_MSG, posID, ERROR_COMMAND, msgObj);
 	}
-	
+
 	/**
 	 * Returns the current document cookies as a hash
 	 * @name $sf.lib._cookieHash
@@ -2656,11 +2656,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			c = cooks[i].split("=");
 			cookies[c[0]] = c[1];
 		}
-		
+
 		return cookies;
 	}
 
-	
+
 	/**
      * Read a host domain cookie
      *
@@ -2682,21 +2682,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			id			= (params_conf && params_conf.dest),
 			ifr			= (id && _elt(id)),
 			key, cookies;
-			
-		
+
+
 		var command = "read-cookie";
-		
+
 		var canRead = params_conf.supports && params_conf.supports[command] && params_conf.supports[command] != "0";
-		
+
 		if(!canRead){
 			return;
 		}
-		
+
 		if (!posID || !params || !ifr) return;
 
 		key = msgObj.cookie;
 		if(!key) return;
-		
+
 		cookies = _cookieHash();
 
 		_fire_pub_callback(POS_MSG, command, posID, 0, 0);
@@ -2708,7 +2708,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		ifr = params = msgObj = NULL;
     }
 
-	
+
 	/**
      * Write a host domain cookie
      *
@@ -2730,22 +2730,22 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			id			= (params_conf && params_conf.dest),
 			ifr			= (id && _elt(id)),
 			key, newValue, cookies, newCookies;
-			
-		
+
+
 		var command = "write-cookie";
-		
+
 		var canRead = params_conf.supports && params_conf.supports[command] && params_conf.supports[command] != "0";
-		
+
 		if(!canRead){
 			return;
 		}
-		
+
 		if (!posID || !params || !ifr) return;
 
 		key = msgObj.cookie;
 		if(!key) return;
 		newValue = escape(msgObj.value);
-		
+
 		var exdate=new Date();
 		exdate.setDate(exdate.getDate() + 1);
 		var c_value=newValue + "; expires="+exdate.toUTCString();
@@ -2762,7 +2762,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		ifr = params = msgObj = NULL;
     }
 
-	
+
    /**
 	 * Remove / destroy one or more SafeFrames from the publisher page
 	 *
@@ -3073,6 +3073,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		}
 	}
 
-	
-	
+
+
 })(window);
