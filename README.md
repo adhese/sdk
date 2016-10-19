@@ -9,7 +9,7 @@ It allows a uniform way to identify request parameters and include advertising f
 ###Build from source
 The Makefile uses UglifyJS2 to compress the JavaScript files. For more information: https://github.com/mishoo/UglifyJS2
 
-Check out this repository and type 'make' or 'make display' in the root of the SDK directory.
+Check out this repository and type 'make' or 'make debug' in the root of the SDK directory.
 
 The default make target will include all files. The 'novast' make target includes all but VAST support, as video advertising is not always needed in a display advertising context.
 
