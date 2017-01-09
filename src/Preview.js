@@ -85,7 +85,7 @@ Adhese.prototype.showPreviewSign = function () {
 	p.innerHTML = msg;
 	// once and afterload
 	document.body.appendChild(p);
-	that.helper.addEvent("click", that.closePreviewSign.bind(that), p);
+	that.helper.addEvent("click", that.closePreviewSign.bind(that), p, p);
 };
 
 /**
