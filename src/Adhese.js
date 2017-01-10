@@ -54,8 +54,6 @@
 		this.config.hostname = adHost.hostname;
  	}
 
-
-
 	if (options.previewHost) {
 		this.config.previewHost = options.previewHost;
 	}
@@ -93,6 +91,8 @@
       	this.registerRequestParameter('dt', this.detection.device());
       	this.registerRequestParameter('br', this.detection.device());
   	}
+    this.config.previewExclusive = false;
+    if(options.previewExclusive) this.config.previewExclusive = options.previewExclusive;
 	this.checkPreview();
     if(this.checkVisible){
         addEventListener("load", this.checkVisible.bind(this), false);
@@ -176,7 +176,9 @@ Adhese.prototype.addRequestString = function(value) {
 
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
- 		this.write(ad);
+        if(this.config.previewExclusive == false || (this.config.previewExclusive == true && ad.swfSrc)){
+            this.write(ad);
+        }     
  	}
  	return ad;
  };
