@@ -192,7 +192,7 @@ Adhese.prototype.addRequestString = function(value) {
  Adhese.prototype.write = function(ad) {
  	if (this.config.safeframe) {
  		var adUrl = "";
- 		if (this.previewActive) {
+ 		if (this.previewActive && ad.swfSrc) {
  			adUrl = ad.swfSrc;
  		} else {
  			adUrl = this.getRequestUri(ad, {'type':'json'});
@@ -214,7 +214,7 @@ Adhese.prototype.addRequestString = function(value) {
  	} else {
 
  		var adUrl = "";
- 		if (this.previewActive) {
+ 		if (this.previewActive && ad.swfSrc) {
  			adUrl = ad.swfSrc;
  		} else {
  			adUrl = this.getRequestUri(ad, {'type':'js'});
