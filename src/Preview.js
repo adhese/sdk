@@ -22,6 +22,12 @@ Adhese.prototype.checkPreview = function () {
 		var w = 0;
 		var h = 0;
 		var tc = [];
+        if (b.indexOf("adhesePreviewExclusive=true") != -1) {
+            this.config.previewExclusive = true;
+        }
+        if (b.indexOf("adhesePreviewExclusive=false") != -1) {
+            this.config.previewExclusive = false;
+        }
 		for (var x=0; x<p.length; x++) {
 			if (p[x].split("=")[0]=="adhesePreviewCreativeId") {
 				c = unescape(p[x].split("=")[1]);
