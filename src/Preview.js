@@ -127,7 +127,6 @@ Adhese.prototype.showInfoSign = function() {
 	var p = document.createElement("DIV");
 	var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.3; border:2px blue solid">';
 	msg += '<b>Adhese info (Click to disable)</br>';
-	console.log(adhese);
 	msg += '</br>Location code:</br>';
 	msg += adhese.config.location + '</br>';
 	msg += '</br>Format code(s):</br>';
@@ -140,7 +139,6 @@ Adhese.prototype.showInfoSign = function() {
 	}
 	msg += '</div>';
 	p.innerHTML = msg;
-	console.log(document.body);
 	document.body.appendChild(p);
 	that.helper.addEvent("click", that.closeInfoSign.bind(that), p, p);
 };
@@ -149,7 +147,6 @@ Adhese.prototype.showInfoSign = function() {
  * The closeInfoSign function hides the info box for the user.
  */
 Adhese.prototype.closeInfoSign = function() {
-	console.log('close info');
 	var infoMsg = document.getElementById('adhInfoMessage');
 	infoMsg.style.display = 'none';
 
