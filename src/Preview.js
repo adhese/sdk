@@ -125,19 +125,19 @@ Adhese.prototype.checkAdheseInfo = function() {
 Adhese.prototype.showInfoSign = function() {
 	var that = this;
 	var p = document.createElement("DIV");
-	var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.3; border:2px blue solid">';
-	msg += '<b>Adhese info (Click to disable)</br>';
-	msg += '</br>Location code:</br>';
-	msg += adhese.config.location + '</br>';
-	msg += '</br>Format code(s):</br>';
-	for (x in adhese.ads) {
-		msg += adhese.ads[x][0] + '</br>';
-	}
-	msg += '</br>Targeting:</br>';
-	for (x in adhese.request) {
-		if (x != 'ur' && x != 'rn' && x != 're') msg += x + ': ' + adhese.request[x] + '</br>';
-	}
-	msg += '</div>';
+	var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: lightgrey; color: black; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.9; border:2px #9e9e9e solid">';
+    msg += '<b>Adhese Request Info</b></br>- Click to disable -</br>';
+    msg += '</br><b>Location code:</b></br>';
+    msg += adhese.config.location + '</br>';
+    msg += '</br><b>Format code(s):</b></br>';
+    for(x in adhese.ads){
+        msg +=adhese.ads[x][0]+'</br>';
+    }
+    msg += '</br><b>Targeting:</b></br>';
+    for(x in adhese.request){
+        if(x != 'ur' && x != 'rn' && x!= 're' && x!= 'pr' && x!='fp')msg += '<b>'+x+': </b>' + adhese.request[x] + '</br>';
+    }
+    msg += '</div>';
 	p.innerHTML = msg;
 	document.body.appendChild(p);
 	that.helper.addEvent("click", that.closeInfoSign.bind(that), p, p);
