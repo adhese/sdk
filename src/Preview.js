@@ -105,3 +105,78 @@ Adhese.prototype.closePreviewSign = function () {
 		location.reload();
 	}
 };
+
+/**
+ * The showPreviewSign function displays a message to inform the user that the live preview is active.
+ */
+Adhese.prototype.showPreviewSign = function() {
+	var that = this;
+	var p = document.createElement('DIV');
+	var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;"><b>Adhese preview active.</br> Click to disable</div>';
+	p.innerHTML = msg;
+	// once and afterload
+	document.body.appendChild(p);
+	that.helper.addEvent("click", that.closePreviewSign.bind(that), p, p);
+};
+
+/**
+ * The closePreviewSign function exits the live preview mode and reloads the page.
+ */
+Adhese.prototype.closePreviewSign = function() {
+	this.helper.eraseCookie("adhese_preview");
+	if (location.search.indexOf("adhesePreviewCreativeId") != -1) {
+		location.href = location.href.split("?")[0];
+	} else {
+		location.reload();
+	}
+};
+
+/**
+ * Function to check for the 'adheseInfo' parameter in the query string of the page location.
+ * If present, we show a box with request information once the page is loaded.
+ */
+Adhese.prototype.checkAdheseInfo = function() {
+	var that = this;
+	if (window.location.search.indexOf("adheseInfo=true") == -1) {
+		return false;
+	} else {
+		addEventListener("load", that.showInfoSign.bind(that));
+	}
+};
+
+/**
+ * The showInfoSign function displays a message which contains information about the request such as location, requested formats and targeting info.
+ */
+Adhese.prototype.showInfoSign = function() {
+	var that = this;
+	var p = document.createElement("DIV");
+	var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.3; border:2px blue solid">';
+	msg += '<b>Adhese info (Click to disable)</br>';
+	console.log(adhese);
+	msg += '</br>Location code:</br>';
+	msg += adhese.config.location + '</br>';
+	msg += '</br>Format code(s):</br>';
+	for (x in adhese.ads) {
+		msg += adhese.ads[x][0] + '</br>';
+	}
+	msg += '</br>Targeting:</br>';
+	for (x in adhese.request) {
+		if (x != 'ur' && x != 'rn' && x != 're') msg += x + ': ' + adhese.request[x] + '</br>';
+	}
+	msg += '</div>';
+	p.innerHTML = msg;
+	console.log(document.body);
+	document.body.appendChild(p);
+	that.helper.addEvent("click", that.closeInfoSign.bind(that), p, p);
+};
+
+/**
+ * The closeInfoSign function hides the info box for the user.
+ */
+Adhese.prototype.closeInfoSign = function() {
+	console.log('close info');
+	var infoMsg = document.getElementById('adhInfoMessage');
+	infoMsg.style.display = 'none';
+
+};
+

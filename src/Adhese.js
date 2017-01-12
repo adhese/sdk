@@ -94,6 +94,7 @@
     this.config.previewExclusive = false;
     if(options.previewExclusive) this.config.previewExclusive = options.previewExclusive;
 	this.checkPreview();
+	this.checkAdheseInfo();
     if(this.checkVisible){
         addEventListener("load", this.checkVisible.bind(this), false);
         addEventListener("scroll", this.checkVisible.bind(this), false);
