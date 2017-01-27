@@ -41,7 +41,7 @@ Adhese.prototype.rubiconMultiSync = function(rp_account) {
 	script.setAttribute("data-region","eu");
 	script.setAttribute("data-country","be");
 	script.setAttribute("data-endpoint","eu");
-	script.src = "http://assets.rubiconproject.com/utils/xapi/multi-sync.js";	
+	script.src = "https://secure-assets.rubiconproject.com/utils/xapi/multi-sync.js";	
 	document.body.appendChild(script);
 }
 
