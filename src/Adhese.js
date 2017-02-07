@@ -154,7 +154,9 @@ Adhese.prototype.addRequestString = function(value) {
  	this.helper.log(formatCode, JSON.stringify(options));
 
   	var ad = new this.Ad(this, formatCode, options);
- 	if (this.previewActive) {
+	ad.options.slotName = this.getSlotName(ad);
+ 	
+	if (this.previewActive) {
  		var pf = this.previewFormats
 		for (var key in pf) {
 			if (key  == formatCode) {
@@ -169,7 +171,6 @@ Adhese.prototype.addRequestString = function(value) {
 				previewAd.width = previewformat.width;
 				previewAd.height = previewformat.height;
 				ad = previewAd;
-				// document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
                 addEventListener("load", that.showPreviewSign.bind(that))
 			}
 		}
@@ -265,22 +266,11 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 
 	 // add an sl clause for each Ad in adArray
 	for (var i = adArray.length - 1; i >= 0; i--) {
-    var ad = adArray[i];
-    var u = "";
-    if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
-        if(ad.options.position && ad.options.location){
-          u = this.options.location + ad.options.position;
-        }else if(ad.options.position){
-          u = this.config.location + ad.options.position;
-        }else if (ad.options.location) {
-    			u = ad.options.location;
-        } else {
-        	u = this.config.location;
-        }
-        uri += "sl" + u  + "-" + ad.format + "/";
-    	}
+		var ad = adArray[i];
+		if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
+			uri += "sl" + this.getSlotName(ad) + "/";
+		}
     }
-
 
 	for (var a in this.request) {
 		var s = a;
@@ -298,6 +288,25 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 	uri += '?t=' + new Date().getTime();
 	return uri;
 };
+
+/**
+ * Returns the slot name for this ad
+ *
+ * @param {Ad} ad the Ad instance whose uri is needed
+ * @return {string}
+ */
+Adhese.prototype.getSlotName = function(ad) {
+	if(ad.options.position && ad.options.location) {
+		u = this.options.location + ad.options.position;
+	} else if(ad.options.position) {
+		u = this.config.location + ad.options.position;
+	} else if (ad.options.location) {
+		u = ad.options.location;
+	} else {
+		u = this.config.location;
+	}
+	return u  + "-" + ad.format;	
+}
 
 /**
  * Returns the uri to execute the actual request for this ad
