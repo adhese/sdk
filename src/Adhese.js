@@ -27,6 +27,8 @@
  * @param {string} options.poolHost (optional) the host of your CDN
  * @param {string} options.location  can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
  * @param {boolean} options.safeframe true/false, for switching on the use of the IAB SafeFrame standard, the default value is true
+ * @param {boolean} options.referrer true/false, for adding the document.referrer to the req as a base64 string, the default value is true
+ * @param {boolean} options.url true/false, for adding the window.location.href to the req as a base64 string, the default value is true
  * @return {void}
  */
  Adhese.prototype.init = function(options) {
@@ -80,9 +82,12 @@
       	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
   	}
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
-	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
-	this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
-
+	if (typeof options.referrer == 'undefined' || options.referrer == true) {
+		this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
+	}
+	if (typeof options.url == 'undefined' || options.url == true) {
+		this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
+	}
  	this.userAgent = this.helper.getUserAgent();
 	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
