@@ -27,6 +27,8 @@
  * @param {string} options.poolHost (optional) the host of your CDN
  * @param {string} options.location  can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
  * @param {boolean} options.safeframe true/false, for switching on the use of the IAB SafeFrame standard, the default value is true
+ * @param {boolean} options.referrer true/false, for adding the document.referrer to the req as a base64 string, the default value is true
+ * @param {boolean} options.url true/false, for adding the window.location.href to the req as a base64 string, the default value is true
  * @return {void}
  */
  Adhese.prototype.init = function(options) {
@@ -54,8 +56,6 @@
 		this.config.hostname = adHost.hostname;
  	}
 
-
-
 	if (options.previewHost) {
 		this.config.previewHost = options.previewHost;
 	}
@@ -70,7 +70,7 @@
     	this.config.location = 'testlocation'
   	}
 
- 	if (options.safeframe || options.safeframe == false) {
+ 	if (typeof options.safeframe == 'undefined' || options.safeframe == false) {
  		this.config.safeframe = false;
  	} else {
  	 	this.config.safeframe = options.safeframe;
@@ -82,9 +82,12 @@
       	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
   	}
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
-	this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
-	this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
-
+	if (typeof options.referrer == 'undefined' || options.referrer == true) {
+		this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
+	}
+	if (typeof options.url == 'undefined' || options.url == true) {
+		this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
+	}
  	this.userAgent = this.helper.getUserAgent();
 	for (var p in this.userAgent) {
  		this.registerRequestParameter('br', this.userAgent[p]);
@@ -93,7 +96,10 @@
       	this.registerRequestParameter('dt', this.detection.device());
       	this.registerRequestParameter('br', this.detection.device());
   	}
+    this.config.previewExclusive = false;
+    if(options.previewExclusive) this.config.previewExclusive = options.previewExclusive;
 	this.checkPreview();
+	this.checkAdheseInfo();
     if(this.checkVisible){
         addEventListener("load", this.checkVisible.bind(this), false);
         addEventListener("scroll", this.checkVisible.bind(this), false);
@@ -153,7 +159,9 @@ Adhese.prototype.addRequestString = function(value) {
  	this.helper.log(formatCode, JSON.stringify(options));
 
   	var ad = new this.Ad(this, formatCode, options);
- 	if (this.previewActive) {
+	ad.options.slotName = this.getSlotName(ad);
+ 	
+	if (this.previewActive) {
  		var pf = this.previewFormats
 		for (var key in pf) {
 			if (key  == formatCode) {
@@ -168,7 +176,6 @@ Adhese.prototype.addRequestString = function(value) {
 				previewAd.width = previewformat.width;
 				previewAd.height = previewformat.height;
 				ad = previewAd;
-				// document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+that.config.previewHost+'/creatives/preview/tag.do?id=' + previewformat.creative + '&slotId=' + previewformat.slot + '"><\/scr' + 'ipt>');
                 addEventListener("load", that.showPreviewSign.bind(that))
 			}
 		}
@@ -176,7 +183,9 @@ Adhese.prototype.addRequestString = function(value) {
 
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
- 		this.write(ad);
+        if(this.config.previewExclusive == false || (this.config.previewExclusive == true && ad.swfSrc)){
+            this.write(ad);
+        }     
  	}
  	return ad;
  };
@@ -190,7 +199,7 @@ Adhese.prototype.addRequestString = function(value) {
  Adhese.prototype.write = function(ad) {
  	if (this.config.safeframe) {
  		var adUrl = "";
- 		if (this.previewActive) {
+ 		if (this.previewActive && ad.swfSrc) {
  			adUrl = ad.swfSrc;
  		} else {
  			adUrl = this.getRequestUri(ad, {'type':'json'});
@@ -212,7 +221,7 @@ Adhese.prototype.addRequestString = function(value) {
  	} else {
 
  		var adUrl = "";
- 		if (this.previewActive) {
+ 		if (this.previewActive && ad.swfSrc) {
  			adUrl = ad.swfSrc;
  		} else {
  			adUrl = this.getRequestUri(ad, {'type':'js'});
@@ -262,22 +271,11 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 
 	 // add an sl clause for each Ad in adArray
 	for (var i = adArray.length - 1; i >= 0; i--) {
-    var ad = adArray[i];
-    var u = "";
-    if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
-        if(ad.options.position && ad.options.location){
-          u = this.options.location + ad.options.position;
-        }else if(ad.options.position){
-          u = this.config.location + ad.options.position;
-        }else if (ad.options.location) {
-    			u = ad.options.location;
-        } else {
-        	u = this.config.location;
-        }
-        uri += "sl" + u  + "-" + ad.format + "/";
-    	}
+		var ad = adArray[i];
+		if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
+			uri += "sl" + this.getSlotName(ad) + "/";
+		}
     }
-    
 
 	for (var a in this.request) {
 		var s = a;
@@ -297,6 +295,25 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 };
 
 /**
+ * Returns the slot name for this ad
+ *
+ * @param {Ad} ad the Ad instance whose uri is needed
+ * @return {string}
+ */
+Adhese.prototype.getSlotName = function(ad) {
+	if(ad.options.position && ad.options.location) {
+		u = this.options.location + ad.options.position;
+	} else if(ad.options.position) {
+		u = this.config.location + ad.options.position;
+	} else if (ad.options.location) {
+		u = ad.options.location;
+	} else {
+		u = this.config.location;
+	}
+	return u  + "-" + ad.format;	
+}
+
+/**
  * Returns the uri to execute the actual request for this ad
  *
  * @param {Ad} ad the Ad instance whose uri is needed
@@ -310,7 +327,7 @@ Adhese.prototype.getRequestUri = function(ad, options) {
         var adArray = [ ad ];
         return this.getMultipleRequestUri(adArray, options);
     }
-    
+
 };
 
 /**
