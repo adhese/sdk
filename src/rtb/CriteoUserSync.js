@@ -22,7 +22,7 @@ Adhese.prototype.criteoUserSync = function(options){
         }
         crtg_content=crtg_getCookie(crtg_cookiename);
         var crtg_rnd=Math.floor(Math.random()*99999999999);
-        var crtg_url='http://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);
+        var crtg_url='https://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);
         crtg_url+='&cookieName='+escape(crtg_cookiename);
         crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=crtg_content';
         var crtg_script=document.createElement('script');

@@ -5,7 +5,7 @@ nocompression:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js vast/adhese-vast.js -b -v -o dist/adhese.js
 
 novastnoajax:
-	uglifyjs src/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js -m -v -c -o dist/adhese.novastajax.min.js
+	uglifyjs src/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js src/rtb/*.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js -m -v -c -o dist/adhese.novastajax.min.js
 
 novast:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js src/rtb/*.js -m -v -c -o dist/adhese.novast.min.js

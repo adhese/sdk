@@ -305,29 +305,32 @@ Adhese.prototype.Helper.prototype.debugTable = function() {
  * @param  {string} The string to be converted to a hexadecimal value
  * @return {number} A hexadecimal number generated from the input string
  */
-Adhese.prototype.Helper.prototype.stringToHex = function(str) {
-	var hex, i;
-	var result = "";
-	for (i=0; i<str.length; i++) {
-	  hex = str.charCodeAt(i).toString(16);
-	  result += ("000"+hex).slice(-4);
-	}
-	return result;
+Adhese.prototype.Helper.prototype.stringToHex = function(str, hex) {
+    try{
+        hex = unescape(encodeURIComponent(str)).split('').map(
+            function(v){
+                return v.charCodeAt(0).toString(16);
+            }).join('');
+  }
+  catch(e){
+    hex = str
+    console.log('invalid text input: ', e, str)
+  }
+  return hex
 }
-
 /**
  * Internal method for generating a string representation of a hexadecimal
  * @param  {number} A hexadecimal number generated from the input string
  * @return {string} The string to be converted to a hexadecimal value
  */
- Adhese.prototype.Helper.prototype.hexToString = function(hex){
-    var j;
-    var hexes = hex.match(/.{1,2}/g) || [];
-    var back = "";
-    for(j = 0; j<hexes.length; j++) {
-        back += String.fromCharCode(parseInt("00"+hexes[j], 16));
-    }
-    return back;
+ Adhese.prototype.Helper.prototype.hexToString = function(hex, str){
+	try{
+    	str = decodeURIComponent(hex.replace(/(..)/g,'%$1'))
+	} catch(e){
+    str = hex
+    console.log('invalid hex input: ', e, hex)
+  }
+  return str
 }
 
 
