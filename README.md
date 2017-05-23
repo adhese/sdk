@@ -1,5 +1,4 @@
 #Adhese SDK
-
 This repository contains all code for implementing Adhese ad serving in web pages, applications, video/radio players, ...
 
 ###Introduction
