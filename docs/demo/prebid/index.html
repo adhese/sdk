@@ -161,7 +161,6 @@ function getLocation() {
                     iframe.style.width = bidResponses[code].bids[winningIndex].width;
                     iframe.style.height = bidResponses[code].bids[winningIndex].height;
                     pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
-                    [winningIndex].adId);
                     if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
                 }
             }
