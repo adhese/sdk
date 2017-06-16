@@ -157,7 +157,11 @@ function getLocation() {
                             winningIndex = y;
                         }
                     }
-                    pbjs.renderAd(document.getElementById(code).contentWindow.document, bidResponses[code].bids[winningIndex].adId);
+					var iframe = document.getElementById(code);
+                    iframe.style.width = bidResponses[code].bids[winningIndex].width;
+                    iframe.style.height = bidResponses[code].bids[winningIndex].height;
+                    pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
+                    [winningIndex].adId);
                     if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
                 }
             }
