@@ -259,7 +259,7 @@ Adhese.prototype.getLocation = function() {
     var l = window.location.href != "about:blank" ? window.location : parent.window.location;
     var p = l.hostname.replace(new RegExp("www."), "") || "unknown";
     var s = l.pathname.replace(/^\/([^\/]*).*$/, "$1");
-    if (l.hostname.indexOf("pebblemedia.be") != -1 || l.hostname == "") {
+    if (l.hostname.indexOf("pebblemedia.be") != -1 || l.hostname == "" || l.hostname == "adhese.github.io") {
         s = "";
         p = "sporza_homepage";
     }
