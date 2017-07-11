@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Adhese Demo</title>
+    <script>
+    var PREBID_TIMEOUT = 50;
+    function getLocation() {
+        return "_sdk_example_";
+    }
+    </script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="tag.js" async></script>
+    <script>
+    
+        var pbjs = pbjs || {};
+        pbjs.que = pbjs.que || [];
+        var startTime = Date.now();
+        pbjs.que.push(function() {
+            var adUnits = [{
+                code: "MiddleLarge", 
+                sizes: [[300, 250],[300,600]],
+                bids: [{
+                        bidder: "adhese",
+                        params: {
+                            account: "pebblemedia",
+                            location: adhese.getLocation(),
+                            formats: [ "MiddleLarge" ]
+                        }                    
+                    },{
+                        bidder: 'improvedigital',
+                        params: {
+                        placementId: '1040936'
+                        }
+                    }]
+            },{
+                code: "TopLarge", 
+                sizes: [[728, 90],[920,250],[840,150]],
+                bids: [{
+                        bidder: "adhese",
+                        params: {
+                            account: "pebblemedia",
+                            location: adhese.getLocation(),
+                            formats: [ "TopLarge" ]
+                        }                    
+                    },{
+                        bidder: 'improvedigital',
+                        params: {
+                        placementId: '1040937'                       
+                        }
+                    }]
+            }];
+            pbjs.addAdUnits(adUnits);
+            pbjs.requestBids({
+                // This callback gets triggered when all bids for this
+                // ad unit come back. 
+                bidsBackHandler: function(bidResponses) {
+
+                    var activeCodes = ["MiddleLarge","TopLarge"];
+
+                    for (var x=0; x<activeCodes.length; x++) {
+                        var code = activeCodes[x];
+                        var bids = bidResponses[code].bids;
+                        var winningIndex = 0;
+                        var hPrice = 0;
+                        for (var y=0; y<bids.length; y++) {
+                            if (bids[y].cpm > hPrice) {
+                                hPrice = bids[y].cpm;
+                                winningIndex = y;
+                            }
+                        }
+
+                        var container = document.getElementById(code);
+                        // float:left; vertical-align:top; padding-right: 20px; overflow: hidden; width:300px; height:250px; border:none;
+                        var iframe = document.createElement('iframe');
+                        iframe.style.width = bidResponses[code].bids[winningIndex].width;
+                        iframe.style.height = bidResponses[code].bids[winningIndex].height;
+                        iframe.style = "float:left; vertical-align:top; padding-right: 20px; overflow: hidden; border:none;";
+                        iframe.frameBorder = 0;
+                        iframe.marginwidth = "0";
+                        iframe.margingeight = "0";
+                        iframe.scrolling = "no";
+                        container.appendChild(iframe);
+                        pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
+                        if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1 style="width:100%; clear:both;">TopLarge</h1>
+    <div style="width:100%; clear:both;" id="TopLarge"></div>
+    <h1 style="width:100%; clear:both;">MiddleLarge</h1>
+    <div style="width:100%; clear:both;" id="MiddleLarge"></div>
+</body>
+</html>
+
