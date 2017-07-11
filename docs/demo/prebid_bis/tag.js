@@ -2366,9 +2366,7 @@ adhese.addEvent("load", adhese.checkVisible.bind(adhese));
 
 adhese.addEvent("scroll", adhese.checkVisible.bind(adhese));
 
-if (window.location.hostname == "") {
-    var prebidScript = document.createElement("script");
-    prebidScript.src = "prebid.js";
-    prebidScript.onload = function() {};
-    document.head.appendChild(prebidScript);
-}
+var prebidScript = document.createElement("script");
+prebidScript.src = "prebid.js";
+prebidScript.onload = function() {};
+document.head.appendChild(prebidScript);
