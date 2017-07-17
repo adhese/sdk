@@ -262,7 +262,7 @@ Adhese.prototype.getLocation = function() {
     if (l.hostname.indexOf("pebblemedia.be") != -1) {
         s = "";
         p = "sporza_socio_home";
-    } else if (l.hostname == "") {
+    } else if (l.hostname == "" || l.hostname == "adhese.github.io") {
         s = "";
         p = "flair-nl_others";
     }
