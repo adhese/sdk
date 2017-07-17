@@ -493,6 +493,7 @@ template {
                         var winningIndex = 0;
                         var hPrice = 0;
                         for (var y=0; y<bids.length; y++) {
+                            console.log("bid for " + code + ", " + bids[y].cpm + " vs. " + hPrice);
                             if (bids[y].cpm > hPrice) {
                                 hPrice = bids[y].cpm;
                                 winningIndex = y;                                
@@ -501,7 +502,7 @@ template {
                         
                         console.log("winning for " + code);
                         console.log(bidResponses[code].bids[winningIndex]);
-
+                        try {
                         var container = document.getElementById(code);
                         var iframe = document.createElement('iframe');
                         iframe.setAttribute('FRAMEBORDER', 0);
@@ -515,7 +516,11 @@ template {
                         iframe.setAttribute('height', bidResponses[code].bids[winningIndex].height);
                         container.appendChild(iframe);
                         pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
-                        if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
+                        if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.track(bidResponses[code].bids[winningIndex].impressionCounter);
+                        } catch(e) {
+                          console.log("error rendering winning bid");
+                          console.log(e);
+                        }
                     }
                 }
             });
