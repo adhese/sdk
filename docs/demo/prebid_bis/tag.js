@@ -2151,7 +2151,7 @@ adhese.addEvent("load", adhese.checkVisible.bind(adhese));
 
 adhese.addEvent("scroll", adhese.checkVisible.bind(adhese));
 
-if (window.location.hostname == "") {
+if (window.location.hostname == "" || window.location.hostname == "adhese.github.io") {
     var prebidScript = document.createElement("script");
     prebidScript.src = "prebid.js";
     prebidScript.onload = function() {};
