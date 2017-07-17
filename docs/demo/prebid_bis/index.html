@@ -436,7 +436,7 @@ template {
         return "_sdk_example_";
     }
     </script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="tag.js" async></script>
     <script>
     
@@ -484,6 +484,8 @@ template {
                 bidsBackHandler: function(bidResponses) {
 
                     var activeCodes = ["MiddleLarge","TopLarge"];
+                    
+                    console.log(bidResponses);
 
                     for (var x=0; x<activeCodes.length; x++) {
                         var code = activeCodes[x];
@@ -493,20 +495,24 @@ template {
                         for (var y=0; y<bids.length; y++) {
                             if (bids[y].cpm > hPrice) {
                                 hPrice = bids[y].cpm;
-                                winningIndex = y;
+                                winningIndex = y;                                
                             }
                         }
+                        
+                        console.log("winning for " + code);
+                        console.log(bidResponses[code].bids[winningIndex]);
 
                         var container = document.getElementById(code);
-                        // float:left; vertical-align:top; padding-right: 20px; overflow: hidden; width:300px; height:250px; border:none;
                         var iframe = document.createElement('iframe');
-                        iframe.style.width = bidResponses[code].bids[winningIndex].width;
-                        iframe.style.height = bidResponses[code].bids[winningIndex].height;
-                        iframe.style = "float:left; vertical-align:top; padding: 0px; margin: 0px; overflow: hidden; border:none;";
-                        iframe.frameBorder = 0;
-                        iframe.marginwidth = "0";
-                        iframe.margingeight = "0";
-                        iframe.scrolling = "no";
+                        iframe.setAttribute('FRAMEBORDER', 0);
+                        iframe.setAttribute('SCROLLING', 'no');
+                        iframe.setAttribute('MARGINHEIGHT', 0);
+                        iframe.setAttribute('MARGINWIDTH', 0);
+                        iframe.setAttribute('TOPMARGIN', 0);
+                        iframe.setAttribute('LEFTMARGIN', 0);
+                        iframe.setAttribute('ALLOWTRANSPARENCY', 'true');
+                        iframe.setAttribute('width', bidResponses[code].bids[winningIndex].width);
+                        iframe.setAttribute('height', bidResponses[code].bids[winningIndex].height);
                         container.appendChild(iframe);
                         pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
                         if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
@@ -518,10 +524,10 @@ template {
 </head>
 
 <body>
-    <h1 style="width:100%; clear:both;">TopLarge</h1>
-    <div style="width:100%; clear:both;" id="TopLarge"></div>
-    <h1 style="width:100%; clear:both;">MiddleLarge</h1>
-    <div style="width:100%; clear:both;" id="MiddleLarge"></div>
+    <h1 style="clear:both;">TopLarge</h1>
+    <div style="" id="TopLarge"></div>
+    <h1 style="clear:both;">MiddleLarge</h1>
+    <div style="" id="MiddleLarge"></div>
 </body>
 </html>
 
