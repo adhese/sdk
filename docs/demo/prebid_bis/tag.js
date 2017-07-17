@@ -261,7 +261,7 @@ Adhese.prototype.getLocation = function() {
     var s = l.pathname.replace(/^\/([^\/]*).*$/, "$1");
     if (l.hostname.indexOf("pebblemedia.be") != -1 || l.hostname == "" || l.hostname == "adhese.github.io") {
         s = "";
-        p = "sporza_homepage";
+        p = "flair-nl_others";
     }
     p += s != "" ? "_" + s : "";
     var loc = "_" + lang + p + "_";
