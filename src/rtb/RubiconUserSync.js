@@ -34,15 +34,17 @@ Adhese.prototype.rubiconUserSync = function(option) {
  * @return {void}            
  */
 Adhese.prototype.rubiconMultiSync = function(rp_account) {
-	var script = document.createElement("SCRIPT");
-	script.type = "text\/javascript";
-	script.setAttribute("id","multisync");
-	script.setAttribute("data-partner",rp_account);
-	script.setAttribute("data-region","eu");
-	script.setAttribute("data-country","be");
-	script.setAttribute("data-endpoint","eu");
-	script.src = "https://secure-assets.rubiconproject.com/utils/xapi/multi-sync.js";	
-	document.body.appendChild(script);
-}
+	var iframe = document.createElement("IFRAME");
+	iframe.setAttribute("id", "multisync");
+	iframe.setAttribute("height", "0");
+	iframe.setAttribute("width", "0");
+	iframe.setAttribute("marginwidth", "0");
+	iframe.setAttribute("marginheight", "0");
+	iframe.setAttribute("frameborder", "0");
+	iframe.setAttribute("scrolling", "no");
+	iframe.setAttribute("style", "border: 0px; display: none;");
+	iframe.setAttribute("src", "https://secure-assets.rubiconproject.com/utils/xapi/multi-sync.html?p=" + rp_account + "&endpoint=eu");
+	document.body.appendChild(iframe);
+};
 
 
