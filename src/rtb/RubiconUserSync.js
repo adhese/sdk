@@ -6,16 +6,18 @@
 Adhese.prototype.rubiconUserSync = function(option) {
 	// if no account given, do nothing
 	if (option && option.rp_account && option.rp_account!='') {
-		if(document.cookie.indexOf("rubicon_uid_last_sync")==-1) {
+		if(document.cookie.indexOf("rubicon_uid_last_sync")==-1 || !option.syncRefreshPeriod) {
 			this.helper.addEvent("load", this.rubiconMultiSync, option.rp_account);
-			var date = new Date();
-			date.setDate(date.getDate()+1);
-			date.setHours(0);
-			date.setMinutes(0);
-			date.setSeconds(0);
-			var diff = date.getTime() - new Date().getTime();
-			this.helper.createCookie("rubicon_uid_last_sync", diff, (diff/24/60/60/1000));
-			// also create domain cookie, so do a request to an .adhese.com endpoint with the current domain as qs param
+			if(option.syncRefreshPeriod) {
+				var date = new Date();
+				date.setDate(date.getDate()+1);
+				date.setHours(0);
+				date.setMinutes(0);
+				date.setSeconds(0);
+				var diff = date.getTime() - new Date().getTime();
+				this.helper.createCookie("rubicon_uid_last_sync", diff, (diff/option.syncRefreshPeriod));
+				// also create domain cookie, so do a request to an .adhese.com endpoint with the current domain as qs param
+			}
 			if (this.config && this.config.hostname) new Image().src = "https://user-sync.adhese.com/handlers/rubicon/user_sync_discovery?domain=" + this.config.hostname;
 			// this endpoint wil create a cookie on .adhese.com containing the domain as passed
 		}
