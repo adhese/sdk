@@ -70,6 +70,97 @@ img.emoji {
 			.search-form span { background-color: #107fd3; }</style>
 
 <link rel="stylesheet" type="text/css" id="wp-custom-css" href="https://adhese.com/?custom-css=1fc1b00517" />
+
+
+    <script>
+        var PREBID_TIMEOUT = 50;
+    </script>
+    <script type="text/javascript" src="prebid.js" async></script>    
+<script>
+function getLocation() {
+    return "_sdk_example_";
+}
+
+    var pbjs = pbjs || {};
+    pbjs.que = pbjs.que || [];
+    var startTime = Date.now();
+    pbjs.que.push(function() {
+        var adUnits = [{
+            code: "imu", 
+            sizes: [[300, 250]],
+            bids: [{
+                    bidder: "adhese",
+                    params: {
+                        account: "demo",
+                        location: "_sdk_example_",
+                        formats: [ "imu" ],
+                        data: [
+                            {
+                                key: "ag", 
+                                value: "41"
+                            },
+                            {
+                                key: "ge", 
+                                value: "male"
+                            }
+                        ]
+                    }                    
+                }]
+        },{
+            code: "leaderboard", 
+            sizes: [[728, 90],[920,250]],
+            bids: [{
+                    bidder: "adhese",
+                    params: {
+                        account: "demo",
+                        location: "_sdk_example_",
+                        formats: [ "leaderboard" ],
+                        data: [
+                            {
+                                key: "ag", 
+                                value: "41"
+                            },
+                            {
+                                key: "ge", 
+                                value: "male"
+                            }
+                        ]
+                    }                    
+                },{
+                    bidder: 'improvedigital',
+                    params: {
+                       placementId: '589593'                       
+                    }
+                }]
+        }];
+        pbjs.addAdUnits(adUnits);
+        pbjs.requestBids({
+            // This callback gets triggered when all bids for this
+            // ad unit come back. 
+            bidsBackHandler: function(bidResponses) {
+                console.log(bidResponses);
+                var activeCodes = ["imu","leaderboard"];
+                for (var x=0; x<activeCodes.length; x++) {
+                    var code = activeCodes[x];
+                    var bids = bidResponses[code].bids;
+                    var winningIndex = 0;
+                    var hPrice = 0;
+                    for (var y=0; y<bids.length; y++) {
+                        if (bids[y].cpm > hPrice) {
+                            hPrice = bids[y].cpm;
+                            winningIndex = y;
+                        }
+                    }
+					var iframe = document.getElementById(code);
+                    iframe.style.width = bidResponses[code].bids[winningIndex].width;
+                    iframe.style.height = bidResponses[code].bids[winningIndex].height;
+                    pbjs.renderAd(iframe.contentWindow.document, bidResponses[code].bids[winningIndex].adId);
+                    if (bidResponses[code].bids[winningIndex].impressionCounter) adhese.helper.addTrackingPixel(bidResponses[code].bids[winningIndex].impressionCounter);
+                }
+            }
+        });
+    });
+</script>
 </head>
 
 <body class="page-template-default page page-id-8 no-sidebar narrow-978">
@@ -87,7 +178,7 @@ img.emoji {
 							</div><!-- #header-logo-image -->
 											</div><!-- #header-left-section -->
 					<div id="header-right-section">
-												<div id="header-right-sidebar" class="clearfix"><iframe style="overflow: hidden; width:728px; height:90px; border:none;" scrolling="no" id="leaderboard" frameborder="0"></iframe>
+												<div id="header-right-sidebar" class="clearfix"><iframe style="overflow: hidden; width:728px; height:90px; border:none;" scrolling="no" id="leaderboard" frameborder="0" marginwidth="0" marginheight="0"></iframe>
 						<aside id="nav_menu-3" class="widget widget_nav_menu"><div class="menu-utility-container"></div></aside>						</div>
 												<nav id="site-navigation" class="main-navigation" role="navigation">
 							<div class="menu-main-container"></div>						</nav>
@@ -101,7 +192,7 @@ img.emoji {
 						<div class="header-post-title-container clearfix">
 					<div class="inner-wrap">
 						<div class="post-title-wrapper">
-													   	<h1 class="header-post-title-class">Adhese SDK Pages</h1>
+													   	<h1 class="header-post-title-class">Adhese Prebid Demo</h1>
 						   						</div>
 											</div>
 				</div>
@@ -115,8 +206,8 @@ img.emoji {
 				
 <article id="post-8" class="post-8 page type-page status-publish hentry">
 		<div class="entry-content clearfix">
-<p><a href="jsdocs/">JavaScript Documentation</a></p>
-<p><a href="demo/prebid/">Prebid Adapter Demo</a></p>
+<p>This page demonstrates the Adhese and Improve Digital Prebid adapters active on the same page. The Adhese adpater will yield between all it's configured server-side resources, in this demo direct campaigns and Rubicon's XAPI. </p>
+<p><iframe style="float:left; vertical-align:top; padding-right: 20px; overflow: hidden; width:300px; height:250px; border:none;" scrolling="no" id="imu" frameborder="0" marginwidth="0" marginheight="0"></iframe>At the same time, before the page is even fully loaded, Improve Digital is called via it's own adapter. They respond with a bid, the net ecpm of both bids is compared and the heighest is shown on the page.</p>
 			</div>
 	<footer class="entry-meta-bar clearfix">	        			
 		<div class="entry-meta clearfix">

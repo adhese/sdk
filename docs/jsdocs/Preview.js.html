@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Preview.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Preview.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Function to check for preview parameters in the query string of the page location.
+ * If present, the parameters are used to generate a live preview for the ad and are saved in a cookie named adhese_preview.
+ * If no parameters are present but an adhese_preview cookie exists, the cookies value will be used to generate a live preview.
+ * The parameters we are looking for are adhesePreviewCreativeId, adhesePreviewSlotId, adhesePreviewCreativeTemplate, adhesePreviewCreativeWidth, adhesePreviewCreativeHeight.
+ */
+
+Adhese.prototype.checkPreview = function () {
+	this.previewFormats = {};
+	if(!this.config.previewHost){
+		return false;
+	}
+	if (window.location.search.indexOf("adhesePreview")!=-1) {
+		this.helper.log("checking for preview");
+        var b = window.location.search.substring(1);
+        var countAd = (b.match(/adhesePreviewCreativeId/g)).length;
+		var p = b.split("&amp;");
+		var c = '';
+		var s = '';
+		var t = '';
+		var tf = '';
+		var w = 0;
+		var h = 0;
+		var tc = [];
+        if (b.indexOf("adhesePreviewExclusive=true") != -1) {
+            this.config.previewExclusive = true;
+        }
+        if (b.indexOf("adhesePreviewExclusive=false") != -1) {
+            this.config.previewExclusive = false;
+        }
+		for (var x=0; x&lt;p.length; x++) {
+			if (p[x].split("=")[0]=="adhesePreviewCreativeId") {
+				c = unescape(p[x].split("=")[1]);
+		    }
+			if (p[x].split("=")[0]=="adhesePreviewSlotId") {
+				s = p[x].split("=")[1];
+		    }
+			if (p[x].split("=")[0]=="adhesePreviewCreativeTemplate") {
+				t = p[x].split("=")[1];
+				tc.push(t);
+			}
+			if (p[x].split("=")[0]=="adhesePreviewTemplateFile") {
+				tf = p[x].split("=")[1];
+			}
+			if (p[x].split("=")[0]=="adhesePreviewWidth") {
+				w = p[x].split("=")[1];
+			}
+			if (p[x].split("=")[0]=="adhesePreviewHeight") {
+				h = p[x].split("=")[1];
+			}
+			if (p[x].split("=")[0] == "adhesePreviewCreativeKey") {
+				if(countAd > 1){
+					if (s != "" &amp;&amp; tc[0] != "") {
+						for(i in tc){
+							var t = tc[i];
+							this.previewFormats[t]={slot:s,creative:c,templateFile:tf,width:w,height:h};
+						}
+					}
+					tc=[];
+				}
+			}
+		}
+ 		if(countAd == 1){
+			for(var y = 0; y&lt;tc.length; y++){
+ 				this.previewFormats[tc[y]] = {slot:s,creative:c, templateFile:tf,width:w,height:h};
+ 			}
+ 		}
+		var c=[];
+		for(k in this.previewFormats){
+			c.push(k + "," + this.previewFormats[k].creative + "," + this.previewFormats[k].slot + "," + this.previewFormats[k].template + "," + this.previewFormats[k].width + "," + this.previewFormats[k].height);
+		}
+		this.helper.createCookie("adhese_preview",c.join('|'),0);
+		this.previewActive = true;
+	} else if (this.helper.readCookie("adhese_preview")) {
+		var v = this.helper.readCookie("adhese_preview").split("|");
+		for (var x=0; x&lt;v.length; x++) {
+			var c = v[x].split(",");
+			this.previewFormats[c[0]] = {creative: c[1], slot: c[2], template: c[3], width: c[4], height: c[5]};
+		}
+		this.previewActive = true;
+	}
+};
+
+/**
+ * The showPreviewSign function displays a message to inform the user that the live preview is active.
+ */
+Adhese.prototype.showPreviewSign = function () {
+	var that = this;
+	var p = document.createElement('DIV');
+	var msg = '&lt;div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;">&lt;b>Adhese preview active.&lt;/br> Click to disable&lt;/div>';
+	p.innerHTML = msg;
+	// once and afterload
+	document.body.appendChild(p);
+	that.helper.addEvent("click", that.closePreviewSign.bind(that), p, p);
+};
+
+/**
+ * The closePreviewSign function exits the live preview mode and reloads the page.
+ */
+Adhese.prototype.closePreviewSign = function () {
+	this.helper.eraseCookie("adhese_preview");
+	if(location.search.indexOf("adhesePreviewCreativeId") != -1){
+		location.href = location.href.split("?")[0];
+	}else{
+		location.reload();
+	}
+};
+
+/**
+ * Function to check for the 'adheseInfo' parameter in the query string of the page location.
+ * If present, we show a box with request information once the page is loaded.
+ */
+Adhese.prototype.checkAdheseInfo = function() {
+	var that = this;
+	if (window.location.search.indexOf("adheseInfo=true") == -1) {
+		return false;
+	} else {
+		addEventListener("load", that.showInfoSign.bind(that));
+	}
+};
+
+/**
+ * The showInfoSign function displays a message which contains information about the request such as location, requested formats and targeting info.
+ */
+Adhese.prototype.showInfoSign = function() {
+	var that = this;
+	var p = document.createElement("DIV");
+	var msg = '&lt;div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: lightgrey; color: black; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.9; border:2px #9e9e9e solid">';
+    msg += '&lt;b>Adhese Request Info&lt;/b>&lt;/br>- Click to disable -&lt;/br>';
+    msg += '&lt;/br>&lt;b>Location code:&lt;/b>&lt;/br>';
+    msg += adhese.config.location + '&lt;/br>';
+    msg += '&lt;/br>&lt;b>Format code(s):&lt;/b>&lt;/br>';
+    for(x in adhese.ads){
+        msg +=adhese.ads[x][0]+'&lt;/br>';
+    }
+    msg += '&lt;/br>&lt;b>Targeting:&lt;/b>&lt;/br>';
+    for(x in adhese.request){
+        if(x != 'ur' &amp;&amp; x != 'rn' &amp;&amp; x!= 're' &amp;&amp; x!= 'pr' &amp;&amp; x!='fp')msg += '&lt;b>'+x+': &lt;/b>' + adhese.request[x] + '&lt;/br>';
+    }
+    msg += '&lt;/div>';
+	p.innerHTML = msg;
+	document.body.appendChild(p);
+	that.helper.addEvent("click", that.closeInfoSign.bind(that), p, p);
+};
+
+/**
+ * The closeInfoSign function hides the info box for the user.
+ */
+Adhese.prototype.closeInfoSign = function() {
+	var infoMsg = document.getElementById('adhInfoMessage');
+	infoMsg.style.display = 'none';
+
+};
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Detection.html">Detection</a></li><li><a href="Adhese_Events.html">Events</a></li><li><a href="Adhese_Helper.html">Helper</a></li><li><a href="Adhese_SafeFrame.html">SafeFrame</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AdheseAjax">AdheseAjax</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jun 15 2017 14:23:38 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ajax/Helper.ajax.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ajax/Helper.ajax.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Generic function for performing ajax requests
+ * @type {Object}
+ */
+var AdheseAjax = {
+    request: function(ops) {
+        if(typeof ops == 'string') ops = { url: ops };
+        ops.url = ops.url || '';
+        ops.method = ops.method || 'get'
+        ops.data = ops.data || {};
+        if(typeof ops.encodeData == "undefined"){
+            ops.encodeData = true;
+        }
+        var getParams = function(data, url) {
+            var arr = [], str;
+            for(var name in data) {
+                arr.push(name + '=' + encodeURIComponent(data[name]));
+            }
+            str = arr.join('&amp;');
+            if(str != '') {
+                return url ? (url.indexOf('?') &lt; 0 ? '?' + str : '&amp;' + str) : str;
+            }
+            return '';
+        }
+        var api = {
+            host: {},
+            process: function(ops) {
+                var self = this;
+                this.xhr = null;
+
+                if (document.all &amp;&amp; !window.atob) { // IE9 and older
+                    try {
+                        this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
+                    }
+                    catch(e) {
+                        try {
+                            this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        catch (e) {this.xhr = false; }
+                    }
+                } else {
+                    try {
+                        this.xhr = new XMLHttpRequest();
+                    }
+                    catch (e) {
+                        this.xhr = false;
+                    }
+                }
+
+                if(this.xhr) {
+                    if ("withCredentials" in this.xhr) {
+                        this.xhr.withCredentials = true;
+                    }
+                    this.xhr.onreadystatechange = function() {
+                        if(self.xhr.readyState == 4 &amp;&amp; self.xhr.status == 200) {
+                            var result = self.xhr.responseText;
+                            if(ops.json === true &amp;&amp; typeof JSON != 'undefined') {
+                                if (result){
+                                    try{
+                                        result = JSON.parse(result);
+                                        self.doneCallback &amp;&amp; self.doneCallback.apply(self.host, [result, self.xhr]);
+                                    }catch(e){
+                                        self.errorCallback &amp;&amp; self.errorCallback.apply(self.host, ["Adhese Ajax: " + e]);
+                                    }
+                                }else {
+                                    self.errorCallback &amp;&amp; self.errorCallback.apply(self.host, ["Adhese Ajax: Response is empty string"]);
+                                }
+                            }
+                        } else if(self.xhr.readyState == 4) {
+                            self.failCallback &amp;&amp; self.failCallback.apply(self.host, [self.xhr]);
+                        }
+                        self.alwaysCallback &amp;&amp; self.alwaysCallback.apply(self.host, [self.xhr]);
+                    }
+                }
+                if(ops.method == 'get') {
+                    this.xhr.open("GET", ops.url + getParams(ops.data, ops.url), true);
+                } else {
+                    this.xhr.open(ops.method, ops.url, true);
+                    this.setHeaders({
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    });
+                }
+                if(ops.headers &amp;&amp; typeof ops.headers == 'object') {
+                    this.setHeaders(ops.headers);
+                }
+                setTimeout(function() {
+                    if(ops.method == 'get'){
+                        self.xhr.send()
+                    }else{
+                        var data;
+                        if (ops.encodeData) {
+                           data = getParams(ops.data);
+                       }else {
+                           data = ops.data;
+                       }
+                       self.xhr.send(data);
+                   }
+                }, 20);
+                return this;
+            },
+            done: function(callback) {
+                this.doneCallback = callback;
+                return this;
+            },
+            fail: function(callback) {
+                this.failCallback = callback;
+                return this;
+            },
+            always: function(callback) {
+                this.alwaysCallback = callback;
+                return this;
+            },
+            error: function(callback) {
+                this.errorCallback = callback;
+                return this;
+            },
+            setHeaders: function(headers) {
+                for(var name in headers) {
+                    this.xhr &amp;&amp; this.xhr.setRequestHeader(name, headers[name]);
+                }
+            }
+        }
+        return api.process(ops);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Adhese.html">Adhese</a></li><li><a href="Adhese_Ad.html">Ad</a></li><li><a href="Adhese_Detection.html">Detection</a></li><li><a href="Adhese_Events.html">Events</a></li><li><a href="Adhese_Helper.html">Helper</a></li><li><a href="Adhese_SafeFrame.html">SafeFrame</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AdheseAjax">AdheseAjax</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jun 15 2017 14:23:38 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
