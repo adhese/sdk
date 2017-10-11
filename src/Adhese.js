@@ -301,7 +301,11 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
  * @return {string}
  */
 Adhese.prototype.getSlotName = function(ad) {
-	if (ad.options.location) {
+	if(ad.options.position && ad.options.location) {
+		u = ad.options.location + ad.options.position;
+	} else if(ad.options.position) {
+		u = this.config.location + ad.options.position;
+	} else if (ad.options.location) {
 		u = ad.options.location;
 	} else {
 		u = this.config.location;
