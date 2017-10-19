@@ -12,7 +12,7 @@
  */
  Adhese.prototype.Ad = function(adhese, formatCode, options) {
  	var defaults = { write:false };
- 	this.format = (options.format?options.format:formatCode);
+ 	this.format = (options && options.format?options.format:formatCode);
     this.options = adhese.helper.merge(defaults, options);
 	this.uid = formatCode;
  	if (this.options.position!=undefined) {
