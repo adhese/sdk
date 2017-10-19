@@ -339,7 +339,9 @@ Adhese.prototype.getRequestUri = function(ad, options) {
  Adhese.prototype.syncUser = function(network, identification) {
  	if (network=="rubicon") {
  		this.rubiconUserSync(identification);
- 	}
+ 	} else if (network=="improvedigital") {
+		this.improvedigitalUserSync(identification);
+	}
  };
 /**
  * This function can be used in a SafeFrame implementation to create a preview request and write out the result.
