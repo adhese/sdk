@@ -384,3 +384,17 @@ Adhese.prototype.getRequestUri = function(ad, options) {
      });
      adhSelf.getSfPreview(sf_array);
  };
+
+
+/**
+ * This function is used for saving requests in a prebid environment
+ * @param  {string} key        The format uid used for this ad
+ * @param  {object} identification The Ad object
+ * @return {void}
+ */
+Adhese.prototype.registerResponse = function(key, ad) {
+	if (!adhese.responses) {
+      adhese.responses = new Object();
+    }
+	adhese.responses[key] = ad;
+}
