@@ -39,7 +39,6 @@ Adhese.prototype.appendSyncIframe = function(options) {
 };
 
 Adhese.prototype.appendSyncPixel = function(options) {
-        console.log("pix");
         var pixel = document.createElement("IMG");
         pixel.setAttribute("id", "sync_pixel_" + options.syncName);
         pixel.setAttribute("height", "0");
