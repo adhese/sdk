@@ -8,7 +8,7 @@ Adhese.prototype.pubmaticUserSync = function(option) {
                 this.genericUserSync({
                         url: "http://ads.pubmatic.com/AdServer/js/user_sync.html?p=" + option.pubmatic_publisher_id + "&predirect=http%3a%2f%2fuser-sync.adhese.com%2fhandlers%2fpubmatic%2fuser_sync%3fu%3d",
                         syncName: "pubmatic",
-                        iframe: false
+                        iframe: true 
                 });
         }
 };

@@ -39,12 +39,11 @@ Adhese.prototype.appendSyncIframe = function(options) {
 };
 
 Adhese.prototype.appendSyncPixel = function(options) {
-        var pixel = document.createElement("IMAGE");
+        console.log("pix");
+        var pixel = document.createElement("IMG");
         pixel.setAttribute("id", "sync_pixel_" + options.syncName);
         pixel.setAttribute("height", "0");
         pixel.setAttribute("width", "0");
-        pixel.setAttribute("marginwidth", "0");
-        pixel.setAttribute("marginheight", "0");
         pixel.setAttribute("style", "border: 0px; display: none;");
         pixel.setAttribute("src", options.url);
         document.body.appendChild(pixel);

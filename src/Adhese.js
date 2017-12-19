@@ -341,7 +341,9 @@ Adhese.prototype.getRequestUri = function(ad, options) {
  		this.rubiconUserSync(identification);
  	} else if (network=="improvedigital") {
 		this.improvedigitalUserSync(identification);
-	}
+	} else if (network=="pubmatic") {
+                this.pubmaticUserSync(identification);
+        }
  };
 /**
  * This function can be used in a SafeFrame implementation to create a preview request and write out the result.
