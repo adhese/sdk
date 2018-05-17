@@ -2,8 +2,10 @@
  * @class
  * This file contains the SafeFrame object that makes the IAB Safeframe reference implementation available in the Adhese context.
  */
- Adhese.prototype.SafeFrame = function(poolHost) {
+ Adhese.prototype.SafeFrame = function(poolHost, containerID) {
 	this.poolHost = poolHost;
+	this.containerID = "adType";
+	if (containerID) this.containerID = "slotName";
 	this.adhesePositions = new Array();
 	this.ads = [];
 	return this.init();
@@ -25,7 +27,7 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 				"w": ad.width,
 				"h": ad.height,
 				"size" : ad.width+"x"+ad.height,
-				"dest":	ad.adType,
+				"dest":	ad[this.containerID],
 				"tgt": "_blank"
 			};
 		}
@@ -61,15 +63,15 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			}
 		}
 		var posConf = new $sf.host.PosConfig({
-			"id": ad.adType,
+			"id": ad[this.containerID],
 			"w": ad.width,
 			"h": ad.height,
 			"size" : ad.width+"x"+ad.height,
-			"dest":	ad.adType,
+			"dest":	ad.slotName,
 			"tgt": "_blank"
 		});
 		this.adhesePositions.push(new $sf.host.Position({
-			"id": ad.adType,
+			"id": ad[this.containerID],
 			"html": ad.sfHtml,
 			"src": ad.sfSrc,
 			"conf": posConf
@@ -85,7 +87,6 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 Adhese.prototype.SafeFrame.prototype.render = function(id) {
 	for (var x in this.adhesePositions) {
 		if (this.adhesePositions[x].id == id) {
-			console.log(this.adhesePositions[x]);
 			$sf.host.render(this.adhesePositions[x]);
 		}
 	}

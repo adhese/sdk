@@ -27,6 +27,7 @@
  * @param {string} options.poolHost (optional) the host of your CDN
  * @param {string} options.location  can be either a string containing the actual location to be passed to the adserver or a function to be called to retrieve the location
  * @param {boolean} options.safeframe true/false, for switching on the use of the IAB SafeFrame standard, the default value is false
+ * @param {boolean} options.safeframeContainerID string containing the object property of Ad to be used as id for the safeframe container
  * @param {boolean} options.referrer true/false, for adding the document.referrer to the req as a base64 string, the default value is true
  * @param {boolean} options.url true/false, for adding the window.location.href to the req as a base64 string, the default value is true
  * @return {void}
@@ -74,7 +75,7 @@
  		this.config.safeframe = false;
  	} else {
  	 	this.config.safeframe = options.safeframe;
- 		this.safeframe = new this.SafeFrame(this.config.poolHost);
+ 		this.safeframe = new this.SafeFrame(this.config.poolHost, options.safeframeContainerID);
  	}
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
