@@ -23,7 +23,7 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 	if (this.ads && this.ads.length>0) {
 		for (index in this.ads) {
 			var ad = this.ads[index];
-			this.adhesePositionConfig[ad.adType] = {
+			this.adhesePositionConfig[ad[this.containerID]] = {
 				"w": ad.width,
 				"h": ad.height,
 				"size" : ad.width+"x"+ad.height,
@@ -67,7 +67,7 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			"w": ad.width,
 			"h": ad.height,
 			"size" : ad.width+"x"+ad.height,
-			"dest":	ad.slotName,
+			"dest":	ad[this.containerID],
 			"tgt": "_blank"
 		});
 		this.adhesePositions.push(new $sf.host.Position({
