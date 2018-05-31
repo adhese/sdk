@@ -5,7 +5,7 @@
  Adhese.prototype.SafeFrame = function(poolHost, containerID) {
 	this.poolHost = poolHost;
 	this.containerID = "adType";
-	if (containerID) this.containerID = "slotName";
+	if (containerID) this.containerID = containerID;
 	this.adhesePositions = new Array();
 	this.ads = [];
 	return this.init();

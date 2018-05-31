@@ -15,6 +15,7 @@
  	this.format = (options && options.format?options.format:formatCode);
     this.options = adhese.helper.merge(defaults, options);
 	this.uid = formatCode;
+	this.safeframe = (options && options.safeframe?options.safeframe:false);
  	if (this.options.position!=undefined) {
 		this.uid = this.options.position + this.format;
 	} 	

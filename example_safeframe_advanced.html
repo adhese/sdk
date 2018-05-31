@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Adhese SDK Tagging Examples</title>
+	<script type="text/javascript" charset="utf-8" src="dist/adhese.debug.js"></script>
+	<script type="text/javascript">
+		function getLocation() {
+			return "_sdk_example_";
+		}
+		
+		// create Adhese object and initialize
+		var adhese = new Adhese();
+		adhese.init({
+			account:"demo", 
+			location: getLocation,
+			safeframe: false,
+			safeframeContainerID: "slotName"
+		});
+
+		// register a user related parameter
+		adhese.registerRequestParameter('ag', 40);
+		
+	</script>
+
+	<style type="text/css" media="screen">
+		#leaderboard { width:728px; height: 90px; }
+		#imu { width: 300px; height: 250px; padding: 0px;}
+		#skyscraper { width: 120px; height: 600px; padding: 0px; margin: 0px;}
+	</style>
+	
+</head>
+
+<body>
+	
+	<div id="_sdk_example_-leaderboard">
+		<script type="text/javascript" charset="utf-8">
+			adhese.tag("leaderboard", {write:true});
+	</script>
+	</div>	
+				
+	<div id="_sdk_example_-imu"></div>
+	
+	<script type="text/javascript" charset="utf-8">		
+		var adArray = new Array();
+		adArray.push(adhese.tag("imu", {safeframe:true, safeframeContainerID:"slotName"}));
+		
+		AdheseAjax.request({
+    		url: adhese.getMultipleRequestUri(adArray, {'type':'json'}),
+    		method: 'get',
+    		json: true
+		})
+		.done(function(result) {
+			adhese.safeframe.addPositions(result);
+			for (var i = result.length - 1; i >= 0; i--) {
+				adhese.safeframe.render(result[i].slotName);
+    		};    		
+		});
+		
+	</script>
+
+	<div id="_sdk_example_-skyscraper">
+	<script type="text/javascript" charset="utf-8">
+		adhese.tag("skyscraper", {write:true, safeframe:true, safeframeContainerID:"slotName"});
+	</script>
+	</div>	
+
+</body>
+</html>
