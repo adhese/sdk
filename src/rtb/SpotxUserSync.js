@@ -1,6 +1,6 @@
 /**
-* Method to check and if needed sync the Adhese user with a known Pubmatic user. If a match exists, the next request performed by this client will contain a pubmatic_uid cookie that will be used for Bid Requests.
-* @param  {number} option Object containing one attribute: pubmatic_publisher_id: the id for the implementing Pubmatic publisher. 
+* Method to check and if needed sync the Adhese user with a known Spotx user. If a match exists, the next request performed by this client will contain a pubmatic_uid cookie that will be used for Bid Requests.
+* @param  {number} option Object containing one attribute: spotx_advertiser_id: the id for the implementing Spotx publisher. 
 * @return {void}
 */
 Adhese.prototype.spotxUserSync = function(option) {
