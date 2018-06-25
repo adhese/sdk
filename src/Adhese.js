@@ -179,8 +179,7 @@ Adhese.prototype.addRequestString = function(value) {
 	}
 
   	var ad = new this.Ad(this, formatCode, options);
-	ad.options.slotName = this.getSlotName(ad);
- 	
+	 	
 	if (this.previewActive) {
  		var pf = this.previewFormats
 		for (var key in pf) {
@@ -199,7 +198,9 @@ Adhese.prototype.addRequestString = function(value) {
                 addEventListener("load", that.showPreviewSign.bind(that))
 			}
 		}
- 	}
+	 }
+	 
+	 ad.options.slotName = this.getSlotName(ad);
 
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
