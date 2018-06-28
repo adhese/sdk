@@ -365,6 +365,8 @@ Adhese.prototype.getRequestUri = function(ad, options) {
 		this.improvedigitalUserSync(identification);
 	} else if (network=="pubmatic") {
                 this.pubmaticUserSync(identification);
+        } else if (network=="spotx") {
+                this.spotxUserSync(identification);
         }
  };
 /**
