@@ -4,12 +4,14 @@
 * @return {void}
 */
 Adhese.prototype.improvedigitalUserSync = function(option) {
-       if (option && option.publisher_dsp_id && option.publisher_dsp_id!='') {
-                this.genericUserSync({
-                        url: "https://ad.360yield.com/match?publisher_dsp_id=" + option.publisher_dsp_id + "&external_user_id=0&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
-                        syncName: "improvedigital",
-                        iframe: true
-                });
-        }
+       var partner_id = 1;
+       if (option && option.partner_id && option.partner_id!='') {
+               partner_id = option.partner_id;
+       }
+       this.genericUserSync({
+               url: "http://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
+               syncName: "improvedigital",
+               iframe: true
+       });
 };
 
