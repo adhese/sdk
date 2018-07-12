@@ -9,7 +9,7 @@ Adhese.prototype.improvedigitalUserSync = function(option) {
                partner_id = option.partner_id;
        }
        this.genericUserSync({
-               url: "http://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
+               url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
                syncName: "improvedigital",
                iframe: true
        });
