@@ -136,7 +136,6 @@ Adhese.prototype.tag = function(formatCode, options) {
         }
     }
     var ad = new this.Ad(this, formatCode, options);
-    ad.options.slotName = this.getSlotName(ad);
     if (this.previewActive) {
         var pf = this.previewFormats;
         for (var key in pf) {
@@ -155,6 +154,7 @@ Adhese.prototype.tag = function(formatCode, options) {
             }
         }
     }
+    ad.options.slotName = this.getSlotName(ad);
     this.ads.push([ formatCode, ad ]);
     if (ad.options.write) {
         if (this.config.previewExclusive == false || this.config.previewExclusive == true && ad.swfSrc) {
@@ -1261,19 +1261,25 @@ Adhese.prototype.appendSyncPixel = function(options) {
 };
 
 Adhese.prototype.improvedigitalUserSync = function(option) {
-    if (option && option.publisher_dsp_id && option.publisher_dsp_id != "") {
-        this.genericUserSync({
-            url: "https://ad.360yield.com/match?publisher_dsp_id=" + option.publisher_dsp_id + "&external_user_id=0&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
-            syncName: "improvedigital",
-            iframe: true
-        });
+    var partner_id = 1;
+    var domain = "user-sync.adhese.com";
+    if (option && option.partner_id && option.partner_id != "") {
+        partner_id = option.partner_id;
     }
+    if (option && option.domain && option.domain != "") {
+        domain = option.domain;
+    }
+    this.genericUserSync({
+        url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2F" + domain + "%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
+        syncName: "improvedigital",
+        iframe: true
+    });
 };
 
 Adhese.prototype.pubmaticUserSync = function(option) {
     if (option && option.pubmatic_publisher_id) {
         this.genericUserSync({
-            url: "http://ads.pubmatic.com/AdServer/js/user_sync.html?p=" + option.pubmatic_publisher_id + "&predirect=http%3a%2f%2fuser-sync.adhese.com%2fhandlers%2fpubmatic%2fuser_sync%3fu%3d",
+            url: "https://ads.pubmatic.com/AdServer/js/user_sync.html?p=" + option.pubmatic_publisher_id + "&predirect=https%3a%2f%2fuser-sync.adhese.com%2fhandlers%2fpubmatic%2fuser_sync%3fu%3d",
             syncName: "pubmatic",
             iframe: true
         });

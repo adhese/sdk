@@ -200,8 +200,7 @@ Using the Adhese Gateway, publishers can send in information on the context and 
 
 
 ### Synching user id with RTB networks
-Through a generic synching method, Adhese allows cookie synching with an external network. The current implementation supports Rubicon's User Sync service.
-Please contact our support departement for more details.
+Through a generic synching method, Adhese allows cookie synching with an external network. The current implementation supports the User Sync services of the following platforms: Rubicon Project, PubMatic, Improve Digital, SpotX and Criteo. Please contact our support departement for more details.
 
 ### Using the additional creatives array
 One of the attributes of an ad response is an array of Ad objects called "additionalCreatives". These additional creatives can be uploaded through the Adhese UI, and contain the same adType value, as they are a response to the same ad request. But each of them has a different adFormat value. The string contained in adFormat is configured in your Adhese account.

@@ -5,11 +5,15 @@
 */
 Adhese.prototype.improvedigitalUserSync = function(option) {
        var partner_id = 1;
+       var domain = "user-sync.adhese.com";
        if (option && option.partner_id && option.partner_id!='') {
                partner_id = option.partner_id;
        }
-       this.genericUserSync({
-               url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
+       if (option && option.domain && option.domain!='') {
+                domain = option.domain;
+       }
+        this.genericUserSync({
+               url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2F" + domain + "%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
                syncName: "improvedigital",
                iframe: true
        });
