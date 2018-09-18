@@ -63,7 +63,7 @@ export const spec = {
             height: 0,
             creativeId: 0,
             dealId: 0,
-            currency: 'EUR',
+            currency: 'USD',
             netRevenue: true,
             ttl: 360,
             ad: ""
@@ -73,7 +73,7 @@ export const spec = {
             let price = 0; 
             if (ad.extension && ad.extension.prebid && ad.extension.prebid.cpm) {
                 let cpm = ad.extension.prebid.cpm;
-                if (cpm.currency == 'EUR') {
+                if (cpm.currency == 'USD') {
                     price = Number(cpm.amount);
                 }
             }
