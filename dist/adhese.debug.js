@@ -1216,11 +1216,20 @@ Adhese.prototype.criteoUserSync = function(options) {
 Adhese.prototype.genericUserSync = function(option) {
     if (option && option.url && option.syncName) {
         var lastSyncCookieName = option.syncName + "_uid_last_sync";
+        if (typeof option.onload == undefined || option.onload == "") option.onload = true;
         if (document.cookie.indexOf(lastSyncCookieName) == -1 || !option.syncRefreshPeriod) {
-            if (option.iframe) {
-                this.helper.addEvent("load", this.appendSyncIframe, option);
+            if (option.onload) {
+                if (option.iframe) {
+                    this.helper.addEvent("load", this.appendSyncIframe, option);
+                } else {
+                    this.helper.addEvent("load", this.appendSyncPixel, option);
+                }
             } else {
-                this.helper.addEvent("load", this.appendSyncPixel, option);
+                if (option.iframe) {
+                    this.appendSyncIframe(option);
+                } else {
+                    this.appendSyncPixel(option);
+                }
             }
             if (option.syncRefreshPeriod) {
                 var date = new Date();
@@ -1269,10 +1278,16 @@ Adhese.prototype.improvedigitalUserSync = function(option) {
     if (option && option.domain && option.domain != "") {
         domain = option.domain;
     }
+    if (option && option.onload && option.onload != "") {
+        onload = option.onload;
+    } else {
+        onload = true;
+    }
     this.genericUserSync({
         url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2F" + domain + "%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
         syncName: "improvedigital",
-        iframe: true
+        iframe: true,
+        onload: onload
     });
 };
 

@@ -12,10 +12,16 @@ Adhese.prototype.improvedigitalUserSync = function(option) {
        if (option && option.domain && option.domain!='') {
                 domain = option.domain;
        }
+       if (option && option.onload && option.onload!='') {
+                onload = option.onload;
+        } else {
+                onload = true;
+        }
         this.genericUserSync({
                url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2F" + domain + "%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
                syncName: "improvedigital",
-               iframe: true
+               iframe: true,
+               onload: onload
        });
 };
 

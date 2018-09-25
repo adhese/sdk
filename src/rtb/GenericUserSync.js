@@ -1,13 +1,22 @@
 Adhese.prototype.genericUserSync = function(option) {
 	// if no account given, do nothing
 	if (option && option.url && option.syncName) {
-                var lastSyncCookieName = option.syncName + "_uid_last_sync";
+		var lastSyncCookieName = option.syncName + "_uid_last_sync";
+		if (typeof option.onload == undefined || option.onload == "") option.onload = true;
 		if(document.cookie.indexOf(lastSyncCookieName)==-1 || !option.syncRefreshPeriod) {
-                        if (option.iframe) {
-                                this.helper.addEvent("load", this.appendSyncIframe, option);
-                        } else {
-                                this.helper.addEvent("load", this.appendSyncPixel, option);
-                        }
+			if (option.onload) {
+				if (option.iframe) {
+                                	this.helper.addEvent("load", this.appendSyncIframe, option);
+                        	} else {
+                                	this.helper.addEvent("load", this.appendSyncPixel, option);
+				}
+			} else {
+				if (option.iframe) {
+                                	this.appendSyncIframe(option);
+                        	} else {
+                                	this.appendSyncPixel(option);
+				}
+			}
 			if(option.syncRefreshPeriod) {
 				var date = new Date();
 				date.setDate(date.getDate()+1);
