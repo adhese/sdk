@@ -25,6 +25,9 @@ debug:
 prebid-debug:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/visible/*.js src/fingerprint/*.js src/events/*.js src/prebid/*.js -b -v -o dist/adhese.prebid.debug.js
 
+3pas:
+	uglifyjs src/3pas/*.js -b -v -o dist/adhese_3pas.js
+
 .PHONY: docs
 docs:
 	jsdoc --verbose -c conf/jsdoc.conf
