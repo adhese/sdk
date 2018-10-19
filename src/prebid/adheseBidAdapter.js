@@ -17,13 +17,13 @@ export const spec = {
       validBidRequests.forEach(function(bid, index, array) {
         if (!account) {
           account = bid.params.account;
-          location = bid.params.location;
           if (bid.params.data) {
             for (var y=0; y<bid.params.data.length; y++) {
               reqParams.push(new Array(bid.params.data[y].key, bid.params.data[y].value));
             }
           }
         }
+        location = bid.params.location;
         bid.params.formats.forEach(function(format, index, array) {
           ads.push({slotName:location + "-" + format, uid:format, bidId:bid.bidId});
         });
