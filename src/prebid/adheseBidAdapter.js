@@ -70,6 +70,10 @@ export const spec = {
           };
           bidResponses.push(bidResponse);
         } else {
+            let tag = ad.tag;
+            if(ad.ext=="js" && ad.body != undefined && ad.body != "" && ad.body.match(/<script|<SCRIPT/)) {
+                tag = ad.body;
+            }
             let price = 0; 
             if (ad.extension && ad.extension.prebid && ad.extension.prebid.cpm) {
                 let cpm = ad.extension.prebid.cpm;
@@ -87,7 +91,7 @@ export const spec = {
               currency: 'USD',
               netRevenue: true,
               ttl: 360,
-              ad: ad.tag
+              ad: tag
             };
             bidResponses.push(bidResponse);
         }
