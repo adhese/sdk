@@ -84,8 +84,8 @@ export const spec = {
 
             let creativeId = '', dealId = '';
             if(ad.origin == 'RUBICON'){
-              creativeId = ad.originData.bid.crid;
-              dealId = ad.originData.bid.dealid;
+              creativeId = ad.originData.seatbid[0].bid[0].crid;
+              dealId = ad.originData.bid.seatbid[0].bid[0].dealid;
               tag = ad.body
             } else {
               creativeId = ad.id;
