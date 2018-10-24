@@ -81,13 +81,23 @@ export const spec = {
                     price = Number(cpm.amount);
                 }
             }
+
+            let creativeId = '', dealId = '';
+            if(ad.origin == 'RUBICON'){
+              creativeId = ad.originData.bid.crid;
+              dealId = ad.originData.bid.dealid;
+              tag = ad.body
+            } else {
+              creativeId = ad.id;
+              dealId = ad.orderId;
+            }
             const bidResponse = {
               requestId: bids[j].bidId,
               cpm: price,
               width: ad.width,
               height: ad.height,
-              creativeId: ad.id,
-              dealId: ad.orderId,
+              creativeId: creativeId,
+              dealId: dealId,
               currency: 'USD',
               netRevenue: true,
               ttl: 360,
