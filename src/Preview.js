@@ -128,7 +128,7 @@ Adhese.prototype.showInfoSign = function() {
 	var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: lightgrey; color: black; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.9; border:2px #9e9e9e solid">';
     msg += '<b>Adhese Request Info</b></br>- Click to disable -</br>';
     msg += '</br><b>Location code:</b></br>';
-    msg += adhese.config.location + '</br>';
+    msg += this.config.location + '</br>';
     msg += '</br><b>Format code(s):</b></br>';
     for(x in adhese.ads){
         msg +=adhese.ads[x][0]+'</br>';

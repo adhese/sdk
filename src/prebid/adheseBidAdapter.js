@@ -83,13 +83,13 @@ export const spec = {
             }
 
             let creativeId = '', dealId = '';
-            if(ad.origin == 'JERLICIA'){
+            if(ad.origin == 'RUBICON'){
+              creativeId = ad.originData.seatbid[0].bid[0].crid;
+              dealId = ad.originData.seatbid[0].bid[0].dealid;
+              tag = ad.body
+            } else {
               creativeId = ad.id;
               dealId = ad.orderId;
-            } else {
-              creativeId = ad.originData.seatbid[0].bid[0].crid;
-              dealId = ad.originData.bid.seatbid[0].bid[0].dealid;
-              tag = ad.body
             }
             const bidResponse = {
               requestId: bids[j].bidId,
