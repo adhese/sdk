@@ -55,21 +55,7 @@ export const spec = {
       }, {});        
       for (var j = 0; j<bids.length; j++) {
         let ad = ads[bids[j].uid];
-        if (!ad) {
-          const bidResponse = {
-            requestId: bids[j].bidId,
-            cpm: 0,
-            width: 0,
-            height: 0,
-            creativeId: 0,
-            dealId: 0,
-            currency: 'USD',
-            netRevenue: true,
-            ttl: 360,
-            ad: ""
-          };
-          bidResponses.push(bidResponse);
-        } else {
+        if (ad) {
             let tag = ad.tag;
             if(ad.ext=="js" && ad.body != undefined && ad.body != "" && ad.body.match(/<script|<SCRIPT/)) {
                 tag = ad.body;
@@ -91,6 +77,7 @@ export const spec = {
               creativeId = ad.id;
               dealId = ad.orderId;
             }
+            tag += "<img src='"+ ad.impressionCounter +"' style='height:1px; width:1px; margin: -1px -1px; display:none;'/>";
             const bidResponse = {
               requestId: bids[j].bidId,
               cpm: price,
