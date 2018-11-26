@@ -79,7 +79,11 @@ export const spec = {
               creativeId = (ad.id?ad.id:ad.origin+ad.originInstance);
               dealId = ad.orderId;
             }
-            tag += "<img src='"+ ad.impressionCounter +"' style='height:1px; width:1px; margin: -1px -1px; display:none;'/>";
+            
+            if(ad.ext=="js" && ad.body != undefined && ad.body != "" && ad.body.match(/<script|<SCRIPT|<html|<HTML/)) {
+              tag += "<img src='"+ ad.impressionCounter +"' style='height:1px; width:1px; margin: -1px -1px; display:none;'/>";
+            }
+            
             const bidResponse = {
               requestId: bids[j].bidId,
               cpm: price,
