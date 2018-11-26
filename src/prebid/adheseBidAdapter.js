@@ -5,6 +5,8 @@ import { BANNER, VIDEO } from 'src/mediaTypes';
 const BIDDER_CODE = 'adhese';
 export const spec = {
     code: BIDDER_CODE,
+    supportedMediaTypes: ['banner','video'],
+    
     isBidRequestValid: function(bid) {
       return !!(bid.params.account && bid.params.location && bid.params.formats);
     },
@@ -57,7 +59,7 @@ export const spec = {
         let ad = ads[bids[j].uid];
         if (ad) {
             let tag = ad.tag;
-            if(ad.ext=="js" && ad.body != undefined && ad.body != "" && ad.body.match(/<script|<SCRIPT/)) {
+            if(ad.ext=="js" && ad.body != undefined && ad.body != "" && ad.body.match(/<script|<SCRIPT|<html|<HTML|<\?xml/)) {
                 tag = ad.body;
             }
             let price = 0; 
@@ -74,22 +76,27 @@ export const spec = {
               dealId = ad.originData.seatbid[0].bid[0].dealid;
               tag = ad.body
             } else {
-              creativeId = ad.id;
+              creativeId = (ad.id?ad.id:ad.origin+ad.originInstance);
               dealId = ad.orderId;
             }
             tag += "<img src='"+ ad.impressionCounter +"' style='height:1px; width:1px; margin: -1px -1px; display:none;'/>";
             const bidResponse = {
               requestId: bids[j].bidId,
               cpm: price,
-              width: Number.parseInt(ad.width),
-              height: Number.parseInt(ad.height),
+              width: ad.width,
+              height: ad.height,
               creativeId: creativeId,
               dealId: dealId,
               currency: 'USD',
               netRevenue: true,
               ttl: 360,
-              ad: tag
+              ad: tag,
+              mediaType: ((ad.adType=='preroll')?'video':'banner'),
             };
+            if (ad.adType=='preroll') {
+              bidResponse.vastXml = tag;
+              bidResponse.ad = '';
+            }
             bidResponses.push(bidResponse);
         }
       }
