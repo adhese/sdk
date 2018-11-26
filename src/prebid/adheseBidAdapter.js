@@ -83,8 +83,8 @@ export const spec = {
             const bidResponse = {
               requestId: bids[j].bidId,
               cpm: price,
-              width: ad.width,
-              height: ad.height,
+              width: Number.parseInt(ad.width),
+              height: Number.parseInt(ad.height),
               creativeId: creativeId,
               dealId: dealId,
               currency: 'USD',
