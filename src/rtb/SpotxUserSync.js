@@ -4,9 +4,13 @@
 * @return {void}
 */
 Adhese.prototype.spotxUserSync = function(option) {
+        var domain = "user-sync.adhese.com";
+        if (option && option.domain && option.domain!='') {
+                domain = option.domain;
+        }
         if (option && option.spotx_advertiser_id) {
                 this.genericUserSync({
-                        url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
+                        url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2F" + domain + "%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
                         syncName: "spotx",
                         iframe: true 
                 });
