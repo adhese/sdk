@@ -371,10 +371,12 @@ Adhese.prototype.getRequestUri = function(ad, options) {
  	} else if (network=="improvedigital") {
 		this.improvedigitalUserSync(identification);
 	} else if (network=="pubmatic") {
-                this.pubmaticUserSync(identification);
-        } else if (network=="spotx") {
-                this.spotxUserSync(identification);
-        }
+        this.pubmaticUserSync(identification);
+    } else if (network=="spotx") {
+        this.spotxUserSync(identification);
+    } else if (network=="appnexus") {
+        this.appnexusUserSync(identification);
+    }
  };
 /**
  * This function can be used in a SafeFrame implementation to create a preview request and write out the result.
