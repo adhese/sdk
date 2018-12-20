@@ -43,11 +43,18 @@
  		var protocol = "http:";
  		if (window.location.protocol != "file:") {
  			protocol = window.location.protocol;
- 		}
- 		this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
- 		this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
- 		this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
- 		this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
+		}
+		if (!options.prefixVersion || (options.prefixVersion && options.prefixVersion==1)) {
+			this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
+			this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
+			this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
+		} else if (options.prefixVersion && options.prefixVersion==2) {
+			this.config.host = protocol + "//hosts-" + options.account + ".adhese.com/";
+			this.config.poolHost = protocol + "//hosts-" + options.account + ".adhese.com/";
+			this.config.clickHost = protocol + "//hosts-" + options.account + ".adhese.com/";
+		} 
+ 		 
+		 this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
  		this.config.hostname = undefined;
  	} else if (options.host) {
  		this.config.host = options.host;
