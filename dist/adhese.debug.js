@@ -35,9 +35,15 @@ Adhese.prototype.init = function(options) {
         if (window.location.protocol != "file:") {
             protocol = window.location.protocol;
         }
-        this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
-        this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
-        this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
+        if (!options.prefixVersion || options.prefixVersion && options.prefixVersion == 1) {
+            this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
+            this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
+            this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
+        } else if (options.prefixVersion && options.prefixVersion == 2) {
+            this.config.host = protocol + "//hosts-" + options.account + ".adhese.com/";
+            this.config.poolHost = protocol + "//hosts-" + options.account + ".adhese.com/";
+            this.config.clickHost = protocol + "//hosts-" + options.account + ".adhese.com/";
+        }
         this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
         this.config.hostname = undefined;
     } else if (options.host) {
@@ -280,6 +286,8 @@ Adhese.prototype.syncUser = function(network, identification) {
         this.pubmaticUserSync(identification);
     } else if (network == "spotx") {
         this.spotxUserSync(identification);
+    } else if (network == "appnexus") {
+        this.appnexusUserSync(identification);
     }
 };
 
@@ -753,7 +761,7 @@ Adhese.prototype.showInfoSign = function() {
     var msg = '<div id="adhInfoMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: lightgrey; color: black; position:fixed; top:10px;right:10px;padding:10px;z-index:9999;width:auto; max-width:300px; opacity:0.9; border:2px #9e9e9e solid">';
     msg += "<b>Adhese Request Info</b></br>- Click to disable -</br>";
     msg += "</br><b>Location code:</b></br>";
-    msg += adhese.config.location + "</br>";
+    msg += this.config.location + "</br>";
     msg += "</br><b>Format code(s):</b></br>";
     for (x in adhese.ads) {
         msg += adhese.ads[x][0] + "</br>";
@@ -1178,6 +1186,24 @@ Adhese.prototype.Events.prototype.remove = function(type, handler, element) {
     }
 };
 
+Adhese.prototype.appnexusUserSync = function() {
+    this.genericUserSync({
+        url: "https://ib.adnxs.com/getuid?https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fappnexus%2Fuser_sync%3Fu%3D%24UID",
+        syncName: "appnexus",
+        iframe: true
+    });
+};
+
+Adhese.prototype.bidswitchUserSync = function(option) {
+    if (option && option.bidswitch_account_name) {
+        this.genericUserSync({
+            url: "http://x.bidswitch.net/sync?ssp=" + option.bidswitch_account_name,
+            syncName: "bidswitch",
+            iframe: false
+        });
+    }
+};
+
 Adhese.prototype.criteoUserSync = function(options) {
     if (options && options.nid) {
         var crtg_nid = options.nid;
@@ -1216,7 +1242,7 @@ Adhese.prototype.criteoUserSync = function(options) {
 Adhese.prototype.genericUserSync = function(option) {
     if (option && option.url && option.syncName) {
         var lastSyncCookieName = option.syncName + "_uid_last_sync";
-        if (typeof option.onload == undefined || option.onload == "") option.onload = true;
+        if (typeof option.onload == "undefined" || option.onload == "") option.onload = true;
         if (document.cookie.indexOf(lastSyncCookieName) == -1 || !option.syncRefreshPeriod) {
             if (option.onload) {
                 if (option.iframe) {
@@ -1272,6 +1298,7 @@ Adhese.prototype.appendSyncPixel = function(options) {
 Adhese.prototype.improvedigitalUserSync = function(option) {
     var partner_id = 1;
     var domain = "user-sync.adhese.com";
+    var onload = true;
     if (option && option.partner_id && option.partner_id != "") {
         partner_id = option.partner_id;
     }
@@ -1280,8 +1307,6 @@ Adhese.prototype.improvedigitalUserSync = function(option) {
     }
     if (option && option.onload && option.onload != "") {
         onload = option.onload;
-    } else {
-        onload = true;
     }
     this.genericUserSync({
         url: "https://ad.360yield.com/server_match?partner_id=" + partner_id + "&r=https%3A%2F%2F" + domain + "%2Fhandlers%2Fimprovedigital%2Fuser_sync%3Fu%3D%7BPUB_USER_ID%7D",
@@ -1312,9 +1337,13 @@ Adhese.prototype.rubiconUserSync = function(option) {
 };
 
 Adhese.prototype.spotxUserSync = function(option) {
+    var domain = "user-sync.adhese.com";
+    if (option && option.domain && option.domain != "") {
+        domain = option.domain;
+    }
     if (option && option.spotx_advertiser_id) {
         this.genericUserSync({
-            url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
+            url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2F" + domain + "%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
             syncName: "spotx",
             iframe: true
         });
