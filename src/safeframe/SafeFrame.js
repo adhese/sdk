@@ -62,6 +62,8 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 				ad.sfSrc = ad.swfSrc;
 			}
 		}
+		var tgtValue = '_blank';
+        if(ad.sfHtml.indexOf("TARGET='_self'") > 0) tgtValue = '_self';
 		var posConf = new $sf.host.PosConfig({
 			"id": ad[this.containerID],
 			"w": ad.width,
