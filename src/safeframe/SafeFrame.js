@@ -70,7 +70,7 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			"h": ad.height,
 			"size" : ad.width+"x"+ad.height,
 			"dest":	ad[this.containerID],
-			"tgt": "_blank"
+			"tgt": tgtValue
 		});
 		this.adhesePositions.push(new $sf.host.Position({
 			"id": ad[this.containerID],
