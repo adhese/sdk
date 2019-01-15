@@ -150,6 +150,18 @@
                 href = decodeURIComponent(clickTag) + href;
                 anchor.setAttribute('href',href);
                 adheseDiv.appendChild(anchor);                
+            } else if (result[i].ext == 'js') {
+                var iframe = document.createElement('iframe');
+                iframe.width = result[i].width;
+                iframe.height = result[i].height;
+                iframe.scrolling="no";
+                iframe.frameBorder = 0;
+                iframe.frameSpacing = 0;
+                iframe.style = "border: none;outline: none;overflow: hidden;top:0px; left:0px; margin: 0; padding: 0;";
+                adheseDiv.appendChild(iframe);
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(result[i].body);
+                iframe.contentWindow.document.close();                
             }
         };
     });
