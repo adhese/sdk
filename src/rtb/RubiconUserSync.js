@@ -8,7 +8,8 @@ Adhese.prototype.rubiconUserSync = function(option) {
                 this.genericUserSync({
                         url: "https://secure-assets.rubiconproject.com/utils/xapi/multi-sync.html?p=" + option.rp_account + "&endpoint=eu",
                         syncName: "rubicon",
-                        iframe: true
+                        iframe: true,
+                        onload: option.onload 
                 });
         }
 };

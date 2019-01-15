@@ -12,7 +12,8 @@ Adhese.prototype.spotxUserSync = function(option) {
                 this.genericUserSync({
                         url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2F" + domain + "%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
                         syncName: "spotx",
-                        iframe: true 
+                        iframe: true,
+                        onload: option.onload 
                 });
         }
 };

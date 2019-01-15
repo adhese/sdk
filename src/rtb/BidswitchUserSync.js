@@ -3,7 +3,8 @@ Adhese.prototype.bidswitchUserSync = function(option) {
         this.genericUserSync({
             url: "http://x.bidswitch.net/sync?ssp=" + option.bidswitch_account_name,
             syncName: "bidswitch",
-            iframe: false
+            iframe: false,
+            onload: option.onload 
         });
     }
 };
