@@ -83,7 +83,8 @@
  	} else {
 		  this.config.safeframe = options.safeframe;
 		  this.initSafeFrame(options.safeframeContainerID);
- 	}
+	 }
+	 this.config.logSafeframeMessages = options.safeframeMsg || this.logSafeframeMessages;
 
  	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
   	if(typeof(Fingerprint) === "function"){
@@ -119,9 +120,9 @@
 Adhese.prototype.initSafeFrame = function(safeframeContainerID) {
 	if (!this.safeframe) {
 		if (safeframeContainerID) {
-			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID);	
+			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID, this.config.logSafeframeMessages);	
 		} else {
-			this.safeframe = new this.SafeFrame(this.config.poolHost);
+			this.safeframe = new this.SafeFrame(this.config.poolHost, this.config.logSafeframeMessages);
 		}		
 	}	
 }
@@ -432,4 +433,15 @@ Adhese.prototype.registerResponse = function(key, ad) {
       adhese.responses = new Object();
     }
 	adhese.responses[key] = ad;
+}
+
+/**
+ * This function is used in Safeframe implementations to catch messages originating from Safeframe containers with requests for functionality
+ * @param  {string} id   Saframe container ID
+ * @param  {string} type Functionality type
+ * @param  {string} data Functionality data
+ * @return {void}
+ */
+Adhese.prototype.logSafeframeMessages = function(id,status,data) {
+	this.helper.log(id,status,data);
 }

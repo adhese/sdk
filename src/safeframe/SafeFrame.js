@@ -2,12 +2,13 @@
  * @class
  * This file contains the SafeFrame object that makes the IAB Safeframe reference implementation available in the Adhese context.
  */
- Adhese.prototype.SafeFrame = function(poolHost, containerID) {
+ Adhese.prototype.SafeFrame = function(poolHost, containerID, messages) {
 	this.poolHost = poolHost;
 	this.containerID = "adType";
 	if (containerID) this.containerID = containerID;
 	this.adhesePositions = new Array();
 	this.ads = [];
+	this.logMessages = messages || '';
 	return this.init();
  };
 
@@ -39,7 +40,8 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 		debug: true,
 		// Should be absolute path to render file hosted on CDN
 		renderFile:	this.poolHost + "sf/r.html",
-		positions: this.adhesePositionConfig
+		positions: this.adhesePositionConfig,
+		onBeforePosMsg: this.logMessages
 	});
 
 	return this;
