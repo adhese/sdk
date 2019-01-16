@@ -2,7 +2,7 @@ Adhese.prototype.genericUserSync = function(option) {
 	// if no account given, do nothing
 	if (option && option.url && option.syncName) {
 		var lastSyncCookieName = option.syncName + "_uid_last_sync";
-		if (typeof option.onload == "undefined" || option.onload == "") option.onload = true;
+		if (typeof option.onload == "undefined") option.onload = true;
 		if(document.cookie.indexOf(lastSyncCookieName)==-1 || !option.syncRefreshPeriod) {
 			if (option.onload) {
 				if (option.iframe) {
