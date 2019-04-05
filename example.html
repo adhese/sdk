@@ -34,9 +34,9 @@
 		// register a user related parameter
 		adhese.registerRequestParameter('ag', 40);
 
+                var userConsentGiven = true; // assign this value from your CMP 
 		// sync user with Rubicon for RTB Gateway purposes, pass your Rubicon ID
-		// if (adhese.helper.eatsCookie()) {
-		if (true) {
+		if (userConsentGiven) {
 			adhese.syncUser("rubicon",{rp_account:"adhese"});
 			adhese.syncUser("pubmatic",{pubmatic_publisher_id:"156572"});
 			adhese.syncUser("spotx",{spotx_advertiser_id:"8536"});
