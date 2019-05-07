@@ -126,7 +126,7 @@
     var adheseDiv = document.currentScript.parentNode;
     var clickTag = adheseDiv.getAttribute("data-adhese-click");
     if (clickTag==null) clickTag = "";
-    var adUri = "https://ads-" + adheseDiv.getAttribute("data-adhese-account") + ".adhese.com/json/" + adheseDiv.getAttribute("data-adhese-slot") + "/?t=" + new Date().getTime();
+    var adUri = "https://hosts-" + adheseDiv.getAttribute("data-adhese-account") + ".adhese.com/json/" + adheseDiv.getAttribute("data-adhese-slot") + "/?t=" + new Date().getTime();
     var response = AdheseAjax.request({
         url: adUri,
         method: 'get',
