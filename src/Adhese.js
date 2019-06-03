@@ -377,6 +377,10 @@ Adhese.prototype.getRequestUri = function(ad, options) {
         this.spotxUserSync(identification);
     } else if (network=="appnexus") {
         this.appnexusUserSync(identification);
+    } else if (network=="smartadserver") {
+        this.smartadserverUserSync(identification);
+    } else if (network=="multi") {
+        this.multiUserSync(identification);
     }
  };
 /**
