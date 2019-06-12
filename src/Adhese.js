@@ -49,9 +49,9 @@
 			this.config.poolHost = protocol + "//pool-" + options.account + ".adhese.com/";
 			this.config.clickHost = protocol + "//click-" + options.account + ".adhese.com/";
 		} else if (options.prefixVersion && options.prefixVersion==2) {
-			this.config.host = protocol + "//hosts-" + options.account + ".adhese.com/";
-			this.config.poolHost = protocol + "//hosts-" + options.account + ".adhese.com/";
-			this.config.clickHost = protocol + "//hosts-" + options.account + ".adhese.com/";
+			this.config.host = protocol + "//ads-" + options.account + ".adhese.com/";
+			this.config.poolHost = protocol + "//ads-" + options.account + ".adhese.com/";
+			this.config.clickHost = protocol + "//ads-" + options.account + ".adhese.com/";
 		} 
  		 
 		 this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
