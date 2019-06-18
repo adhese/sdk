@@ -58,6 +58,7 @@
                                             result = JSON.parse(result);
                                             self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
                                         }catch(e){
+                                            console.error('Ad response parsing error: \n', e);
                                             self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: " + e]);
                                         }
                                     }else {
