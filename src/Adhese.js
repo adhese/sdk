@@ -203,7 +203,11 @@ Adhese.prototype.addRequestString = function(value) {
 				previewAd.width = previewformat.width;
 				previewAd.height = previewformat.height;
 				ad = previewAd;
-                addEventListener("load", that.showPreviewSign.bind(that))
+				if (document.readyState === 'complete') {
+					this.showPreviewSign();
+				} else {
+					addEventListener("load", that.showPreviewSign.bind(that));
+				}
 			}
 		}
 	 }
