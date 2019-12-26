@@ -58,11 +58,11 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 		var ad = inAds[index];
 		ad.sfHtml = ad.tag;
 		if(ad.ext=="js") {
-			if (ad.body != undefined && ad.body!="" && ad.body.match(/<script|<SCRIPT/)) {
+			//if (ad.body != undefined && ad.body!="" && ad.body.match(/<script|<SCRIPT/)) {
 				ad.sfHtml = ad.body;
-			} else {
-				ad.sfSrc = ad.swfSrc;
-			}
+			// } else {
+			// 	ad.sfSrc = ad.swfSrc;
+			// }
 		}
 		var tgtValue = '_blank';
         if(ad.sfHtml && ad.sfHtml.indexOf("TARGET='_self'") > 0) tgtValue = '_self';
