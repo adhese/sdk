@@ -92,10 +92,10 @@
   	}
 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
 	if (typeof options.referrer == 'undefined' || options.referrer == true) {
-		this.registerRequestParameter('re', this.helper.stringToHex(document.referrer.substr(0, 200)));
+		this.registerRequestParameter('re', this.helper.base64.urlencode(document.referrer.substr(0, 200)));
 	}
 	if (typeof options.url == 'undefined' || options.url == true) {
-		this.registerRequestParameter('ur', this.helper.stringToHex(window.location.href));
+		this.registerRequestParameter('ur', this.helper.base64.urlencode(window.location.href));
 	}
  	this.userAgent = this.helper.getUserAgent();
 	for (var p in this.userAgent) {
