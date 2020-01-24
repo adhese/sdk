@@ -2748,7 +2748,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 		var exdate=new Date();
 		exdate.setDate(exdate.getDate() + 1);
-		var c_value=newValue + "; expires="+exdate.toUTCString();
+		var c_value=newValue + "; expires="+exdate.toUTCString() + "; SameSite=None; Secure";
 		document.cookie=key + "=" + c_value;
 
 
