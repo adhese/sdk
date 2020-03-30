@@ -36,7 +36,7 @@ if (window["$sf"]) {
 
 	}
 } else {
-	var $sf = { 
+	window["$sf"] = { 
 		ver: "1-1-0",
 		specVersion: "1.1"
 	};
