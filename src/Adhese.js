@@ -212,8 +212,6 @@ Adhese.prototype.addRequestString = function(value) {
 		}
 	 }
 	 
-	 ad.options.slotName = this.getSlotName(ad);
-
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {
         if(this.config.previewExclusive == false || (this.config.previewExclusive == true && ad.swfSrc)){
