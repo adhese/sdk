@@ -511,18 +511,25 @@ Adhese.prototype.Helper.prototype.getMetaContent = function(meta_name) {
  * @return {boolean} true if visible, false if not
  */
  Adhese.prototype.Helper.prototype.adhElementInViewport = function(element) {
-  if(typeof(element) == "string"){
-    element = document.getElementById(element);
-  }
-	if(element){
-    	var rect = element.getBoundingClientRect();
-			return (
-					rect.top >= 0 &&
-					rect.left >= 0 &&
-					rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-					rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-			);
-		}else{
-			return false;
-		}
+  return this.adhElementInViewportWithPercentage(element, 1.0);
+};
+
+/**
+ * Function to check if an element is visible or not
+ * @param {string} the id from the element to be checked or the element itself
+ * @param {float} the percentage of container that needs to be visible to return true, set as a floating point number between 1.0 and 0.0
+ * @return {boolean} true if visible, false if not
+ */
+Adhese.prototype.Helper.prototype.adhElementInViewportWithPercentage = function (element, w, h, percentage) {
+    if (typeof element == "string") {
+        element = document.getElementById(element);
+    }
+    if (element) {
+        var rect = element.getBoundingClientRect();
+        var calY = rect.top + h * percentage;
+        var calX = rect.left + w * percentage;
+        return rect.top >= 0 && rect.left >= 0 && calY <= (window.innerHeight || document.documentElement.clientHeight) && calX <= (window.innerWidth || document.documentElement.clientWidth);
+    } else {
+        return false;
+    }
 };

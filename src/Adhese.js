@@ -272,9 +272,22 @@ Adhese.prototype.addRequestString = function(value) {
 Adhese.prototype.track = function(uri) {
 	this.helper.addTrackingPixel(uri);
 };
+
 Adhese.prototype.trackByUrl = function (uri) {
   this.helper.addTrackingPixel(uri);
 };
+
+/**
+ * render the markup for the given ad and fire of a "paid impression" tracker
+ */
+Adhese.prototype.renderAndTrackAd = function(ad) {
+    this.safeframe.render(ad.containingElementId);
+    AdheseAjax.request({
+        url: ad.tracker,
+        method: "get"
+    });
+};
+
 /**
  * This function can be used to create a request for several slots at once. For each ad object passed, a sl part is added to the request. The target parameters are added once.
  * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
