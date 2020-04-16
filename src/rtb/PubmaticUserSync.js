@@ -6,7 +6,7 @@
 Adhese.prototype.pubmaticUserSync = function(option) {
         if (option && option.pubmatic_publisher_id) {
                 this.genericUserSync({
-                        url: "https://ads.pubmatic.com/AdServer/js/user_sync.html?p=" + option.pubmatic_publisher_id + "&predirect=https%3a%2f%2fuser-sync.adhese.com%2fhandlers%2fpubmatic%2fuser_sync%3fu%3d",
+                        url: "https://ads.pubmatic.com/AdServer/js/user_sync.html?p=" + option.pubmatic_publisher_id + "&predirect=https%3a%2f%2fuser-sync.adhese.com%2fhandlers%2fpubmatic%2fuser_sync%3ftl%3D" + this.getBooleanConsent() + "%26u%3d",
                         syncName: "pubmatic",
                         iframe: true,
                         onload: option.onload 

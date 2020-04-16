@@ -5,7 +5,7 @@
 */
 Adhese.prototype.appnexusUserSync = function() {
     this.genericUserSync({
-        url: "https://ib.adnxs.com/getuid?https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fappnexus%2Fuser_sync%3Fu%3D%24UID",
+        url: "https://ib.adnxs.com/getuid?https%3A%2F%2Fuser-sync.adhese.com%2Fhandlers%2Fappnexus%2Ftl%3D" + this.getBooleanConsent() + "%26user_sync%3Fu%3D%24UID",
         syncName: "appnexus",
         iframe: true,
         onload: option.onload 
