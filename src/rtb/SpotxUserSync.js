@@ -10,7 +10,7 @@ Adhese.prototype.spotxUserSync = function(option) {
         }
         if (option && option.spotx_advertiser_id) {
                 this.genericUserSync({
-                        url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2F" + domain + "%2Fhandlers%2Fspotx%2Fuser_sync%3Fu%3D%24SPOTX_USER_ID",
+                        url: "https://sync.search.spotxchange.com/partner?adv_id=" + option.spotx_advertiser_id + "&redir=https%3A%2F%2F" + domain + "%2Fhandlers%2Fspotx%2Fuser_sync%3Ftl%3D" + this.getBooleanConsent() + "%26u%3D%24SPOTX_USER_ID",
                         syncName: "spotx",
                         iframe: true,
                         onload: option.onload 

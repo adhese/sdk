@@ -155,6 +155,13 @@ Adhese.prototype.removeRequestParameter = function(key, value) {
     }
 };
 
+Adhese.prototype.getBooleanConsent = function() {
+	try {
+		return this.request.tl[0];
+	} catch(e) {
+		return 'none';
+	}
+}
 
 /**
  * Function to add a string to an Adhese instance. This string will be appended to each request.

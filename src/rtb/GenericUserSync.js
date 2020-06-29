@@ -27,7 +27,7 @@ Adhese.prototype.genericUserSync = function(option) {
 				this.helper.createCookie(lastSyncCookieName, diff, (diff/option.syncRefreshPeriod));
 				// also create domain cookie, so do a request to an .adhese.com endpoint with the current domain as qs param
 			}
-			if (this.config && this.config.hostname) new Image().src = "https://user-sync.adhese.com/handlers/" + option.syncName + "/user_sync_discovery?domain=" + this.config.hostname;
+			if (this.config && this.config.hostname) new Image().src = "https://user-sync.adhese.com/handlers/" + option.syncName + "/user_sync_discovery?domain=" + this.config.hostname + "&tl=" + this.getBooleanConsent();
 			// this endpoint wil create a cookie on .adhese.com containing the domain as passed
 		}
 	}
