@@ -56,8 +56,10 @@
  		 
 		 this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
  		this.config.hostname = undefined;
- 	} else if (options.host) {
- 		this.config.host = options.host;
+ 	} else if (options.host && options.poolHost) {
+		this.config.host = options.host;
+		this.config.clickHost = options.host;
+		this.config.poolHost = options.poolHost;
  		//make anchor to extract some info about domain
  		var adHost = document.createElement("a");
 		adHost.href = this.config.host;
@@ -86,11 +88,7 @@
 	 }
 	 this.config.logSafeframeMessages = options.safeframeMsg || this.logSafeframeMessages;
 
- 	this.registerRequestParameter('rn', Math.round(Math.random()*10000));
-  	if(typeof(Fingerprint) === "function"){
-      	this.registerRequestParameter('fp', new Fingerprint({canvas: true}).get());
-  	}
-	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
+ 	this.registerRequestParameter('pr', (window.devicePixelRatio || 1));
 	if (typeof options.referrer == 'undefined' || options.referrer == true) {
 		this.registerRequestParameter('re', this.helper.base64.urlencode(document.referrer.substr(0, 200)));
 	}

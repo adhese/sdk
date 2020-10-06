@@ -1,5 +1,5 @@
 all:
-	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js src/rtb/*.js vast/adhese-vast.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js -m -v -c -o dist/adhese.min.js
+	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js src/rtb/*.js vast/adhese-vast.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js -m -c -o dist/adhese.min.js
 
 nocompression:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/fingerprint/*.js src/events/*.js vast/adhese-vast.js -b -v -o dist/adhese.js
@@ -20,7 +20,7 @@ novastnoajaxnofingerprint:
 	uglifyjs src/*.js src/detection/*.js -m -v -c -o dist/adhese.novastnoajaxnofingerprint.min.js
 
 debug:
-	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/visible/*.js src/fingerprint/*.js src/events/*.js src/rtb/*.js vast/adhese-vast.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js -b -v -o dist/adhese.debug.js
+	cat src/*.js src/ajax/*.js src/detection/*.js src/visible/*.js src/events/*.js src/rtb/*.js vast/adhese-vast.js src/safeframe/SafeFrame.js src/safeframe/js/lib/base.js src/safeframe/js/host/host.js src/safeframe/js/lib/boot.js > dist/adhese.debug.js
 
 prebid-debug:
 	uglifyjs src/*.js src/ajax/*.js src/detection/*.js src/visible/*.js src/fingerprint/*.js src/events/*.js src/prebid/*.js -b -v -o dist/adhese.prebid.debug.js
