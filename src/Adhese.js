@@ -56,8 +56,10 @@
  		 
 		 this.config.previewHost = "https://" + options.account + "-preview.adhese.org/";
  		this.config.hostname = undefined;
- 	} else if (options.host) {
- 		this.config.host = options.host;
+ 	} else if (options.host && options.poolHost) {
+		this.config.host = options.host;
+		this.config.clickHost = options.host;
+		this.config.poolHost = options.poolHost;
  		//make anchor to extract some info about domain
  		var adHost = document.createElement("a");
 		adHost.href = this.config.host;
