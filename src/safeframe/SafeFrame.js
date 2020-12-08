@@ -95,10 +95,10 @@ Adhese.prototype.SafeFrame.prototype.render = function(id) {
 	for (var x in this.adhesePositions) {
 		if (this.adhesePositions[x].id == id) {
 			$sf.host.render(this.adhesePositions[x]);
-		}
-		if (this.viewability && this.adhesePositions[x].viewableTracker && this.adhesePositions[x].viewableTracker !== '') {
-			this.viewability.trackers[id] = this.adhesePositions[x].viewableTracker;
-			this.viewability.adObserver.observe(document.getElementById(id));
+			if (this.viewability && this.adhesePositions[x].viewableTracker && this.adhesePositions[x].viewableTracker !== '') {
+				this.viewability.trackers[id] = this.adhesePositions[x].viewableTracker;
+				this.viewability.adObserver.observe(document.getElementById(id));
+			}
 		}
 	}
 };
