@@ -515,7 +515,17 @@ Adhese.prototype.enableViewabilityTracking = function (target, settings) {
 					adBox.timerRunning = true;
 					adBox.timer = window.setTimeout(function () {
 						target.viewability.adObserver.unobserve(adBox);
-						if (target.viewability.trackers[adBox.id]) this.helper.addTrackingPixel(target.viewability.trackers[adBox.id]);
+						if (target.viewability.trackers[adBox.id]) {
+							var tracker = document.createElement("img");
+							tracker.src = target.viewability.trackers[adBox.id];
+							tracker.style.height = "1px";
+							tracker.style.width = "1px";
+							tracker.style.margin = "-1px";
+							tracker.style.border = "0";
+							tracker.style.position = "absolute";
+							tracker.style.top = "0";
+							document.body.appendChild(tracker);
+						}						
 					}, target.viewability.trackerTimeout * 1000);
 				} else {
 					if (adBox.timerRunning) {
