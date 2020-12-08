@@ -9,8 +9,8 @@
  	this.ads = [];
  	this.that = this;
  	this.helper = new this.Helper();
-  	this.detection = new this.Detection();
-  	return this;
+ 	this.detection = new this.Detection();
+ 	return this;
  }
 
 /**
@@ -76,9 +76,15 @@
  	} else if (options.location && typeof options.location=="string"){
  		this.config.location = options.location;
      	this.helper.log('options.location=="string"')
-  	} else {
+  } else {
     	this.config.location = 'testlocation'
-  	}
+	}
+	
+	if (options.viewabilityTracking) {
+			this.config.viewabilityTracking = options.viewabilityTracking
+	} else {
+			this.config.viewabilityTracking = false;
+	}
 
  	if (typeof options.safeframe == 'undefined' || options.safeframe == false) {
  		this.config.safeframe = false;
@@ -122,9 +128,9 @@
 Adhese.prototype.initSafeFrame = function(safeframeContainerID) {
 	if (!this.safeframe) {
 		if (safeframeContainerID) {
-			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID, this.config.logSafeframeMessages);	
+			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID, this.config.viewabilityTracking,this.config.logSafeframeMessages);	
 		} else {
-			this.safeframe = new this.SafeFrame(this.config.poolHost, this.config.logSafeframeMessages);
+			this.safeframe = new this.SafeFrame(this.config.poolHost, this.config.viewabilityTracking, this.config.logSafeframeMessages);
 		}		
 	}	
 }
@@ -473,3 +479,53 @@ Adhese.prototype.registerResponse = function(key, ad) {
 Adhese.prototype.logSafeframeMessages = function(id,status,data) {
 	this.helper.log(id,status,data);
 }
+
+/**
+* This function is used for viewability measurement and makes use of the IntersectionObserver API. Default settings are based on IAB.
+* @param  {object} target   Object to which we will add the observer. Can be the safeframe object or another one.
+* @param  {object} settings Viewability settings such as duration and in view percentage. When set to true, default IAB settings will be used.
+*/
+Adhese.prototype.enableViewabilityTracking = function (target, settings) {
+
+	target.viewability = {
+		contentBox: document.querySelector("body"),
+		trackers: {},
+		trackerTimeout: 0
+	}
+
+	observerOptions = {
+		root: null,
+		rootMargin: "0px",
+		threshold: [0.0]
+	};
+
+	if (typeof settings === 'object' && settings !== null) {
+		settings.inViewPercentage ? observerOptions.threshold.push(settings.inViewPercentage) : observerOptions.threshold.push(0.5);
+		target.viewability.trackerTimeout = settings.duration && settings.duration !== '' ? settings.duration : 1;
+	} else {
+		observerOptions.threshold.push(0.5);
+		target.viewability.trackerTimeout = 1;
+	}
+
+	target.viewability.intersectionCallback = function (entries) {
+		entries.forEach(function (entry) {
+			var adBox = entry.target;
+			if (entry.isIntersecting) {
+				if (entry.intersectionRatio >= 0.50) {
+					adBox.timerRunning = true;
+					adBox.timer = window.setTimeout(function () {
+						target.viewability.adObserver.unobserve(adBox);
+						if (target.viewability.trackers[adBox.id]) this.helper.addTrackingPixel(target.viewability.trackers[adBox.id]);
+					}, target.viewability.trackerTimeout * 1000);
+				} else {
+					if (adBox.timerRunning) {
+						window.clearTimeout(adBox.timer);
+						adBox.timerRunning = false;
+					}
+
+				}
+			}
+		});
+	}
+	target.viewability.adObserver = new IntersectionObserver(target.viewability.intersectionCallback, observerOptions);
+};

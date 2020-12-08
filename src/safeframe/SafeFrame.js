@@ -2,10 +2,12 @@
  * @class
  * This file contains the SafeFrame object that makes the IAB Safeframe reference implementation available in the Adhese context.
  */
- Adhese.prototype.SafeFrame = function(poolHost, containerID, messages) {
+ Adhese.prototype.SafeFrame = function(poolHost, containerID, viewabilityTracking, messages) {
 	this.poolHost = poolHost;
 	this.containerID = "adType";
 	if (containerID) this.containerID = containerID;
+	this.viewability = viewabilityTracking;
+	if (this.viewability) Adhese.prototype.enableViewabilityTracking(this, this.viewability);
 	this.adhesePositions = new Array();
 	this.ads = [];
 	this.logMessages = messages || '';
@@ -78,7 +80,8 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			"id": ad[this.containerID],
 			"html": ad.sfHtml,
 			"src": ad.sfSrc,
-			"conf": posConf
+			"conf": posConf,
+			"viewableTracker": ad.viewableImpressionCounter || ''
 		}));
 	}
 };
@@ -92,6 +95,10 @@ Adhese.prototype.SafeFrame.prototype.render = function(id) {
 	for (var x in this.adhesePositions) {
 		if (this.adhesePositions[x].id == id) {
 			$sf.host.render(this.adhesePositions[x]);
+		}
+		if (this.viewability && this.adhesePositions[x].viewableTracker && this.adhesePositions[x].viewableTracker !== '') {
+			this.viewability.trackers[id] = this.adhesePositions[x].viewableTracker;
+			this.viewability.adObserver.observe(document.getElementById(id));
 		}
 	}
 };
