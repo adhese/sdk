@@ -204,28 +204,28 @@ Adhese.prototype.addRequestString = function(value) {
   	var ad = new this.Ad(this, formatCode, options);
 	 	
 	if (this.previewActive) {
- 		var pf = this.previewFormats
-		for (var key in pf) {
-			if (key  == formatCode) {
-				var previewformat = pf[formatCode];
-				// create Ad for preview
-				var previewAd = new this.Ad(this, formatCode, options);
-				previewAd.adType = formatCode;
-				previewAd.ext = "js";
-                var previewJsonRequest = "";
-                if(!previewAd.options.write)previewJsonRequest = "json/";
-                previewAd.swfSrc = that.config.previewHost + "/creatives/preview/"+previewJsonRequest+"tag.do?id=" + previewformat.creative + "&slotId=" + previewformat.slot;
-				previewAd.width = previewformat.width;
-				previewAd.height = previewformat.height;
-				ad = previewAd;
-				if (document.readyState === 'complete') {
-					this.showPreviewSign();
-				} else {
-					addEventListener("load", that.showPreviewSign.bind(that));
-				}
-			}
-		}
-	 }
+		var pf = this.previewFormats
+	   for (var key in pf) {
+		   if (key  == formatCode + (options.position?options.position:"")) {
+			   var previewformat = pf[formatCode + (options.position?options.position:"")];
+			   // create Ad for preview
+			   var previewAd = new this.Ad(this, formatCode, options);
+			   previewAd.adType = formatCode;
+			   previewAd.ext = "js";
+			   var previewJsonRequest = "";
+			   if(!previewAd.options.write)previewJsonRequest = "json/";
+			   previewAd.swfSrc = that.config.previewHost + "/creatives/preview/"+previewJsonRequest+"tag.do?id=" + previewformat.creative + "&slotId=" + previewformat.slot;
+			   previewAd.width = previewformat.width;
+			   previewAd.height = previewformat.height;
+			   ad = previewAd;
+			   if (document.readyState === 'complete') {
+				   this.showPreviewSign();
+			   } else {
+				   addEventListener("load", that.showPreviewSign.bind(that));
+			   }
+		   }
+	   }
+	}
 	 
  	this.ads.push([formatCode, ad]);
  	if (ad.options.write) {

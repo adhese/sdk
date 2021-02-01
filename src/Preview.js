@@ -78,8 +78,30 @@ Adhese.prototype.checkPreview = function () {
 			this.previewFormats[c[0]] = {creative: c[1], slot: c[2], template: c[3], width: c[4], height: c[5]};
 		}
 		this.previewActive = true;
+	} else {
+		checkPreviewList();
 	}
 };
+
+Adhese.prototype.checkPreviewList = function() {
+	this.helper.log("checking for preview in json format", this.helper.getQueryStringParameter("adhese_preview"));
+	
+	var previewAds = [];
+	var inUrl = this.helper.getQueryStringParameter("adhese_preview");
+	var inCookie = this.helper.readCookie("adhese_preview");
+	if (inUrl != "")
+		previewAds = JSON.parse(inUrl);
+	else if (inCookie != "")
+		previewAds = JSON.parse(inCookie);
+	
+	this.previewFormats = {};
+	previewAds.forEach(ad => {
+		this.previewFormats[ad.format+(ad.position?ad.position:"")] = {slot:(ad.slotId?ad.slotId:""),creative:ad.cId, templateFile:ad.format,width:0,height:0,position:(ad.position?ad.position:"")};
+	});	
+	
+	this.helper.createCookie("adhese_preview",JSON.stringify(previewAds),0);
+	this.previewActive = previewAds.length>0;	
+}
 
 /**
  * The showPreviewSign function displays a message to inform the user that the live preview is active.
