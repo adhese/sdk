@@ -84,11 +84,11 @@ Adhese.prototype.checkPreview = function () {
 };
 
 Adhese.prototype.checkPreviewList = function() {
-	this.helper.log("checking for preview in json format", this.helper.getQueryStringParameter("adhese_preview"));
+	this.helper.log("checking for preview in json format", this.helper.getQueryStringParameter("adhese_preview_list"));
 	
 	var previewAds = [];
-	var inUrl = this.helper.getQueryStringParameter("adhese_preview");
-	var inCookie = this.helper.readCookie("adhese_preview");
+	var inUrl = this.helper.getQueryStringParameter("adhese_preview_list");
+	var inCookie = this.helper.readCookie("adhese_preview_list");
 	if (inUrl != "" && inUrl != null)
 		previewAds = JSON.parse(inUrl);
 	else if (inCookie != "" && inCookie != null)
@@ -99,7 +99,7 @@ Adhese.prototype.checkPreviewList = function() {
 		this.previewFormats[ad.format+(ad.position?ad.position:"")] = {slot:(ad.slotId?ad.slotId:""),creative:ad.cId, templateFile:ad.format,width:0,height:0,position:(ad.position?ad.position:"")};
 	});	
 	
-	this.helper.createCookie("adhese_preview",JSON.stringify(previewAds),0);
+	this.helper.createCookie("adhese_preview_list",JSON.stringify(previewAds),0);
 	this.previewActive = previewAds.length>0;	
 }
 
