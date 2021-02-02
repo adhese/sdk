@@ -89,9 +89,9 @@ Adhese.prototype.checkPreviewList = function() {
 	var previewAds = [];
 	var inUrl = this.helper.getQueryStringParameter("adhese_preview");
 	var inCookie = this.helper.readCookie("adhese_preview");
-	if (inUrl != "")
+	if (inUrl != "" && inUrl != null)
 		previewAds = JSON.parse(inUrl);
-	else if (inCookie != "")
+	else if (inCookie != "" && inCookie != null)
 		previewAds = JSON.parse(inCookie);
 	
 	this.previewFormats = {};
