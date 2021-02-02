@@ -124,9 +124,9 @@ Adhese.prototype.showPreviewSign = function () {
 Adhese.prototype.closePreviewSign = function () {
 	this.helper.eraseCookie("adhese_preview");
 	this.helper.eraseCookie("adhese_preview_list");
-	if(location.search.indexOf("adhesePreviewCreativeId") != -1){
+	if(location.search.indexOf("adhesePreviewCreativeId") != -1 || location.search.indexOf("adhese_preview_list") != -1){
 		location.href = location.href.split("?")[0];
-	}else{
+	} else {
 		location.reload();
 	}
 };
