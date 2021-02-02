@@ -79,7 +79,7 @@ Adhese.prototype.checkPreview = function () {
 		}
 		this.previewActive = true;
 	} else {
-		checkPreviewList();
+		this.checkPreviewList();
 	}
 };
 
