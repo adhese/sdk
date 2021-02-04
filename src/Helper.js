@@ -161,10 +161,10 @@ Adhese.prototype.Helper.prototype.debugTable = function() {
  * @param  {string} inName	The name of the parameter to read.
  * @return {array}	Returns an array of strings containing the values read from the location uri.
  */
- Adhese.prototype.Helper.prototype.getQueryStringParameter = function(inName) {
- 	var match = RegExp('[?&]' + key + '=([^&]*)').exec(window.location.search);
- 	return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : default_;
- };
+Adhese.prototype.Helper.prototype.getQueryStringParameter = function(inName) {
+	var match = RegExp('[?&]' + inName + '=([^&]*)').exec(window.location.search);
+	return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : "";
+};
 
 /**
  * Creates img element of 1 pixel and adds it to the document outside the viewport.

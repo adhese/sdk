@@ -78,8 +78,30 @@ Adhese.prototype.checkPreview = function () {
 			this.previewFormats[c[0]] = {creative: c[1], slot: c[2], template: c[3], width: c[4], height: c[5]};
 		}
 		this.previewActive = true;
+	} else {
+		this.checkPreviewList();
 	}
 };
+
+Adhese.prototype.checkPreviewList = function() {
+	this.helper.log("checking for preview in json format", this.helper.getQueryStringParameter("adhese_preview_list"));
+	
+	var previewAds = [];
+	var inUrl = this.helper.getQueryStringParameter("adhese_preview_list");
+	var inCookie = this.helper.readCookie("adhese_preview_list");
+	if (inUrl != "" && inUrl != null)
+		previewAds = JSON.parse(inUrl);
+	else if (inCookie != "" && inCookie != null)
+		previewAds = JSON.parse(inCookie);
+	
+	this.previewFormats = {};
+	previewAds.forEach(ad => {
+		this.previewFormats[ad.format+(ad.position?ad.position:"")] = {slot:(ad.slotId?ad.slotId:""),creative:ad.cId, templateFile:ad.format,width:0,height:0,position:(ad.position?ad.position:"")};
+	});	
+	
+	this.helper.createCookie("adhese_preview_list",JSON.stringify(previewAds),0);
+	this.previewActive = previewAds.length>0;	
+}
 
 /**
  * The showPreviewSign function displays a message to inform the user that the live preview is active.
@@ -88,7 +110,7 @@ Adhese.prototype.showPreviewSign = function () {
 	if (!document.getElementById("adhPreviewMessage")){
 		var that = this;
 		var p = document.createElement('DIV');
-		var msg = '<div id="adhPreviewMessage" style="cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;"><b>Adhese preview active.</br> Click to disable</div>';
+		var msg = '<div id="adhPreviewMessage" style="opacity: 0.4; cursor:pointer;font-family:Helvetica,Verdana; font-size:12px; text-align:center; background-color: #000000; color: #FFFFFF; position:fixed; top:10px;left:10px;padding:10px;z-index:9999;width: 100px;">ADHESE PREVIEW MODE<br/>clock to close</div>';
 		p.innerHTML = msg;
 		// once and afterload
 		document.body.appendChild(p);
@@ -101,9 +123,10 @@ Adhese.prototype.showPreviewSign = function () {
  */
 Adhese.prototype.closePreviewSign = function () {
 	this.helper.eraseCookie("adhese_preview");
-	if(location.search.indexOf("adhesePreviewCreativeId") != -1){
+	this.helper.eraseCookie("adhese_preview_list");
+	if(location.search.indexOf("adhesePreviewCreativeId") != -1 || location.search.indexOf("adhese_preview_list") != -1){
 		location.href = location.href.split("?")[0];
-	}else{
+	} else {
 		location.reload();
 	}
 };
