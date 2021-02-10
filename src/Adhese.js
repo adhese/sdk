@@ -502,16 +502,18 @@ Adhese.prototype.enableViewabilityTracking = function (target, settings) {
 	if (typeof settings === 'object' && settings !== null) {
 		settings.inViewPercentage ? observerOptions.threshold.push(settings.inViewPercentage) : observerOptions.threshold.push(0.5);
 		target.viewability.trackerTimeout = settings.duration && settings.duration !== '' ? settings.duration : 1;
+		target.viewability.inViewPercentage = observerOptions.threshold[observerOptions.threshold.length-1];
 	} else {
 		observerOptions.threshold.push(0.5);
 		target.viewability.trackerTimeout = 1;
+		target.viewability.inViewPercentage = observerOptions.threshold[observerOptions.threshold.length-1];
 	}
 
 	target.viewability.intersectionCallback = function (entries) {
 		entries.forEach(function (entry) {
 			var adBox = entry.target;
 			if (entry.isIntersecting) {
-				if (entry.intersectionRatio >= 0.50) {
+				if (entry.intersectionRatio >= target.viewability.inViewPercentage) {
 					adBox.timerRunning = true;
 					adBox.timer = window.setTimeout(function () {
 						target.viewability.adObserver.unobserve(adBox);
