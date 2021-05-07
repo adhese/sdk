@@ -4,103 +4,123 @@
  * @return {Object}
  */
  Adhese.prototype.Helper = function() {
- 	this.oslist = [
- {
-     string: navigator.userAgent,
-    subString: "Windows Phone",
-    identity: "WindowsPhone"
- },
- {
-   string: navigator.userAgent,
-   subString: "Windows NT 10.0",
-   identity: "Windows10"
- },
- {
-       string: navigator.userAgent,
-      subString: "Windows NT 6.3",
-      identity: "Windows8.1"
-  },
-  {
- 		string: navigator.userAgent,
- 		subString: "Windows NT 6.2",
- 		identity: "Windows8"
- 	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Windows NT 6.1",
- 		identity: "Windows7"
- 	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Windows NT 6.0",
- 		identity: "WindowsVista"
- 	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Windows NT 5.1",
- 		identity: "WindowsXP"
- 	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "Windows 98",
- 		identity: "Windows98"
- 	},
-  {
-   string: navigator.userAgent,
-   subString: "Android",
-   identity: "Android"
-  },
- 	{
- 		string: navigator.userAgent,
- 		subString: "iPhone",
- 		identity: "iOS"
- 	},
- 	{
- 		string: navigator.userAgent,
- 		subString: "iPad",
- 		identity: "iOS"
- 	},
- 	{
- 		string: navigator.platform,
- 		subString: "Mac",
- 		identity: "OSX"
- 	},
-  {
-   string: navigator.platform,
-   subString: "Linux",
-   identity: "Linux"
-  }
- 	];
+	 this.oslist = [
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows Phone",
+			 identity: "WindowsPhone"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 10.0",
+			 identity: "Windows10"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 6.3",
+			 identity: "Windows8.1"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 6.2",
+			 identity: "Windows8"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 6.1",
+			 identity: "Windows7"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 6.0",
+			 identity: "WindowsVista"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows NT 5.1",
+			 identity: "WindowsXP"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Windows 98",
+			 identity: "Windows98"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "Android",
+			 identity: "Android"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "iPhone",
+			 identity: "iOS"
+		 },
+		 {
+			 string: navigator.userAgent,
+			 subString: "iPad",
+			 identity: "iOS"
+		 },
+		 {
+			 string: navigator.platform,
+			 subString: "Mac",
+			 identity: "OSX"
+		 },
+		 {
+			 string: navigator.platform,
+			 subString: "Linux",
+			 identity: "Linux"
+		 }
+	 ];
 
- 	this.browserlist = [
- 	{
-        string: navigator.userAgent,
-        subString: "Trident/7",
-        identity: "Explorer",
-        versionSearch: "rv"
-    },{
- 		string: navigator.userAgent,
- 		subString: "MSIE",
- 		identity: "Explorer",
- 		versionSearch: "MSIE"
- 	}, {
- 		string: navigator.userAgent,
- 		subString: "Chrome",
- 		identity: "Chrome"
-  },{
- 		string: navigator.vendor,
- 		subString: "Apple",
- 		identity: "Safari",
- 		versionSearch: "Version"
- 	}, {
- 		prop: window.opera,
- 		identity: "Opera"
- 	}, {
- 		string: navigator.userAgent,
- 		subString: "Firefox",
- 		identity: "Firefox"
- 	}
- 	];
+	 this.browserlist = [
+		{
+			string: navigator.userAgent,
+			subString: "AppleTV",
+			identity: "AppleTV"
+		}, {
+			string: navigator.userAgent,
+			subString: "CrKey",
+			identity: "Chromecast"
+		}, {
+			string: navigator.userAgent,
+			subString: "FBAN",
+			identity: "Facebook"
+		}, {
+			string: navigator.userAgent,
+			subString: "FBAV",
+			identity: "Facebook"
+		}, {
+			string: navigator.userAgent,
+			subString: "Instagram",
+			identity: "Instagram"
+		}, {
+			 string: navigator.userAgent,
+			 subString: "Trident/7",
+			 identity: "Explorer",
+			 versionSearch: "rv"
+		 }, {
+			 string: navigator.userAgent,
+			 subString: "MSIE",
+			 identity: "Explorer",
+			 versionSearch: "MSIE"
+		 }, {
+			 string: navigator.userAgent,
+			 subString: "Chrome",
+			 identity: "Chrome"
+		 }, {
+			 prop: window.opera,
+			 identity: "Opera"
+		 }, {
+			 string: navigator.userAgent,
+			 subString: "Firefox",
+			 identity: "Firefox"
+		 }, {
+			string: navigator.vendor,
+			subString: "Apple",
+			identity: "Safari",
+			versionSearch: "Version"
+		}
+	 ];
  };
 
 /**
