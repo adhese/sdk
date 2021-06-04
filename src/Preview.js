@@ -98,9 +98,10 @@ Adhese.prototype.checkPreviewList = function() {
 	previewAds.forEach(ad => {
 		this.previewFormats[ad.format+(ad.position?ad.position:"")] = {slot:(ad.slotId?ad.slotId:""),creative:ad.cId, templateFile:ad.format,width:0,height:0,position:(ad.position?ad.position:"")};
 	});	
-	
-	this.helper.createCookie("adhese_preview_list",JSON.stringify(previewAds),0);
 	this.previewActive = previewAds.length>0;	
+	if (this.previewActive) {
+		this.helper.createCookie("adhese_preview_list",JSON.stringify(previewAds),0);	
+	}
 }
 
 /**
