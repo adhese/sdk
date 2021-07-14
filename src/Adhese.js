@@ -501,6 +501,9 @@ Adhese.prototype.enableViewabilityTracking = function (target, settings) {
 
 	if (typeof settings === 'object' && settings !== null) {
 		settings.inViewPercentage ? observerOptions.threshold.push(settings.inViewPercentage) : observerOptions.threshold.push(0.5);
+		if (settings.rootMargin) {
+			observerOptions.rootMargin = settings.rootMargin;
+		}		
 		target.viewability.trackerTimeout = settings.duration && settings.duration !== '' ? settings.duration : 1;
 		target.viewability.inViewPercentage = observerOptions.threshold[observerOptions.threshold.length-1];
 	} else {
