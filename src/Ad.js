@@ -9,6 +9,7 @@
  * @param {string} options.location An optional string that identifies this Ad's location. Beware, this will overwrite the global Adhese.location property for this Ad.
  * @param {string} options.position An optional string defining this Ad's position. The string will be added to Adhese.location to identifiy this Ad. Intended for using the same formatCode more than once in the same location.
  * @param {string} options.containerId An optional string defining this Ad's container, intended to be used in pages where the same slot is requested multiple times and needs to be visualised in a different element (ex.: endlessly scrolling web pages)
+ * @param {string} options.parameters An optional object containing target parameters for this ad. The object keys are the request prefixes, the values an array of strings or ints.
  * @return {void}
  */
  Adhese.prototype.Ad = function(adhese, formatCode, options) {
@@ -27,6 +28,8 @@
 	}
 	this.options.slotName = this.getSlotName(adhese);
 	this.containingElementId = this.getContainingElementId();
+	if (options.parameters) this.parameters = options.parameters;
+	else this.parameters = [];
  	return this;
  };
 
