@@ -96,6 +96,42 @@ The SDK can be built with an extra Ajax request handler. If you plan to implemen
     		method: 'get'
 		});
 
+#### POST Request
+
+Below follow an example of a POST request. You are free to use any POST mechanism you like, as long as the host and payload are valid.
+
+1. Create the ad
+
+		var ad = adhese.tag("leaderboard", {"parameters":{"position":"top"}});
+
+2. Retrieve the ad URI to perform the asynchronous request
+
+		const options = {
+            method: "POST",
+            credentials: "same-origin",
+            headers: new Headers({'content-type': 'application/json'}),
+            body: JSON.stringify( adhese.getRequestPayload(slots) )  
+        };
+        fetch( adhese.config.host + "json", options )
+            .then( response => response.json() )
+            .then( response => {
+                adhese.renderAds(response);
+        });
+
+3. Use the body or tag property of the response and append it to a container of your choice
+
+		adhese.safeframe.addPositions(result);
+		for (var i = result.length - 1; i >= 0; i--) {
+			adhese.safeframe.render(result[i].adType);
+    	};
+
+4. Perform a request to the response.tracker URI. Make sure it is not cached. The response of this tracker URI can be ignored.
+
+		AdheseAjax.request({
+    		url: result[0].tracker + '?t=' + new Date().getTime(),
+    		method: 'get'
+		});
+
 #### Response object structure
 The request returns a JSON object with the fields described below. If no ad should be shown, an empty JSON object is returned (just two curly braces).
 
@@ -184,6 +220,18 @@ Please contact our support departement for more details.
 
 		// will add an age target with prefix 'ag' and value '40' to each request
 		adhese.registerRequestParameter('ag', 40);
+
+### Registering slot target parameters
+When creating a new Ad through the adhese.tag() function, yuo can pass a "parameters" object in the options.
+These parameters are bound to the ad placement you created and will not be considered for other ads on the same page.
+Each attribute key of the object should be a valid prefix, the values are always an array of strings or numbers (int)
+
+This feature is only available in POST requests.
+
+The available target parameters and their prefixes are determined by your Adhese account configuration. 
+Please contact our support departement for more details.
+
+		adhese.tag('leaderboard', {'parameters':{'ps':['top']}});
 
 ### Reserved targeting parameters for mobile apps
 Three specific prefixes have been reserved for passing mobile device and location info.
