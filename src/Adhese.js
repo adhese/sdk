@@ -355,6 +355,43 @@ Adhese.prototype.getMultipleRequestUri = function(adArray, options) {
 };
 
 /**
+ * Function that translates array opf ads and target parameters into a payload object for use in a POST request to the ad endpoint
+ * @param  {Ad[]} adArray An array of Ad objects that need to be included in the URI
+ * @param {object} options	options object
+ * @param {object} options.vastContentAsUrl	set to false if you want to receive VAST markup inline, if set to true, response contains a url to retrieve the VAST markup (default true)
+ * @return {object}         Object in the Adhese payload structure
+ */
+Adhese.prototype.getRequestPayload = function(adArray, options) {
+	
+	let slots = [];
+	for (var i = adArray.length - 1; i >= 0; i--) {
+		var ad = adArray[i];
+		if (!ad.swfSrc || (ad.swfSrc && ad.swfSrc.indexOf('preview') == -1)){
+			slots.push({
+				"slotname": this.getSlotName(ad),
+				"parameters": ad.parameters
+			});
+		}
+	}
+
+	let commonParams = {};
+	for (var a in this.request) {
+		var values = [];
+		for (var x=0; x<this.request[a].length; x++) {
+			values.push(this.request[a][x]);
+		}
+		commonParams[a] = values;
+	}
+	
+	let payload = {
+		"slots": slots,
+		"parameters": commonParams,
+		"vastContentAsUrl": (options && options.vastContentAsUrl ? options.vastContentAsUrl : true)
+	 };
+	 return payload;
+};
+
+/**
  * Returns the slot name for this ad
  *
  * @param {Ad} ad the Ad instance whose uri is needed
