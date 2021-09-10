@@ -115,10 +115,11 @@ Below follow an example of a POST request. You are free to use any POST mechanis
         fetch( adhese.config.host + "json", options )
             .then( response => response.json() )
             .then( response => {
-                adhese.renderAds(response);
+                // render the ads in response
+				// execute a tracker for counting an impression
         });
 
-3. Use the body or tag property of the response and append it to a container of your choice
+3. Use the body or tag property of the response in the renderAd function and append it to a container of your choice
 
 		adhese.safeframe.addPositions(result);
 		for (var i = result.length - 1; i >= 0; i--) {
