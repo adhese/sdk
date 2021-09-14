@@ -28,7 +28,7 @@
 	}
 	this.options.slotName = this.getSlotName(adhese);
 	this.containingElementId = this.getContainingElementId();
-	if (options.parameters) this.parameters = options.parameters;
+	if (options && options.parameters) this.parameters = options.parameters;
 	else this.parameters = {};
  	return this;
  };
