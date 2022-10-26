@@ -582,13 +582,10 @@ Adhese.prototype.enableViewabilityTracking = function (target, settings) {
 						tracker.style.top = "0";
 						document.body.appendChild(tracker);
 					}
-				} else {
-					if (adBox.timerRunning) {
-						window.clearTimeout(adBox.timer);
-						adBox.timerRunning = false;
-					}
-
-				}
+				} 
+			} else if (adBox.timerRunning) {
+					window.clearTimeout(adBox.timer);
+					adBox.timerRunning = false;
 			}
 		});
 	}
