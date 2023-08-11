@@ -128,9 +128,9 @@
 Adhese.prototype.initSafeFrame = function(safeframeContainerID) {
 	if (!this.safeframe) {
 		if (safeframeContainerID) {
-			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID, this.config.viewabilityTracking,this.config.logSafeframeMessages);	
+			this.safeframe = new this.SafeFrame(this.config.poolHost, safeframeContainerID, this.config.viewabilityTracking,this.config.logSafeframeMessages, this.helper);	
 		} else {
-			this.safeframe = new this.SafeFrame(this.config.poolHost, this.config.viewabilityTracking, this.config.logSafeframeMessages);
+			this.safeframe = new this.SafeFrame(this.config.poolHost, this.config.viewabilityTracking, this.config.logSafeframeMessages, this.helper);
 		}		
 	}	
 }

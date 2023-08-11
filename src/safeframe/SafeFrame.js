@@ -2,7 +2,7 @@
  * @class
  * This file contains the SafeFrame object that makes the IAB Safeframe reference implementation available in the Adhese context.
  */
- Adhese.prototype.SafeFrame = function(poolHost, containerID, viewabilityTracking, messages) {
+ Adhese.prototype.SafeFrame = function(poolHost, containerID, viewabilityTracking, messages, helper) {
 	this.poolHost = poolHost;
 	this.containerID = "adType";
 	if (containerID) this.containerID = containerID;
@@ -11,6 +11,7 @@
 	this.adhesePositions = new Array();
 	this.ads = [];
 	this.logMessages = messages || '';
+	this.helper = helper;
 	return this.init();
  };
 
@@ -35,7 +36,7 @@ Adhese.prototype.SafeFrame.prototype.init = function() {
 			};
 		}
 	}
-
+  
 	// create a config
 	var conf = new $sf.host.Config({
 		auto: false,
@@ -81,7 +82,8 @@ Adhese.prototype.SafeFrame.prototype.addPositions = function(inAds) {
 			"html": ad.sfHtml,
 			"src": ad.sfSrc,
 			"conf": posConf,
-			"viewableTracker": ad.viewableImpressionCounter || ''
+			"viewableTracker": ad.viewableImpressionCounter || '',
+			"impressionTracker": ad.impressionCounter || ''
 		}));
 	}
 };
@@ -95,6 +97,9 @@ Adhese.prototype.SafeFrame.prototype.render = function(id) {
 	for (var x in this.adhesePositions) {
 		if (this.adhesePositions[x].id == id) {
 			$sf.host.render(this.adhesePositions[x]);
+			if (this.adhesePositions[x].impressionTracker ){
+				this.helper.addTrackingPixel(this.adhesePositions[x].impressionTracker)
+			}
 			if (this.viewability && this.adhesePositions[x].viewableTracker && this.adhesePositions[x].viewableTracker !== '') {
 				this.viewability.trackers[id] = this.adhesePositions[x].viewableTracker;
 				this.viewability.adObserver.observe(document.getElementById(id));
