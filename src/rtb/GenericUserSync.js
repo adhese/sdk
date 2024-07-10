@@ -54,6 +54,7 @@ Adhese.prototype.appendSyncPixel = function(options) {
         pixel.setAttribute("width", "0");
         pixel.setAttribute("style", "border: 0px; display: none;");
         pixel.setAttribute("src", options.url);
+	pixel.setAttribute("alt","");
         document.body.appendChild(pixel);
 };
 
