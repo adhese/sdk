@@ -566,6 +566,7 @@ Adhese.prototype.enableViewabilityTracking = function (target, settings) {
 							tracker.style.border = "0";
 							tracker.style.position = "absolute";
 							tracker.style.top = "0";
+							tracker.alt = "";
 							document.body.appendChild(tracker);
 						}						
 					}, target.viewability.trackerTimeout * 1000);
