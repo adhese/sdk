@@ -201,6 +201,7 @@ Adhese.prototype.Helper.prototype.getQueryStringParameter = function(inName) {
  	img.style.border = "0";
  	img.style.position = "absolute";
  	img.style.top = "0";
+	img.alt = "";
  	document.body.appendChild(img);
  };
 
